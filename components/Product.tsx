@@ -2,7 +2,8 @@ import React from "react";
 import { Suspense } from "react";
 import Link from "next/link";
 
-const Product = ({ title, description, price, image, id }) => {
+const Product = ({ title, description, price, image, id, stockQuantity }) => {
+  const imageUrl = "https://drive.google.com/uc?export=view&id=" + image;
   return (
     <Suspense fallback={<h1>Loading persons...</h1>}>
       {/* <div key={id} className="shadow  max-w-md  rounded h-60">
@@ -19,7 +20,8 @@ const Product = ({ title, description, price, image, id }) => {
           <div
             className="bg-gray-400 h-32 rounded-t-lg p-4 bg-no-repeat bg-center bg-cover"
             style={{
-              backgroundImage: "image",
+              backgroundImage: `url(${imageUrl})`,
+              backgroundPosition: "center",
             }}
           >
             <div className="text-right">
@@ -43,14 +45,33 @@ const Product = ({ title, description, price, image, id }) => {
             <div className="p-2 flex-grow">
               <h1 className="font-medium text-sm font-poppins">{title}</h1>
               <p className="text-gray-500 text-xs font-nunito">{description}</p>
+              {stockQuantity < 1 && (
+                <div className="bg-red-100 text-red-500 rounded-full px-2 py-1 text-xs font-medium  w-24">
+                  Out of Stock
+                </div>
+              )}
             </div>
             <div className="p-2 text-right">
-              <div className="text-teal-500 text-md font-semibold  font-poppins">
-                ${price}
-              </div>
-              <div className="text-xs text-gray-500  line-through font-poppins">
-                $80
-              </div>
+              {/* If stockeQuantity is greater than 0 then render below component or else render out of stock */}
+              {stockQuantity > 0 ? (
+                <>
+                  <div className="text-teal-500 text-md font-semibold  font-poppins">
+                    ${price}
+                  </div>
+                  <div className="text-xs text-gray-500  line-through font-poppins">
+                    $80
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="text-gray-500 text-md font-semibold  font-poppins">
+                    ${price}
+                  </div>
+                  <div className="text-xs text-gray-500  line-through font-poppins">
+                    $80
+                  </div>
+                </>
+              )}
             </div>
           </div>
           <div className="flex justify-center items-center px-2 pb-2">

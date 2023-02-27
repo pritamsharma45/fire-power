@@ -8,9 +8,9 @@ type Edge {
 }
 
 type Mutation {
-  createProduct(description: String!, image: String!, price: Float!, title: String!): Product!
+  createProduct(description: String!, image: String!, price: Float!, stockQuantity: Int!, title: String!): Product!
   deleteProduct(id: Int!): Product!
-  updateProduct(description: String, id: Int, image: String, price: Float, title: String): Product!
+  updateProduct(description: String, id: Int, image: String, price: Float, stockQuantity: Int, title: String): Product!
 }
 
 type PageInfo {
@@ -23,6 +23,7 @@ type Product {
   id: Int
   image: String
   price: Float
+  stockQuantity: Int
   title: String
 }
 

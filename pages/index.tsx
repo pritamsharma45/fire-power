@@ -20,6 +20,7 @@ const AllProducts = gql`
           description
           price
           image
+          stockQuantity
         }
       }
     }
@@ -64,7 +65,8 @@ function Home() {
                 title={node.title}
                 description={node.description}
                 price={node.price}
-                image={node.phone}
+                image={node.image}
+                stockQuantity={node.stockQuantity}
               />
             </div>
           ))}

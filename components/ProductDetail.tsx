@@ -2,7 +2,15 @@ import React from "react";
 import Image from "next/image";
 import { Suspense } from "react";
 
-const ProductDetail = ({ title, description, price, image, id }) => {
+const ProductDetail = ({
+  title,
+  description,
+  price,
+  image,
+  id,
+  stockQuantity,
+}) => {
+  const imageUrl = "https://drive.google.com/uc?export=view&id=" + image;
   return (
     <>
       <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-ds md:max-w-4xl">
@@ -10,7 +18,7 @@ const ProductDetail = ({ title, description, price, image, id }) => {
           <div className="md:flex-shrink-0">
             <Image
               className="h-48 w-full object-cover md:w96 md:h-auto"
-              src="/image.jpg"
+              src={imageUrl}
               alt="Product Image"
               width={300}
               height={300}
@@ -28,6 +36,11 @@ const ProductDetail = ({ title, description, price, image, id }) => {
             </a>
             <p className="mt-2 text-gray-500">{description}</p>
             <p className="mt-2 text-gray-700 font-bold">Price: ${price}</p>
+            {stockQuantity < 1 && (
+              <div className="bg-red-100 text-red-500 rounded-full px-2 py-1 text-xs font-medium  w-24">
+                Out of Stock
+              </div>
+            )}
             <div className="mt-4 flex space-x-4">
               <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-3 w-40 h-8 rounded-full">
                 <svg className="inline w-6 h-6 mr-2" viewBox="0 0 24 24">

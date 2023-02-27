@@ -11,8 +11,6 @@ import Link from "next/link";
 import ProductDetail from "../../components/ProductDetail";
 import { Suspense } from "react";
 
-
-
 const SingleProduct = gql`
   query Query($id: Int!) {
     product(id: $id) {
@@ -21,6 +19,7 @@ const SingleProduct = gql`
       image
       price
       title
+      stockQuantity
     }
   }
 `;
@@ -60,7 +59,8 @@ function ProductCard() {
                 title={data.product.title}
                 description={data.product.description}
                 price={data.product.price}
-                image={data.product.phone}
+                image={data.product.image}
+                stockQuantity={data.product.stockQuantity}
               />
             </div>
           )}

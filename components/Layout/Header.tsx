@@ -5,7 +5,7 @@ import Image from "next/image";
 const Header = () => {
   return (
     <header className="text-gray-600 body-font">
-      <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+      <div className="flex items-center justify-between bg-gray-800 p-2">
         <Link href="/">
           <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
             <Image
@@ -31,18 +31,28 @@ const Header = () => {
             </svg> */}
           </a>
         </Link>
-        <nav>
-          <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-            <div className="flex flex-wrap items-center text-base justify-center">
+        <div className="block lg:inline-block lg:mt-0 text-red-500  text-5xl font-bold mx-4 mb-1">
+          Xxray
+        </div>
+
+        <nav className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center mr-10">
+          <div className="flex flex-1 flex-row justify-center  text-green-600 mr-10">
+            
               <Link href="/">
-                <div className="nav-link mr-5 hover:text-gray-900">Home</div>
+              <a>
+                <div className="mx-10 block lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+                  Home
+                </div>
+                </a>
               </Link>
-              <Link href="/about">
-                <div className="nav-link mr-5 hover:text-gray-900">
+        
+            <Link href="/about">
+              <a>
+                <div className="block lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-10">
                   Contact Us
                 </div>
-              </Link>
-            </div>
+              </a>
+            </Link>
           </div>
         </nav>
       </div>

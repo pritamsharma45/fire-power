@@ -40,6 +40,7 @@ export const Product = objectType({
     t.float("price");
     t.string("description");
     t.string("image");
+    t.int("stockQuantity");
   },
 });
 
@@ -134,6 +135,7 @@ export const CreateProductMutation = extendType({
         description: nonNull(stringArg()),
         price: nonNull(floatArg()),
         image: nonNull(stringArg()),
+        stockQuantity: nonNull(intArg()),
       },
       async resolve(_parent, args, ctx) {
         const newProduct = {
@@ -141,6 +143,7 @@ export const CreateProductMutation = extendType({
           description: args.description,
           price: args.price,
           image: args.image,
+          stockQuantity: args.stockQuantity,
         };
 
         return await ctx.prisma.product.create({
@@ -163,6 +166,7 @@ export const UpdateProductMutation = extendType({
         image: stringArg(),
         price: floatArg(),
         description: stringArg(),
+        stockQuantity: intArg(),
       },
       resolve(_parent, args, ctx) {
         return ctx.prisma.product.update({
@@ -172,12 +176,37 @@ export const UpdateProductMutation = extendType({
             description: args.description,
             price: args.price,
             image: args.image,
+            stockQuantity: args.stockQuantity,
           },
         });
       },
     });
   },
 });
+
+//  Update likes
+// export const UpdateProductMutation = extendType({
+//   type: "Mutation",
+//   definition(t) {
+//     t.nonNull.field("incrementLikes", {
+//       type: "Product",
+//       args: {
+//         id: intArg(),
+//       },
+//       resolve(_parent, args, ctx) {
+//         return ctx.prisma.product.update({
+//           where: { id: args.id },
+//           data: {
+//             likes: {
+
+//             }
+//           },
+//         });
+//       },
+//     });
+//   },
+// });
+
 // // delete Product
 export const DeleteProductMutation = extendType({
   type: "Mutation",
