@@ -1,20 +1,48 @@
 import React from "react";
 import { Suspense } from "react";
 import Link from "next/link";
+import { gql, useMutation } from "@apollo/client";
+import { useState } from "react";
+
+// import AddToCart from "../features/counter/AddToCart";
+import AddToCart from "../features/cart/AddToCart";
+import { TCartItem } from "../features/cart/AddToCart";
+
+import styles from "./product.module.css";
+
+const UPDATE_LIKE = gql`
+  mutation AddOrUpdateLike(
+    $productId: Int!
+    $userId: String!
+    $hasLiked: Boolean!
+  ) {
+    addOrUpdateLike(
+      productId: $productId
+      userId: $userId
+      hasLiked: $hasLiked
+    ) {
+      hasLiked
+    }
+  }
+`;
 
 const Product = ({ title, description, price, image, id, stockQuantity }) => {
   const imageUrl = "https://drive.google.com/uc?export=view&id=" + image;
+
+  const cartItem: TCartItem = {
+    id: id,
+    title: title,
+    description: description,
+    price: price,
+    image: image,
+  };
+
+  const [updateLike, { data, loading, error }] = useMutation(UPDATE_LIKE);
+
+  const [hasLiked, setHasLiked] = React.useState(true);
+
   return (
     <Suspense fallback={<h1>Loading persons...</h1>}>
-      {/* <div key={id} className="shadow  max-w-md  rounded h-60">
-        <div className="p-5 flex flex-col space-y-2">
-          <p className="text-sm font-medium">{image}</p>
-          <p className="text-lg font-medium">{title}</p>
-          <p className="text-sm font-medium">{description}</p>
-          <p className="text-sm text-blue-500">{price}</p>
-        </div>
-      </div> */}
-
       <div key={id} className="shadow  max-w-md  rounded h-180">
         <div className="bg-white shadow-lg hover:shadow-xl rounded-lg">
           <div
@@ -31,8 +59,22 @@ const Product = ({ title, description, price, image, id, stockQuantity }) => {
                   backgroundColor: "black",
                   color: "pink",
                 }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  updateLike({
+                    variables: {
+                      productId: id,
+                      hasLiked: hasLiked,
+                      userId: "cleqri2vl0008kgvxdb5t94u9",
+                    },
+                  });
+                  setHasLiked(!hasLiked);
+                }}
               >
-                <svg className="w-6 h-6" viewBox="0 0 24 24">
+                <svg
+                  className={`w-6 h-6 ${loading ? "spin" : ""}`}
+                  viewBox="0 0 24 24"
+                >
                   <path
                     fill="currentColor"
                     d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
@@ -90,23 +132,7 @@ const Product = ({ title, description, price, image, id, stockQuantity }) => {
               </Link>
             </div>
             <div className="w-1/2 p-1">
-              <button className="block w-full  h-8 bg-white hover:bg-gray-100 text-teal-500 border-2 border-teal-500 px-1 pb-0 rounded uppercase font-poppins font-medium">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="inline w-4 h-4 mb-1"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-                  />
-                </svg>{" "}
-                <span className="mb-0 text-xs">Add to cart</span>
-              </button>
+              <AddToCart cartItem={cartItem} />
             </div>
           </div>
         </div>
@@ -116,3 +142,4 @@ const Product = ({ title, description, price, image, id, stockQuantity }) => {
 };
 
 export default Product;
+// export default connect(null, { addProduct })(Product)

@@ -4,6 +4,8 @@ import Link from "next/link";
 import Product from "../components/Product";
 import { Suspense } from "react";
 import { useState } from "react";
+import { useAppSelector, useAppDispatch } from "../hooks/hooks";
+import { selectCount, selectCartItems } from "../features/cart/cartSlice";
 
 const AllProducts = gql`
   query allProductsQuer($first: Int, $after: Int) {
@@ -33,7 +35,8 @@ function Home() {
   });
   const [bottomLoading, setBottomLoading] = useState(false);
   // console.log(data);
-
+  const cartItems = useAppSelector(selectCartItems);
+  console.log("Cart items", cartItems);
   // Handle when product card is clicked
 
   if (loading)
@@ -56,7 +59,8 @@ function Home() {
         <div>
           <h1 className="text-4xl font-bold mb-4">Products</h1>
         </div>
-
+      
+        {/* <pre>{JSON.stringify(cartItems,null,2)}</pre> */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {data?.products.edges.map(({ node }, i) => (
             <div className="person h-auto w-70">

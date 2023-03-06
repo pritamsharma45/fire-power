@@ -44,6 +44,8 @@ export const Product = objectType({
   },
 });
 
+
+
 // get All Products
 export const ProductsQuery = extendType({
   type: "Query",
@@ -61,14 +63,17 @@ export const ProductsQuery = extendType({
             cursor: {
               id: args.after,
             },
+            include: { likes: true },
           });
         } else {
           queryResults = await ctx.prisma.product.findMany({
             take: args.first,
+            include: { likes: true },
           });
         }
-
+       
         if (queryResults.length > 0) {
+          
           const lastProductResults = queryResults[queryResults.length - 1];
           const lastProductID = lastProductResults.id;
 
@@ -77,6 +82,7 @@ export const ProductsQuery = extendType({
             cursor: {
               id: lastProductID,
             },
+            include: { likes: true },
           });
 
           const result = {
@@ -153,6 +159,7 @@ export const CreateProductMutation = extendType({
     });
   },
 });
+
 
 // update Product
 export const UpdateProductMutation = extendType({

@@ -10,35 +10,152 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id            Int       @id @default(autoincrement())
-  title         String
-  description   String?
-  image         String?
-  price         Float
-  stockQuantity Int       @default(0)
-  comments      Comment[]
-  likes         Int       @default(0)
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  email    String    @unique
-  name     String?
-  comments Comment[]
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  // Relationships
+  accounts      Account[]
+  sessions      Session[]
+  comments      Comment[]
+  likes         Like[]
+  orders        Order[]
 }
 
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+
+
+// Product model
+model Product {
+  id            Int         @id @default(autoincrement())
+  title         String
+  description   String
+  image         String?
+  price         Float
+  stockQuantity Int
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  // Relationships
+  comments      Comment[]
+  likes         Like[]
+  orders        OrderItem[]
+  inventory     Inventory[]
+}
+
+// Comment model
 model Comment {
-  id        Int     @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   content   String
-  user      User    @relation(fields: [userId], references: [id])
-  userId    Int
-  product   Product @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // Relationships
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  productId Int
+  userId    String
+}
+
+// Like model
+model Like {
+  id        Int      @id @default(autoincrement())
+  hasLiked  Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // Relationships
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  productId Int
+  userId    String
+
+  @@unique([productId, userId])
+}
+
+// Order model
+model Order {
+  id           Int                  @id @default(autoincrement())
+  total        Float
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  // Relationships
+  items        OrderItem[]
+  user         User                 @relation(fields: [userId], references: [id])
+  transactions PaymentTransaction[]
+  userId       String
+}
+
+// OrderItem model
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  quantity  Int
+  price     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // Relationships
+  order     Order    @relation(fields: [orderId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  orderId   Int
   productId Int
 }
 
-// model Like {
-//   id        Int     @id @default(autoincrement())
-//   product   Product @relation(fields: [productId], references: [id])
-//   productId Int
-// }
+// PaymentTransaction model
+model PaymentTransaction {
+  id        Int      @id @default(autoincrement())
+  amount    Float
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // Relationships
+  order     Order    @relation(fields: [orderId], references: [id])
+  userId    String
+  orderId   Int
+}
+
+// Inventory model
+model Inventory {
+  id        Int      @id @default(autoincrement())
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // Relationships
+  product   Product  @relation(fields: [productId], references: [id])
+  location  String
+  productId Int
+}

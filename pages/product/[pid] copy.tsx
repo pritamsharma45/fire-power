@@ -47,18 +47,24 @@ function ProductCard() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="container mx-auto max-w-5xl my-5 px-5">
-        {data?.product && (
-          <div >
-            <ProductDetail
-              id={data.product.id}
-              title={data.product.title}
-              description={data.product.description}
-              price={data.product.price}
-              image={data.product.image}
-              stockQuantity={data.product.stockQuantity}
-            />
-          </div>
-        )}
+        {/* <div>
+          <h1 className="text-4xl font-bold mb-4">Product</h1>
+        </div> */}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {data?.product && (
+            <div className="person">
+              <ProductDetail
+                id={data.product.id}
+                title={data.product.title}
+                description={data.product.description}
+                price={data.product.price}
+                image={data.product.image}
+                stockQuantity={data.product.stockQuantity}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

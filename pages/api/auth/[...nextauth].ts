@@ -1,0 +1,39 @@
+import NextAuth from "next-auth";
+import { User } from "next-auth";
+import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { prisma } from "../../../lib/prisma";
+
+interface MyUser extends User {
+  userId: string;
+}
+export default NextAuth({
+  adapter: PrismaAdapter(prisma),
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    GithubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
+      // https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
+      // @ts-ignore
+      scope: "read:user",
+    }),
+  ],
+  callbacks: {
+    async session({ session, user, token }) {
+      // console.log("session called:", user);
+      const myUser = user as MyUser;
+      myUser.userId = user.id;
+      session.user = myUser;
+
+      return session;
+    },
+  },
+  secret: process.env.SECRET,
+
+  debug: true,
+});

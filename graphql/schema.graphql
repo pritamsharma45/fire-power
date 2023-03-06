@@ -2,20 +2,75 @@
 ### Do not make changes to this file directly
 
 
+type Comment {
+  content: String
+  createdAt: String
+  id: Int
+  product: Product
+  productId: Int
+  updatedAt: String
+  user: User
+  userId: String
+}
+
 type Edge {
   cursor: Int!
   node: Product!
 }
 
+type Like {
+  createdAt: String
+  hasLiked: Boolean
+  id: Int
+  product: Product
+  productId: Int
+  updatedAt: String
+  user: User
+  userId: String
+}
+
 type Mutation {
+  addComment(content: String!, productId: Int!, userId: String!): Comment!
+  addOrUpdateLike(hasLiked: Boolean!, productId: Int!, userId: String!): Like!
   createProduct(description: String!, image: String!, price: Float!, stockQuantity: Int!, title: String!): Product!
   deleteProduct(id: Int!): Product!
   updateProduct(description: String, id: Int, image: String, price: Float, stockQuantity: Int, title: String): Product!
 }
 
+type Order {
+  createdAt: String
+  id: Int
+  items: OrderItem
+  total: Float
+  transactions: PaymentTransaction
+  updatedAt: String
+  user: User
+}
+
+type OrderItem {
+  createdAt: String
+  id: Int
+  order: Order
+  price: Float
+  product: Product
+  quantity: Int
+  updatedAt: String
+}
+
 type PageInfo {
   endCursor: Int!
   hasNextPage: Boolean!
+}
+
+type PaymentTransaction {
+  amount: Float
+  createdAt: String
+  id: Int
+  order: Order
+  orderId: Int
+  status: String
+  updatedAt: String
+  userId: Int
 }
 
 type Product {
@@ -28,11 +83,26 @@ type Product {
 }
 
 type Query {
+  commentsByProductId(productId: Int!): [Comment]!
+  likeByProductId(productId: Int!, userId: String!): [Like]!
   product(id: Int!): Product!
   products(after: Int, first: Int): Response
+  userWithEmail(email: String!): User!
 }
 
 type Response {
   edges: [Edge]!
   pageInfo: PageInfo!
+}
+
+type User {
+  comments: Comment
+  createdAt: String
+  email: String
+  id: String
+  likes: Like
+  name: String
+  orders: Order
+  password: String
+  updatedAt: String
 }
