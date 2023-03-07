@@ -1,19 +1,18 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import styles from "./header.module.css";
 import Profile from "./Profile";
 import Cart from "./cart";
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
-import { selectCount,selectCartItems } from "../../features/cart/cartSlice";
+import { selectCount, selectCartItems } from "../../features/cart/cartSlice";
 
 const Header = () => {
   const { data: session, status } = useSession();
   const count = useAppSelector(selectCount);
   const cartItems = useAppSelector(selectCartItems);
-  // const cartItems = useAppSelector(selectCartItems);
-  // console.log("Cart items", cartItems);
+
   const loading = status === "loading";
   return (
     <header className="text-gray-600 body-font">
@@ -43,8 +42,11 @@ const Header = () => {
             </svg> */}
           </a>
         </Link>
-        <div className="block lg:inline-block lg:mt-0 text-red-500  text-5xl font-bold mx-4 mb-1">
-          Xxray
+        <div className="flex-row">
+          <div className="block lg:inline-block lg:mt-0 text-red-500  text-5xl font-bold mx-2 mb-1">
+            Xxray
+          </div>
+          <div className="text-white text-xs mx-2">Everything Herbal</div>
         </div>
 
         <nav className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center mr-10">

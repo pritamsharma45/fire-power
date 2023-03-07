@@ -51,6 +51,22 @@ model User {
   comments      Comment[]
   likes         Like[]
   orders        Order[]
+  profile       Profile?
+}
+
+model Profile {
+  id        Int      @id @default(autoincrement())
+  firstName String
+  lastName  String
+  address   String
+  street    String
+  city      String
+  zip       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // Relationships
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String   @unique
 }
 
 model VerificationToken {
@@ -60,8 +76,6 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
-
-
 
 // Product model
 model Product {

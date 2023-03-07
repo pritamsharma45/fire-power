@@ -42,6 +42,7 @@ const ProductDetail = ({
   image,
   id,
   stockQuantity,
+  isLiked,
 }) => {
   const router = useRouter();
   const {
@@ -49,14 +50,9 @@ const ProductDetail = ({
     loading: likeLoading,
     error: likeError,
   } = useQuery(GET_LIKE, {
-    variables: { userId: "cleqri2vl0008kgvxdb5t94u9", productId: id },
+    variables: { userId: "clewzr63k0006mgvxyt7tjvlx", productId: id },
   });
-
-  console.log(likeData);
-
-  const [hasLiked, setHasLiked] = React.useState(
-    likeData?.likeByProductId[0].hasLiked
-  );
+  const [blLiked, setHasLiked] = React.useState(isLiked);
 
   const [updateLike, { data, loading, error }] = useMutation(UPDATE_LIKE);
   // Handle checkout
@@ -91,7 +87,7 @@ const ProductDetail = ({
   const imageUrl = "https://drive.google.com/uc?export=view&id=" + image;
   return (
     <>
-      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-ds md:max-w-4xl">
+      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-ds md:max-w-5xl">
         <div className="md:flex">
           <div className="md:flex-shrink-0 mt-4">
             <Image
@@ -140,11 +136,7 @@ const ProductDetail = ({
                   </button>
                 </div>
               )}
-              {likeData?.likeByProductId[0].hasLiked ? (
-                <div>Liked: true</div>
-              ) : (
-                <div>Liked: false</div>
-              )}
+
               <div className="mt-4 flex space-x-4 my-3">
                 <button
                   className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-3 w-40 h-8 rounded-full"
@@ -153,21 +145,20 @@ const ProductDetail = ({
                     updateLike({
                       variables: {
                         productId: id,
-                        hasLiked: hasLiked,
-                        userId: "cleqri2vl0008kgvxdb5t94u9",
+                        hasLiked: !isLiked,
+                        userId: "clewzr63k0006mgvxyt7tjvlx",
                       },
                     });
+                    setHasLiked(!blLiked);
                   }}
                 >
                   <svg className="inline w-6 h-6 mr-2" viewBox="0 0 24 24">
                     <path
-                      fill={
-                        likeData?.likeByProductId[0].hasLiked ? "pink" : "black"
-                      }
+                      fill={blLiked ? "red" : "black"}
                       d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
                     />
                   </svg>
-                  {likeData?.likeByProductId[0].hasLiked ? "Unlike" : "Like"}
+                  {blLiked ? "Unlike" : "Like"}
                 </button>
                 <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-3  w-40 h-8 rounded-full">
                   <svg

@@ -43,7 +43,7 @@ function ProfileDropdown({ user }) {
           </small>
         </span>
         <hr />
-        <a href="#" className="block px-4 py-2 text-gray-800 hover:bg-gray-300">
+        <a href="/user" className="block px-4 py-2 text-gray-800 hover:bg-gray-300">
           Profile
         </a>
         <a href="#" className="block px-4 py-2 text-gray-800 hover:bg-gray-300">

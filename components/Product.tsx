@@ -3,11 +3,13 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { gql, useMutation } from "@apollo/client";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 // import AddToCart from "../features/counter/AddToCart";
 import AddToCart from "../features/cart/AddToCart";
 import { TCartItem } from "../features/cart/AddToCart";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import styles from "./product.module.css";
 
 const UPDATE_LIKE = gql`
@@ -26,7 +28,16 @@ const UPDATE_LIKE = gql`
   }
 `;
 
-const Product = ({ title, description, price, image, id, stockQuantity }) => {
+const Product = ({
+  title,
+  description,
+  price,
+  image,
+  id,
+  stockQuantity,
+  hasLiked,
+  userId,
+}) => {
   const imageUrl = "https://drive.google.com/uc?export=view&id=" + image;
 
   const cartItem: TCartItem = {
@@ -39,7 +50,26 @@ const Product = ({ title, description, price, image, id, stockQuantity }) => {
 
   const [updateLike, { data, loading, error }] = useMutation(UPDATE_LIKE);
 
-  const [hasLiked, setHasLiked] = React.useState(true);
+  const [isLiked, setHasLiked] = React.useState(hasLiked);
+
+  const handleLikeProduct = async () => {
+    try {
+      await updateLike({
+        variables: {
+          productId: id,
+          hasLiked: !hasLiked,
+          userId: userId,
+        },
+      });
+      setHasLiked(!hasLiked);
+      // toast.success("Product liked successfully!");
+      toast.success("Like updated successfully!", {
+        autoClose: 1000,
+      });
+    } catch (error) {
+      toast.error("Failed to like product.");
+    }
+  };
 
   return (
     <Suspense fallback={<h1>Loading persons...</h1>}>
@@ -54,25 +84,19 @@ const Product = ({ title, description, price, image, id, stockQuantity }) => {
           >
             <div className="text-right">
               <button
-                className="text-pink-500 hover:text-pink-600 p-2 rounded-full"
-                style={{
-                  backgroundColor: "black",
-                  color: "pink",
-                }}
+                className={
+                  isLiked
+                    ? "text-red-600 bg-yellow-100 hover:text-red-400 hover:fill-green-500 p-1 rounded-full"
+                    : "text-gray-300 bg-yellow-100 hover:text-red-600 hover:fill-green-500 p-1 rounded-full"
+                }
                 onClick={(e) => {
                   e.preventDefault();
-                  updateLike({
-                    variables: {
-                      productId: id,
-                      hasLiked: hasLiked,
-                      userId: "cleqri2vl0008kgvxdb5t94u9",
-                    },
-                  });
+                  handleLikeProduct();
                   setHasLiked(!hasLiked);
                 }}
               >
                 <svg
-                  className={`w-6 h-6 ${loading ? "spin" : ""}`}
+                  className={`w-5 h-5 ${loading ? "spin" : ""}`}
                   viewBox="0 0 24 24"
                 >
                   <path

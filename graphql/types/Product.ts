@@ -41,6 +41,21 @@ export const Product = objectType({
     t.string("description");
     t.string("image");
     t.int("stockQuantity");
+
+    // likes which are connected to this product
+    t.list.field("likes", {
+      type: "Like",
+      resolve(parent, args, ctx) {
+        return ctx.prisma.product
+          .findUnique({
+            where: {
+              id: parent.id,
+            },
+          })
+          .likes();
+      },
+    });
+
   },
 });
 

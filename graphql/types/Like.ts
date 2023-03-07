@@ -49,6 +49,10 @@ export const UpdateLike = extendType({
             productId: args.productId,
             userId: args.userId,
           },
+          include: {
+            product: true // Include the product information in the response
+          }
+          
         });
       },
     });

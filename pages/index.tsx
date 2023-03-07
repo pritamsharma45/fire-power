@@ -3,6 +3,7 @@ import { gql, useQuery } from "@apollo/client";
 import Link from "next/link";
 import Product from "../components/Product";
 import { Suspense } from "react";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "../hooks/hooks";
 import { selectCount, selectCartItems } from "../features/cart/cartSlice";
@@ -23,6 +24,9 @@ const AllProducts = gql`
           price
           image
           stockQuantity
+          likes {
+            hasLiked
+          }
         }
       }
     }
@@ -30,6 +34,14 @@ const AllProducts = gql`
 `;
 
 function Home() {
+  const { data: session, status } = useSession();
+  console.log("Session", session);
+  let userId = null;
+  if (session) {
+    userId = session?.user?.id;
+    console.log("Session", session.user);
+  }
+
   const { data, loading, error, fetchMore } = useQuery(AllProducts, {
     variables: { first: 20 },
   });
@@ -59,7 +71,7 @@ function Home() {
         <div>
           <h1 className="text-4xl font-bold mb-4">Products</h1>
         </div>
-      
+
         {/* <pre>{JSON.stringify(cartItems,null,2)}</pre> */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {data?.products.edges.map(({ node }, i) => (
@@ -71,6 +83,8 @@ function Home() {
                 price={node.price}
                 image={node.image}
                 stockQuantity={node.stockQuantity}
+                hasLiked={node.likes[0]?.hasLiked}
+                userId={userId}
               />
             </div>
           ))}

@@ -20,6 +20,9 @@ const SingleProduct = gql`
       price
       title
       stockQuantity
+      likes {
+        hasLiked
+      }
     }
   }
 `;
@@ -56,6 +59,7 @@ function ProductCard() {
               price={data.product.price}
               image={data.product.image}
               stockQuantity={data.product.stockQuantity}
+              isLiked={data.product.likes[0]?.hasLiked}
             />
           </div>
         )}
