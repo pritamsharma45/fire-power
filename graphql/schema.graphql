@@ -33,6 +33,7 @@ type Mutation {
   addComment(content: String!, productId: Int!, userId: String!): Comment!
   addOrUpdateLike(hasLiked: Boolean!, productId: Int!, userId: String!): Like!
   addProfile(address: String!, city: String!, firstName: String!, lastName: String!, street: String!, zip: String!): Profile!
+  createOrder(items: [OrderItemInput!]!, payment: PaymentTransactionInput!, total: Float!, userId: String!): Order
   createProduct(description: String!, image: String!, price: Float!, stockQuantity: Int!, title: String!): Product!
   deleteProduct(id: Int!): Product!
   updateProduct(description: String, id: Int, image: String, price: Float, stockQuantity: Int, title: String): Product!
@@ -58,6 +59,12 @@ type OrderItem {
   updatedAt: String
 }
 
+input OrderItemInput {
+  price: Float!
+  productId: Int!
+  quantity: Int!
+}
+
 type PageInfo {
   endCursor: Int!
   hasNextPage: Boolean!
@@ -69,9 +76,15 @@ type PaymentTransaction {
   id: Int
   order: Order
   orderId: Int
+  payment_intent_id: String
   status: String
   updatedAt: String
   userId: Int
+}
+
+input PaymentTransactionInput {
+  amount: Float!
+  status: String!
 }
 
 type Product {
@@ -100,6 +113,7 @@ type Query {
   commentsByProductId(productId: Int!): [Comment]!
   getProfileByEmail(userId: String!): Profile!
   likeByProductId(productId: Int!, userId: String!): [Like]!
+  orderItems(userId: String!): [OrderItem]
   product(id: Int!): Product!
   products(after: Int, first: Int): Response
   userWithEmail(email: String!): User!

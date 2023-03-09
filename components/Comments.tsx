@@ -11,6 +11,7 @@ const UPDATE_COMMENTS = gql`
   }
 `;
 
+
 const GET_COMMENTS = gql`
   query Query($productId: Int!) {
     commentsByProductId(productId: $productId) {
@@ -25,7 +26,7 @@ const GET_COMMENTS = gql`
 export default function Comments({ prodId }) {
   const { data: session, status } = useSession();
   const [commentInput, setCommentInput] = useState("");
-  const [updateComment, { data, loading, error }] =
+  const [updateComment, { data:comment, loading, error }] =
     useMutation(UPDATE_COMMENTS);
 
   const {
@@ -40,6 +41,8 @@ export default function Comments({ prodId }) {
 
   console.log(comments);
 
+  let commentsArray = comments?.commentsByProductId;
+
   const handleCommentSubmit = () => {
     updateComment({
       variables: {
@@ -50,6 +53,7 @@ export default function Comments({ prodId }) {
     }).then(() => {
       // Clear the comment input
       setCommentInput("");
+      console.log("Comment added",comment);
     });
   };
   return (

@@ -39,7 +39,8 @@
     "react-redux": "^8.0.5",
     "react-toastify": "^9.1.1",
     "redux": "^4.2.1",
-    "stripe": "^11.12.0"
+    "stripe": "^11.12.0",
+    "swr": "^2.1.0"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"

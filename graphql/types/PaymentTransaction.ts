@@ -25,6 +25,7 @@ export const PaymentTransaction = objectType({
     t.int("id");
     t.float("amount");
     t.string("status");
+    t.string("payment_intent_id");
     t.string("createdAt");
     t.string("updatedAt");
     t.field("order", { type: "Order" });

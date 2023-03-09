@@ -32,13 +32,16 @@ const users = Array.from({ length: 100 }).map((_, i) => {
 });
 
 async function main() {
-  await prisma.like.deleteMany();
-  await prisma.comment.deleteMany();
-  await prisma.user.deleteMany();
-  await prisma.product.deleteMany();
-  await prisma.product.createMany({
-    data,
-  });
+  // await prisma.like.deleteMany();
+  // await prisma.comment.deleteMany();
+  // await prisma.user.deleteMany();
+  // await prisma.product.deleteMany();
+  // await prisma.product.createMany({
+  //   data,
+  // });
+  // await prisma.order.deleteMany();
+
+  // await prisma.orderItem.deleteMany();
 }
 main()
   .then(async () => {

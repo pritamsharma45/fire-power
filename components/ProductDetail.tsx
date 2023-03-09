@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import Comments from "./Comments";
 import classNames from "classnames";
+import { useSession } from "next-auth/react";
 
 const UPDATE_LIKE = gql`
   mutation AddOrUpdateLike(
@@ -44,6 +45,7 @@ const ProductDetail = ({
   stockQuantity,
   isLiked,
 }) => {
+  const { data: session, status } = useSession();
   const router = useRouter();
   const {
     data: likeData,
@@ -58,21 +60,28 @@ const ProductDetail = ({
   // Handle checkout
   const handleClick = async (event) => {
     // Get Stripe.js instance
-
+    const payload = {};
+    payload.userId = session?.user?.id;
+    payload.line_items = [
+      {
+        id: id,
+        title: title,
+        price: price,
+        image: image,
+        description: description,
+      },
+    ];
     // Call your backend to create the Checkout Session
     const { sessionId } = await fetch("/api/checkout/session", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        id: id,
-        title: title,
-        price: price,
-        image: image,
-        description: description,
-      }),
-    }).then((res) => res.json());
+      body: JSON.stringify(payload),
+    }).then((res) => {
+      console.log("Checkout done", JSON.stringify(res));
+      return res.json();
+    });
     console.log(sessionId);
     const stripe = await stripePromise;
     const { error } = await stripe.redirectToCheckout({

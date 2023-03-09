@@ -1,9 +1,29 @@
 import React, { useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 import Image from "next/image";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { GetServerSideProps } from "next";
 import { useDispatch, useSelector } from "react-redux";
 import { loadStripe } from "@stripe/stripe-js";
+import { useSession } from "next-auth/react";
+
+const CREATE_ORDER = gql`
+  mutation Mutation(
+    $total: Float!
+    $items: [OrderItemInput!]!
+    $userId: String!
+    $payment: PaymentTransactionInput!
+  ) {
+    createOrder(
+      total: $total
+      items: $items
+      userId: $userId
+      payment: $payment
+    ) {
+      total
+    }
+  }
+`;
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -20,7 +40,7 @@ import styles from "../styles/CartPage.module.css";
 
 export default function Cart({ cartItems }) {
   // console.log("Cart items in cart page", cartItems);
-
+  const { data: session, status } = useSession();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,8 +54,9 @@ export default function Cart({ cartItems }) {
     );
   };
   const cart = useSelector(selectCartItems);
-  console.log("Cart items in cart page", cart);
-
+  // console.log("Cart items in cart page", cart);
+  const payloadCart = { userId: session?.user?.id, line_items: cart };
+  console.log("Cart items in cart page", payloadCart);
   const handleCheckout = async () => {
     // Get Stripe.js instance
 
@@ -45,8 +66,11 @@ export default function Cart({ cartItems }) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(cart),
-    }).then((res) => res.json());
+      body: JSON.stringify(payloadCart),
+    }).then((res) => {
+      console.log("Checkout done", JSON.stringify(res));
+      return res.json();
+    });
     console.log(sessionId);
     const stripe = await stripePromise;
     const { error } = await stripe.redirectToCheckout({
