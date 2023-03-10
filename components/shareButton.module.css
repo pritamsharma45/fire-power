@@ -1,0 +1,23 @@
+.share-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .share-buttons button {
+    margin-right: 10px;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .share-buttons button:hover {
+    transform: translateY(-2px);
+  }
+  
+  .share-buttons button svg {
+    width: 20px;
+    height: 20px;
+  }
+  

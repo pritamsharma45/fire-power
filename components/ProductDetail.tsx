@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { Suspense } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import Comments from "./Comments";
+import ShareButtons from "./ShareButton";
 import classNames from "classnames";
 import { useSession } from "next-auth/react";
 
@@ -92,13 +93,18 @@ const ProductDetail = ({
       alert(error.message);
     }
   };
+  const [showShareButtons, setShowShareButtons] = useState(false);
+  const handleShareButtonClick = () => {
+    setShowShareButtons(!showShareButtons);
+    setTimeout(() => setShowShareButtons(false), 5000);
+  };
 
   const imageUrl = "https://drive.google.com/uc?export=view&id=" + image;
   return (
     <>
-      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-ds md:max-w-5xl">
+      <div className="max-w-md ml-2 mr-0 bg-white rounded-xl shadow-md overflow-ds md:max-w-5xl">
         <div className="md:flex">
-          <div className="md:flex-shrink-0 mt-4">
+          <div className="md:flex-shrink-0 mt-4 ml-2">
             <Image
               className="h-48 w-full object-cover md:w96 md:h-auto"
               src={imageUrl}
@@ -169,7 +175,10 @@ const ProductDetail = ({
                   </svg>
                   {blLiked ? "Unlike" : "Like"}
                 </button>
-                <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-3  w-40 h-8 rounded-full">
+                <button
+                  onClick={handleShareButtonClick}
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-3  w-40 h-8 rounded-full"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -187,12 +196,15 @@ const ProductDetail = ({
 
                   <span className="ml-2">Share</span>
                 </button>
+                {showShareButtons && (
+                  <ShareButtons url={router.asPath} title={title} />
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="bg-gray-100 text-gray-500 w-full h-60 text-center align-center text-2xl m-2">
+      <div className="bg-gray-100 text-gray-500 w-full h-60 text-center align-center text-2xl mt-4 ml-1 mr-2">
         Scrollable Container for Buy more products
       </div>
       <div>

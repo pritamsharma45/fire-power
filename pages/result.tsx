@@ -80,13 +80,31 @@ export default function Result() {
     }
   );
 
+
   return (
-    <div>
-      <h1>Result</h1>
-      <p>Success</p>
-      <pre>
+    <>
+     <div className="max-w-xl mx-auto mt-10">
+      <div className="bg-green-500 rounded-lg shadow-lg">
+        <div className="text-white font-bold uppercase p-8">
+          Success
+        </div>
+        <div className="p-8">
+          <p className="text-white text-lg font-bold mb-4">
+            Congratulations! Your order has been successfully completed.
+          </p>
+          <p className="text-white mb-4">
+            Thank you for your purchase. We appreciate your business and hope you enjoy your new items.
+          </p>
+          <p className="text-white">
+            If you have any questions or concerns, please do not hesitate to contact us.
+          </p>
+        </div>
+      </div>
+    </div>
+    <pre>
         {sessionData ? JSON.stringify(sessionData, null, 2) : "Loading..."}
       </pre>
-    </div>
+    </>
+   
   );
 }

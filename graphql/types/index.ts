@@ -6,3 +6,4 @@ export * from "./Order";
 export * from "./OrderItem";
 export * from "./PaymentTransaction";
 export * from "./Profile";
+export * from "./Cart";

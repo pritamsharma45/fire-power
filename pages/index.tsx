@@ -1,4 +1,5 @@
 import Head from "next/head";
+import React, { useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 import Link from "next/link";
 import Product from "../components/Product";
@@ -6,7 +7,12 @@ import { Suspense } from "react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "../hooks/hooks";
-import { selectCount, selectCartItems } from "../features/cart/cartSlice";
+import {
+  selectCount,
+  selectCartItems,
+  updateCart,
+} from "../features/cart/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const AllProducts = gql`
   query allProductsQuer($first: Int, $after: Int) {
@@ -33,6 +39,15 @@ const AllProducts = gql`
   }
 `;
 
+const FETCH_CART = gql`
+  query Query($userId: String!) {
+    cartByUserId(userId: $userId) {
+      id
+      items
+    }
+  }
+`;
+
 function Home() {
   const { data: session, status } = useSession();
   console.log("Session", session);
@@ -47,9 +62,30 @@ function Home() {
   });
   const [bottomLoading, setBottomLoading] = useState(false);
   // console.log(data);
+
+  // Handle when product card is clicked
+  const dispatch = useDispatch();
+  // Fetch cart form server
+  const {
+    data: cartFromDB,
+    loading: commentsLoading,
+    error: commentsError,
+  } = useQuery(FETCH_CART, {
+    variables: {
+      userId: session?.user?.id,
+    },
+  });
+  console.log("Cart items fetched from DB", cartFromDB);
+  let cartfromDB = cartFromDB?.cartByUserId?.items;
+
+  useEffect(() => {
+    if (cartfromDB !== undefined) {
+      dispatch(updateCart(cartfromDB));
+    }
+  }, [dispatch, cartfromDB]);
+
   const cartItems = useAppSelector(selectCartItems);
   console.log("Cart items", cartItems);
-  // Handle when product card is clicked
 
   if (loading)
     return (
@@ -74,20 +110,24 @@ function Home() {
 
         {/* <pre>{JSON.stringify(cartItems,null,2)}</pre> */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {data?.products.edges.map(({ node }, i) => (
-            <div className="person h-auto w-70">
-              <Product
-                id={node.id}
-                title={node.title}
-                description={node.description}
-                price={node.price}
-                image={node.image}
-                stockQuantity={node.stockQuantity}
-                hasLiked={node.likes[0]?.hasLiked}
-                userId={userId}
-              />
-            </div>
-          ))}
+          {data?.products.edges.map(({ node }, i) => {
+            const inCartBl = cartItems.find((item) => item.id === node.id);
+            return (
+              <div className="person h-auto w-70">
+                <Product
+                  id={node.id}
+                  title={node.title}
+                  description={node.description}
+                  price={node.price}
+                  image={node.image}
+                  stockQuantity={node.stockQuantity}
+                  hasLiked={node.likes[0]?.hasLiked}
+                  userId={userId}
+                  inCart={inCartBl}
+                />
+              </div>
+            );
+          })}
         </div>
         {/* To render spinner when data is being fetched */}
         {bottomLoading && (

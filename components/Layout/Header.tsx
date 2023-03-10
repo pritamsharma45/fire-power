@@ -7,8 +7,10 @@ import Profile from "./Profile";
 import Cart from "./cart";
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
 import { selectCount, selectCartItems } from "../../features/cart/cartSlice";
+import { useRouter } from "next/router";
 
 const Header = () => {
+  const router = useRouter();
   const { data: session, status } = useSession();
   const count = useAppSelector(selectCount);
   const cartItems = useAppSelector(selectCartItems);
@@ -52,23 +54,27 @@ const Header = () => {
         <nav className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center mr-10">
           <div className="flex flex-1 flex-row justify-center  text-green-600 mr-10">
             <Link href="/">
-              <a>
-                <div className="mx-10 block lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
-                  Home
-                </div>
+              <a
+                className={`mx-10 block lg:inline-block lg:mt-0 text-teal-200 font-bold hover:text-white ${
+                  router.pathname === "/" ? "text-green-50" : ""
+                }`}
+              >
+                Home
               </a>
             </Link>
 
             <Link href="/about">
-              <a>
-                <div className="block lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-10">
-                  Contact Us
-                </div>
+              <a
+                className={`block lg:inline-block lg:mt-0 text-teal-200 font-bold hover:text-white mr-10 ${
+                  router.pathname === "/about" ? "text-green-50" : ""
+                }`}
+              >
+                Contact Us
               </a>
             </Link>
           </div>
         </nav>
-        <div className="w-12 mt-2 mr-2">
+        <div className="w-42 mt-2 mr-2">
           <p
             className={`nojs-show ${
               !session && loading ? styles.loading : styles.loaded
@@ -76,19 +82,15 @@ const Header = () => {
           >
             {!session && (
               <>
-                <span className={styles.notSignedInText}>
-                  You are not signed in
-                </span>
+                <span></span>
                 <a
                   href={`/api/auth/signin`}
-                  className={styles.buttonPrimary}
+                  className="w-40"
                   onClick={(e) => {
                     e.preventDefault();
                     signIn();
                   }}
-                >
-                  Sign in
-                </a>
+                ></a>
               </>
             )}
             {session?.user && (

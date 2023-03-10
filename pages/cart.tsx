@@ -25,6 +25,14 @@ const CREATE_ORDER = gql`
   }
 `;
 
+const FETCH_CART = gql`
+  query Query($userId: String!) {
+    cartByUserId(userId: $userId) {
+      id
+      items
+    }
+  }
+`;
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
@@ -39,10 +47,27 @@ import {
 import styles from "../styles/CartPage.module.css";
 
 export default function Cart({ cartItems }) {
-  // console.log("Cart items in cart page", cartItems);
+  console.log("Cart items in cart page", cartItems);
   const { data: session, status } = useSession();
   const dispatch = useDispatch();
+  // Fetch cart form server
+  const {
+    data: cartFromDB,
+    loading: commentsLoading,
+    error: commentsError,
+  } = useQuery(FETCH_CART, {
+    variables: {
+      userId: session?.user?.id,
+    },
+  });
 
+  let cartfromDB = cartFromDB?.cartByUserId?.items;
+  console.log("Cart items fetched from DB", cartfromDB);
+  useEffect(() => {
+    if (cartfromDB !== undefined) {
+      dispatch(updateCart(cartfromDB));
+    }
+  }, [dispatch, cartfromDB]);
   useEffect(() => {
     dispatch(updateCart(cartItems));
   }, [dispatch, cartItems]);
@@ -54,13 +79,13 @@ export default function Cart({ cartItems }) {
     );
   };
   const cart = useSelector(selectCartItems);
+  // const cart = cartFromDB?.cartByUserId?.items;
   // console.log("Cart items in cart page", cart);
   const payloadCart = { userId: session?.user?.id, line_items: cart };
-  console.log("Cart items in cart page", payloadCart);
+  console.log("Cart items in payload", payloadCart);
   const handleCheckout = async () => {
     // Get Stripe.js instance
 
-    // Call your backend to create the Checkout Session
     const { sessionId } = await fetch("/api/checkout/session", {
       method: "POST",
       headers: {
@@ -103,59 +128,67 @@ export default function Cart({ cartItems }) {
             <div>Price</div>
             <div>Quantity</div>
             <div></div>
-            <div>Total Price</div>
+            <div className="text-left mr-10">Total Price</div>
           </div>
           {cart.map((item) => (
-            <div className={styles.body}>
-              <div className={styles.image}>
-                <Image
-                  src={
-                    "https://drive.google.com/uc?export=view&id=" + item.image
-                  }
-                  height="90"
-                  width="65"
-                />
-              </div>
-              <p>{item.title}</p>
-              <p>$ {item.price}</p>
+            <>
+              <div className={styles.body}>
+                <div className={styles.image}>
+                  <Image
+                    src={
+                      "https://drive.google.com/uc?export=view&id=" + item.image
+                    }
+                    height="90"
+                    width="65"
+                  />
+                </div>
+                <div className="flex-col">
+                  <p className="text-xs font-bold text-left">{item.title}</p>
+                  <p className="text-xs font-light text-left w-80">
+                    {item.description}
+                  </p>
+                </div>
+                <p className="ml-10">$ {item.price}</p>
 
-              <p>
-                <div className="flex items-center justify-center">
-                  <button
-                    className="bg-gray-200 text-gray-700 rounded-l px-4 py-2"
-                    onClick={() => dispatch(decrementQuantity(item.id))}
-                  >
-                    -
-                  </button>
-                  <div className="bg-gray-100 text-gray-800 px-1 py-2 w-12 text-center">
-                    {item.quantity}
+                <p>
+                  <div className="flex items-center justify-center">
+                    <button
+                      className="bg-gray-200 text-gray-700 rounded-l px-4 py-2"
+                      onClick={() => dispatch(decrementQuantity(item.id))}
+                    >
+                      -
+                    </button>
+                    <div className="bg-gray-100 text-gray-800 px-1 py-2 w-12 text-center">
+                      {item.quantity}
+                    </div>
+                    <button
+                      className="bg-gray-200 text-gray-700 rounded-r px-4 py-2"
+                      onClick={() => dispatch(incrementQuantity(item.id))}
+                    >
+                      +
+                    </button>
                   </div>
+                </p>
+                <div>
                   <button
-                    className="bg-gray-200 text-gray-700 rounded-r px-4 py-2"
-                    onClick={() => dispatch(incrementQuantity(item.id))}
+                    className="flex items-center justify-center px-2 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                    onClick={() => dispatch(removeFromCart(item.id))}
                   >
-                    +
+                    <FaTrash className=" h-4 mr-1" />
+                    Delete
                   </button>
                 </div>
-              </p>
-              <div>
-                <button
-                  className="flex items-center justify-center px-2 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-                  onClick={() => dispatch(removeFromCart(item.id))}
-                >
-                  <FaTrash className=" h-4 mr-1" />
-                  Delete
-                </button>
+                <p className="text-right mr-32">
+                  $ {(item.quantity * item.price).toFixed(2)}
+                </p>
               </div>
-              <p className="text-right">
-                $ {(item.quantity * item.price).toFixed(2)}
-              </p>
-            </div>
+              {/* <hr /> */}
+            </>
           ))}
-          <h2 className="text-right">
+          <h2 className="text-right mr-32">
             <strong>Grand Total: $ {getTotalPrice().toFixed(2)}</strong>
           </h2>
-          <div className="flex justify-end mt-4">
+          <div className="flex justify-end mt-4 mr-28">
             <button
               className="bg-orange-100 text-orange-600 rounded-full px-2 py-1 mr-3 text-sm font-bold  w-24"
               onClick={saveCart}
@@ -177,9 +210,7 @@ export default function Cart({ cartItems }) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { cart } = context.query;
-
   const cartItems = JSON.parse(cart);
-  console.log("Cart items in gssp", cartItems);
   return {
     props: {
       cartItems,

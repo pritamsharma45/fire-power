@@ -28,6 +28,14 @@ const UPDATE_LIKE = gql`
   }
 `;
 
+const ADD_TO_CART = gql`
+  mutation Mutation($userId: String!, $items: Json!) {
+    addItemsToCart(userId: $userId, items: $items) {
+      id
+    }
+  }
+`;
+
 const Product = ({
   title,
   description,
@@ -37,6 +45,7 @@ const Product = ({
   stockQuantity,
   hasLiked,
   userId,
+  inCart,
 }) => {
   const imageUrl = "https://drive.google.com/uc?export=view&id=" + image;
 
@@ -156,7 +165,7 @@ const Product = ({
               </Link>
             </div>
             <div className="w-1/2 p-1">
-              <AddToCart cartItem={cartItem} />
+              <AddToCart cartItem={cartItem} inCart={inCart} />
             </div>
           </div>
         </div>

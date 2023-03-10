@@ -7,6 +7,8 @@ const UPDATE_COMMENTS = gql`
   mutation AddComment($productId: Int!, $content: String!, $userId: String!) {
     addComment(productId: $productId, content: $content, userId: $userId) {
       content
+      updatedAt
+      userId
     }
   }
 `;
@@ -39,9 +41,11 @@ export default function Comments({ prodId }) {
     },
   });
 
-  console.log(comments);
+ 
 
   let commentsArray = comments?.commentsByProductId;
+  commentsArray = commentsArray? [...commentsArray]:[];
+  console.log("Comments", commentsArray);
 
   const handleCommentSubmit = () => {
     updateComment({
@@ -50,10 +54,12 @@ export default function Comments({ prodId }) {
         productId: prodId,
         userId: session.user.id,
       },
-    }).then(() => {
+    }).then((res) => {
       // Clear the comment input
+      const comment = res.data.addComment;
       setCommentInput("");
       console.log("Comment added",comment);
+      commentsArray.push(comment);
     });
   };
   return (
@@ -90,7 +96,7 @@ export default function Comments({ prodId }) {
         </button>
       </div>
       <ul>
-        {comments?.commentsByProductId.map((comment) => (
+        {commentsArray?.map((comment) => (
           <li className="mt-4">
             <div className="flex flex-col space-y-1">
               <div className="flex items-center">

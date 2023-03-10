@@ -2,6 +2,15 @@
 ### Do not make changes to this file directly
 
 
+type Cart {
+  createdAt: String
+  id: Int
+  items: Json
+  updatedAt: String
+  user: User
+  userId: String
+}
+
 type Comment {
   content: String
   createdAt: String
@@ -18,6 +27,11 @@ type Edge {
   node: Product!
 }
 
+"""
+The `Json` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar Json
+
 type Like {
   createdAt: String
   hasLiked: Boolean
@@ -31,6 +45,8 @@ type Like {
 
 type Mutation {
   addComment(content: String!, productId: Int!, userId: String!): Comment!
+  addItemToCart(productId: Int!, quantity: Int!, userId: String!): Cart!
+  addItemsToCart(items: Json!, userId: String!): Cart!
   addOrUpdateLike(hasLiked: Boolean!, productId: Int!, userId: String!): Like!
   addProfile(address: String!, city: String!, firstName: String!, lastName: String!, street: String!, zip: String!): Profile!
   createOrder(items: [OrderItemInput!]!, payment: PaymentTransactionInput!, total: Float!, userId: String!): Order
@@ -110,6 +126,7 @@ type Profile {
 }
 
 type Query {
+  cartByUserId(userId: String!): Cart!
   commentsByProductId(productId: Int!): [Comment]!
   getProfileByEmail(userId: String!): Profile!
   likeByProductId(productId: Int!, userId: String!): [Like]!
