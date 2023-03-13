@@ -55,11 +55,8 @@ export const Product = objectType({
           .likes();
       },
     });
-
   },
 });
-
-
 
 // get All Products
 export const ProductsQuery = extendType({
@@ -79,16 +76,21 @@ export const ProductsQuery = extendType({
               id: args.after,
             },
             include: { likes: true },
+            orderBy: {
+              rank: "asc",
+            },
           });
         } else {
           queryResults = await ctx.prisma.product.findMany({
             take: args.first,
             include: { likes: true },
+            orderBy: {
+              rank: "asc",
+            },
           });
         }
-       
+
         if (queryResults.length > 0) {
-          
           const lastProductResults = queryResults[queryResults.length - 1];
           const lastProductID = lastProductResults.id;
 
@@ -145,6 +147,64 @@ export const ProductByIDQuery = extendType({
   },
 });
 
+// get 10 Products with maximum likes
+export const TopProductsQuery = extendType({
+  type: "Query",
+  definition(t) {
+    t.list.field("topProducts", {
+      type: "Product",
+      resolve: async (_parent, args, ctx) => {
+        const productsWithMaxLikes = await ctx.prisma.product.findMany({
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            price: true,
+            image: true,
+            stockQuantity: true,
+
+            likes: {
+              select: {
+                hasLiked: true,
+              },
+            },
+            _count: { select: { likes: { where: { hasLiked: true } } } },
+          },
+        });
+        // console.log("Products with max likes", productsWithMaxLikes);
+        const outputResult = productsWithMaxLikes
+          .sort((a, b) => {
+            return b._count.likes - a._count.likes;
+          })
+          .slice(0, 10);
+        // console.log("Output result", outputResult);
+        return outputResult;
+      },
+    });
+  },
+});
+
+// Get products with aggregated likes. Count likes and group by product id
+// export const ProductsWithAggregatedLikesQuery = extendType({
+//   type: "Query",
+//   definition(t) {
+//     t.list.field("productsWithAggregatedLikes", {
+//       type: "Product",
+//       resolve(_parent, args, ctx) {
+//         const productsWithLikes = ctx.prisma.product.findMany({
+//           select: {
+//             _count: {
+//               select: { likes: true },
+//             },
+//           },
+//         });
+
+//         return productsWithLikes;
+//       },
+//     });
+//   },
+// });
+
 // create product
 export const CreateProductMutation = extendType({
   type: "Mutation",
@@ -174,7 +234,6 @@ export const CreateProductMutation = extendType({
     });
   },
 });
-
 
 // update Product
 export const UpdateProductMutation = extendType({

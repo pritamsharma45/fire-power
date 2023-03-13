@@ -59,7 +59,7 @@ export const CartByUserId = extendType({
           },
         });
         // results.items = JSON.stringify(results.items);
-        console.log(results.items);
+        // console.log(results.items);
         return results;
       },
     });
@@ -171,6 +171,101 @@ export const AddItemsToCart = extendType({
             },
           });
         }
+      },
+    });
+  },
+});
+
+// Delete item from cart by productId
+export const DeleteItemFromCart = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.nonNull.field("deleteItemFromCart", {
+      type: Cart,
+      args: {
+        userId: nonNull(stringArg()),
+        productId: nonNull(intArg()),
+      },
+      async resolve(parent, args, ctx) {
+        const cart = await ctx.prisma.cart.findUnique({
+          where: {
+            userId: args.userId,
+          },
+        });
+        if (cart) {
+          const items = cart.items.filter((item) => item.id !== args.productId);
+          return await ctx.prisma.cart.update({
+            where: {
+              userId: args.userId,
+            },
+            data: {
+              items: items,
+            },
+          });
+        } else {
+          return null;
+        }
+      },
+    });
+  },
+});
+
+//  Update item quantity in cart
+
+export const UpdateItemQuantityInCart = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.nonNull.field("updateItemQuantityInCart", {
+      type: Cart,
+      args: {
+        userId: nonNull(stringArg()),
+        productId: nonNull(intArg()),
+        quantity: nonNull(intArg()),
+      },
+      async resolve(parent, args, ctx) {
+        const cart = await ctx.prisma.cart.findUnique({
+          where: {
+            userId: args.userId,
+          },
+        });
+        if (cart) {
+          const items = cart.items.map((item) => {
+            if (item.id === args.productId) {
+              item.quantity = args.quantity;
+            }
+            return item;
+          });
+          return await ctx.prisma.cart.update({
+            where: {
+              userId: args.userId,
+            },
+            data: {
+              items: items,
+            },
+          });
+        } else {
+          return null;
+        }
+      },
+    });
+  },
+});
+
+// Delete cart by userId
+export const DeleteCartByUserId = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.nonNull.field("deleteCartByUserId", {
+      type: Cart,
+      args: {
+        userId: nonNull(stringArg()),
+      },
+      async resolve(parent, args, ctx) {
+        return await ctx.prisma.cart.delete({
+          where: {
+            userId: args.userId,
+          },
+        });
       },
     });
   },

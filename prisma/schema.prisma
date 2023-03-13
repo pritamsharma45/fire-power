@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["filteredRelationCount"]
 }
 
 datasource db {
@@ -86,6 +87,7 @@ model Product {
   description   String
   image         String?
   price         Float
+  rank          Int         @default(2000)
   stockQuantity Int
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
@@ -137,7 +139,7 @@ model Cart {
 // Like model
 model Like {
   id        Int      @id @default(autoincrement())
-  hasLiked  Boolean
+  hasLiked  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   // Relationships
@@ -151,15 +153,16 @@ model Like {
 
 // Order model
 model Order {
-  id           Int                  @id @default(autoincrement())
-  total        Float
-  createdAt    DateTime             @default(now())
-  updatedAt    DateTime             @updatedAt
+  id             Int                  @id @default(autoincrement())
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  status         OrderStatus          @default(PENDING)
+  deliveryStatus DeliveryStatus?      @default(PENDING)
   // Relationships
-  items        OrderItem[]
-  user         User                 @relation(fields: [userId], references: [id])
-  transactions PaymentTransaction[]
-  userId       String
+  items          OrderItem[]
+  user           User                 @relation(fields: [userId], references: [id])
+  transactions   PaymentTransaction[]
+  userId         String
 }
 
 // OrderItem model
@@ -200,4 +203,17 @@ model Inventory {
   product   Product  @relation(fields: [productId], references: [id])
   location  String
   productId Int
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  CANCELLED
+}
+
+enum DeliveryStatus {
+  PENDING
+  IN_TRANSIT
+  DELIVERED
 }

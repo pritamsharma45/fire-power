@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
 
 const UPDATE_PROFILE = gql`
   mutation AddProfile(
@@ -44,6 +45,7 @@ const GET_PROFILE = gql`
 
 function UserProfile({ userEmail }) {
   // State to hold the form data
+  const { data: session, status } = useSession();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -59,7 +61,7 @@ function UserProfile({ userEmail }) {
     loading: profileLoading,
     error: profileError,
   } = useQuery(GET_PROFILE, {
-    variables: { userId: "clewzr63k0006mgvxyt7tjvlx" },
+    variables: { userId: session?.user?.id },
   });
 
   // Update the form data with the user's profile data

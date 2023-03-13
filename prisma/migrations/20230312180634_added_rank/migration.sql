@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Product" ADD COLUMN     "rank" INTEGER NOT NULL DEFAULT 2000;

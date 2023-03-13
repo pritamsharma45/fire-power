@@ -13,7 +13,6 @@ export const Order = objectType({
   name: "Order",
   definition(t) {
     t.int("id");
-    t.float("total");
     t.string("createdAt");
     t.string("updatedAt");
     t.field("items", { type: "OrderItem" });
@@ -22,7 +21,7 @@ export const Order = objectType({
   },
 });
 
-// Create a new order with two order items and a payment transaction
+// Fetch Orders for a user
 // export const createOrder = extendType({
 //   type: "Mutation",
 //   definition(t) {
@@ -68,8 +67,7 @@ export const Order = objectType({
 //   },
 // });
 
-
-//  Fetch all orderItems for a user 
+//  Fetch all orderItems for a user
 export const orderItems = extendType({
   type: "Query",
   definition(t) {
@@ -87,9 +85,9 @@ export const orderItems = extendType({
               },
             },
           },
-          include:{
+          include: {
             product: true,
-          }
+          },
         });
 
         return orderItems;
@@ -98,7 +96,6 @@ export const orderItems = extendType({
   },
 });
 
-
 // Create a new order with two order items and a payment transaction
 export const createOrder = extendType({
   type: "Mutation",
@@ -106,7 +103,6 @@ export const createOrder = extendType({
     t.field("createOrder", {
       type: "Order",
       args: {
-        total: nonNull(floatArg()),
         items: nonNull(
           list(
             nonNull(
@@ -114,8 +110,8 @@ export const createOrder = extendType({
                 name: "OrderItemInput",
                 definition(t) {
                   t.nonNull.int("quantity");
-                  t.nonNull.float("price");
                   t.nonNull.int("productId");
+                  t.nonNull.float("price");
                 },
               })
             )
@@ -128,7 +124,6 @@ export const createOrder = extendType({
             definition(t) {
               t.nonNull.float("amount");
               t.nonNull.string("status");
-              // t.nonNull.string("payment_intent_id");
             },
           })
         ),
@@ -144,9 +139,9 @@ export const createOrder = extendType({
           data: {
             amount: payment.amount,
             status: payment.status,
-            userId : userId,
+            userId: userId,
             // payment_intent_id: payment.payment_intent_id,
-            order: { create: { total, user: { connect: { id: userId } } } },
+            order: { create: { user: { connect: { id: userId } } } },
           },
         });
 
@@ -163,4 +158,3 @@ export const createOrder = extendType({
     });
   },
 });
-

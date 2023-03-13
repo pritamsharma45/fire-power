@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { prisma } from "../../lib/prisma";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 import { gql, useQuery } from "@apollo/client";
 import toast, { Toaster } from "react-hot-toast";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
@@ -26,14 +27,36 @@ const SingleProduct = gql`
     }
   }
 `;
+const Fetch_User_CART = gql`
+  query Query($userId: String!) {
+    cartByUserId(userId: $userId) {
+      items
+    }
+  }
+`;
 
 function ProductCard() {
+  // user session
+  const { data: session } = useSession();
   const router = useRouter();
   const { pid } = router.query;
   console.log(pid);
   const { data, loading, error } = useQuery(SingleProduct, {
     variables: { id: Number(pid) },
   });
+
+  const {
+    data: cartData,
+    loading: cartLoading,
+    error: cartError,
+  } = useQuery(Fetch_User_CART, {
+    variables: { userId: session?.user?.id },
+  });
+
+  const inCartBl = cartData?.cartByUserId?.items?.some(
+    (item) => item.id === Number(pid)
+  );
+  console.log("inCartBl", inCartBl);
 
   if (loading)
     return (
@@ -51,7 +74,7 @@ function ProductCard() {
       </Head>
       <div className="container mx-auto max-w-5xl my-5 px-5">
         {data?.product && (
-          <div >
+          <div>
             <ProductDetail
               id={data.product.id}
               title={data.product.title}
@@ -60,6 +83,7 @@ function ProductCard() {
               image={data.product.image}
               stockQuantity={data.product.stockQuantity}
               isLiked={data.product.likes[0]?.hasLiked}
+              inCart={inCartBl}
             />
           </div>
         )}

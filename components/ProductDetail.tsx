@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { Suspense } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import Comments from "./Comments";
 import ShareButtons from "./ShareButton";
+import ProductSimple from "./ProductSimple";
+import AddToCart from "../features/cart/AddToCart";
+import { TCartItem } from "../features/cart/AddToCart";
 import classNames from "classnames";
 import { useSession } from "next-auth/react";
+import { useAppDispatch } from "../hooks/hooks";
+import { addTocart } from "../features/cart/cartSlice";
 
 const UPDATE_LIKE = gql`
   mutation AddOrUpdateLike(
@@ -32,6 +38,26 @@ const GET_LIKE = gql`
     }
   }
 `;
+const ADD_TO_CART = gql`
+  mutation Mutation($userId: String!, $items: Json!) {
+    addItemsToCart(userId: $userId, items: $items) {
+      id
+    }
+  }
+`;
+
+const FETCH_TOP_LIKED_PRODUCTS = gql`
+  query Query {
+    topProducts {
+      title
+      description
+      price
+      image
+      id
+      stockQuantity
+    }
+  }
+`;
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -45,19 +71,58 @@ const ProductDetail = ({
   id,
   stockQuantity,
   isLiked,
+  inCart,
 }) => {
+  const cartItem: TCartItem = {
+    id: id,
+    title: title,
+    description: description,
+    price: price,
+    image: image,
+  };
   const { data: session, status } = useSession();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const {
     data: likeData,
     loading: likeLoading,
     error: likeError,
   } = useQuery(GET_LIKE, {
-    variables: { userId: "clewzr63k0006mgvxyt7tjvlx", productId: id },
+    variables: { userId: session?.user?.id, productId: id },
   });
+
+  //   Query Top Liked Products
+  const {
+    data: topLikedProducts,
+    loading: topLikedProductsLoading,
+    error: topLikedProductsError,
+  } = useQuery(FETCH_TOP_LIKED_PRODUCTS);
+
+  console.log("Top Liked Products", topLikedProducts);
   const [blLiked, setHasLiked] = React.useState(isLiked);
 
   const [updateLike, { data, loading, error }] = useMutation(UPDATE_LIKE);
+  const [
+    addToCart,
+    { data: cartData, loading: cartLoading, error: cartError },
+  ] = useMutation(ADD_TO_CART);
+
+  const handleAddToCart = async () => {
+    console.log("Cart item to be added to db", cartItem);
+    let paylodCart = { ...cartItem, quantity: 1, productId: cartItem.id };
+    try {
+      const res = await addToCart({
+        variables: {
+          userId: session?.user?.id,
+          items: [paylodCart],
+        },
+      });
+      dispatch(addTocart({ ...cartItem, quantity: 1 }));
+      console.log("Cart added to DB", res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   // Handle checkout
   const handleClick = async (event) => {
     // Get Stripe.js instance
@@ -138,10 +203,27 @@ const ProductDetail = ({
                 <div>
                   {" "}
                   <button
+                    disabled={inCart}
                     className="bg-orange-100 text-orange-600 rounded-full mt-4 px-2 py-1 text-xs font-medium  w-24"
-                    onClick={handleClick}
+                    onClick={handleAddToCart}
                   >
-                    Add to Cart
+                    {inCart ? "In Cart" : "Add to Cart"}
+                    {inCart && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="inline w-4 h-4 mb-1"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    )}
                   </button>
                   <button
                     className="bg-blue-100 text-blue-600 rounded-full mt-4 mx-2 px-2 py-1 text-xs font-medium  w-24"
@@ -161,7 +243,7 @@ const ProductDetail = ({
                       variables: {
                         productId: id,
                         hasLiked: !isLiked,
-                        userId: "clewzr63k0006mgvxyt7tjvlx",
+                        userId: session?.user?.id,
                       },
                     });
                     setHasLiked(!blLiked);
@@ -204,8 +286,28 @@ const ProductDetail = ({
           </div>
         </div>
       </div>
-      <div className="bg-gray-100 text-gray-500 w-full h-60 text-center align-center text-2xl mt-4 ml-1 mr-2">
-        Scrollable Container for Buy more products
+      <div>
+        <h1 className="text-2xl font-bold text-gray-700 mt-8 ml-1 mr-2">
+          You may like these products
+        </h1>
+      </div>
+      {/* Scrollable container */}
+      <div className="bg-gray-100 text-gray-500 w-full mt-4 ml-1 mr-2 ">
+        {
+          <div className="flex flex-row gap-1 overflow-x-auto">
+            {topLikedProducts?.topProducts?.map((product) => (
+              <ProductSimple
+                key={product.id}
+                title={product.title}
+                description={product.description}
+                price={product.price}
+                image={product.image}
+                id={product.id}
+                stockQuantity={product.stockQuantity}
+              />
+            ))}
+          </div>
+        }
       </div>
       <div>
         <Comments prodId={id} />

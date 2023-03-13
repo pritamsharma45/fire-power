@@ -41,10 +41,10 @@ export default function Comments({ prodId }) {
     },
   });
 
- 
+ const [commentsArray, setCommentsArray] = useState(comments?.commentsByProductId || []);
 
-  let commentsArray = comments?.commentsByProductId;
-  commentsArray = commentsArray? [...commentsArray]:[];
+  // let commentsArray = comments?.commentsByProductId;
+  // commentsArray = commentsArray? [...commentsArray]:[];
   console.log("Comments", commentsArray);
 
   const handleCommentSubmit = () => {
@@ -59,7 +59,9 @@ export default function Comments({ prodId }) {
       const comment = res.data.addComment;
       setCommentInput("");
       console.log("Comment added",comment);
-      commentsArray.push(comment);
+      // commentsArray.push(comment);
+      setCommentsArray((prevComments) => [...prevComments, comment]);
+      console.log("Comments", commentsArray)
     });
   };
   return (
@@ -97,7 +99,7 @@ export default function Comments({ prodId }) {
       </div>
       <ul>
         {commentsArray?.map((comment) => (
-          <li className="mt-4">
+          <li className="mt-4" key={comment.updatedAt}>
             <div className="flex flex-col space-y-1">
               <div className="flex items-center">
                 <div className="font-medium text-gray-800">John Doe</div>

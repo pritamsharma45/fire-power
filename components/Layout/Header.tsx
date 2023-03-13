@@ -74,23 +74,27 @@ const Header = () => {
             </Link>
           </div>
         </nav>
+        {!session && (
+          <div className="w-56">
+          <span className="text-xs text-gray-400">You are not signed in!</span>
+        </div>
+        )}
         <div className="w-42 mt-2 mr-2">
-          <p
-            className={`nojs-show ${
-              !session && loading ? styles.loading : styles.loaded
-            }`}
-          >
+          <p>
             {!session && (
               <>
-                <span></span>
-                <a
-                  href={`/api/auth/signin`}
-                  className="w-40"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    signIn();
-                  }}
-                ></a>
+                <div className="">
+                  <a
+                    href={`/api/auth/signin`}
+                    className="bg-blue-600 rounded-sm text-white px-4 py-1"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      signIn();
+                    }}
+                  >
+                    Login
+                  </a>
+                </div>
               </>
             )}
             {session?.user && (
