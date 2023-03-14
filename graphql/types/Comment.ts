@@ -40,6 +40,16 @@ export const AddComment = extendType({
             productId: args.productId, // Assign the productId argument to the productId field
             userId: args.userId, // Replace with the actual user ID who is creating the comment
           },
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
         });
       },
     });
@@ -66,6 +76,9 @@ export const CommentsByProductId = extendType({
                 name: true,
               },
             },
+          },
+          orderBy: {
+            createdAt: "desc",
           },
         });
         console.log("Comments", results);

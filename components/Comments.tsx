@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useSession } from "next-auth/react";
 
@@ -9,6 +9,9 @@ const UPDATE_COMMENTS = gql`
       content
       updatedAt
       userId
+      user {
+        name
+      }
     }
   }
 `;
@@ -18,8 +21,11 @@ const GET_COMMENTS = gql`
   query Query($productId: Int!) {
     commentsByProductId(productId: $productId) {
       id
-      content
       userId
+      user {
+        name
+      }
+      content
       updatedAt
     }
   }
@@ -35,17 +41,20 @@ export default function Comments({ prodId }) {
     data: comments,
     loading: commentsLoading,
     error: commentsError,
+    refetch: commentsRefetch,
   } = useQuery(GET_COMMENTS, {
     variables: {
       productId: prodId,
     },
   });
-
- const [commentsArray, setCommentsArray] = useState(comments?.commentsByProductId || []);
-
-  // let commentsArray = comments?.commentsByProductId;
-  // commentsArray = commentsArray? [...commentsArray]:[];
-  console.log("Comments", commentsArray);
+  const [commentsArray, setCommentsArray] = useState([]);
+  useEffect(() => {
+    if (comments?.commentsByProductId) {
+      setCommentsArray(comments.commentsByProductId);
+    }
+  }, [comments]);
+  
+  console.log("Comments State", commentsArray);
 
   const handleCommentSubmit = () => {
     updateComment({
@@ -59,9 +68,11 @@ export default function Comments({ prodId }) {
       const comment = res.data.addComment;
       setCommentInput("");
       console.log("Comment added",comment);
-      // commentsArray.push(comment);
-      setCommentsArray((prevComments) => [...prevComments, comment]);
-      console.log("Comments", commentsArray)
+      commentsRefetch();
+
+    // Update the comments array with the new comment
+    setCommentsArray((prevComments) => [...prevComments, comment]);
+    console.log("Comments", commentsArray)
     });
   };
   return (
@@ -99,15 +110,15 @@ export default function Comments({ prodId }) {
       </div>
       <ul>
         {commentsArray?.map((comment) => (
-          <li className="mt-4" key={comment.updatedAt}>
+          <li className="mt-4" key={comment?.updatedAt}>
             <div className="flex flex-col space-y-1">
               <div className="flex items-center">
-                <div className="font-medium text-gray-800">John Doe</div>
-                <div className="ml-2 text-sm text-gray-600">
+                <div className="font-medium text-gray-800">{comment.user.name}</div>
+                <div className="ml-2 text-xs text-gray-600">
                   {new Date(Number(comment.updatedAt)).toDateString()}
                 </div>
               </div>
-              <div className="text-gray-700 text-xs">{comment.content}</div>
+              <div className="text-gray-700 text-xs">{comment?.content}</div>
             </div>
           </li>
         ))}

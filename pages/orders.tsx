@@ -37,6 +37,7 @@ export default function AllOrders() {
 
   return (
     <div>
+      <h1 className="text-xl font-bold mt-2 ml-20">Orders</h1>
       {
         (orders?.orderItems && <Orders orders={orders?.orderItems} />)
       }

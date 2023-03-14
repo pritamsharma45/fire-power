@@ -68,8 +68,9 @@ function Home() {
   // Fetch cart form server
   const {
     data: cartFromDB,
-    loading: commentsLoading,
-    error: commentsError,
+    loading: cartLoading,
+    error: cartError,
+    refetch: refetchCart,
   } = useQuery(FETCH_CART, {
     variables: {
       userId: session?.user?.id,

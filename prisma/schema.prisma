@@ -82,21 +82,31 @@ model VerificationToken {
 
 // Product model
 model Product {
-  id            Int         @id @default(autoincrement())
+  id            Int             @id @default(autoincrement())
   title         String
   description   String
   image         String?
   price         Float
-  rank          Int         @default(2000)
+  rank          Int             @default(2000)
   stockQuantity Int
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
   // Relationships
   comments      Comment[]
   likes         Like[]
   orders        OrderItem[]
   inventory     Inventory[]
   cartItems     CartItem[]
+  PromoProducts PromoProducts[]
+}
+
+model PromoProducts {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // Relationships
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int
 }
 
 // Comment model

@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { gql, useMutation, useQuery } from "@apollo/client";
+import ScrollableProducts from "../components/ScrollableProducts";
 
 const CREATE_ORDER = gql`
   mutation CreateOrder(
@@ -23,11 +24,32 @@ const DELETE_CART = gql`
   }
 `;
 
+const FETCH_PROMO_PRODUCTS = gql`
+  query Query {
+    promoProducts {
+      product {
+        title
+        stockQuantity
+        price
+        image
+        description
+        id
+      }
+    }
+  }
+`;
+
+
+
 export default function Result() {
   const router = useRouter();
   const { session_id } = router.query;
   const [usedSessions, setUsedSessions] = useState([]);
 
+  const { data: promoData, loading: promoLoading, error: promoError } =
+    useQuery(FETCH_PROMO_PRODUCTS);
+console.log("PromoData", promoData);
+  
   const [
     createOrder,
     { data: orderData, loading: orderLoading, error: orderError },
@@ -92,14 +114,14 @@ export default function Result() {
 
   return (
     <>
-      <div className="max-w-xl mx-auto mt-10">
+      <div className="mx-4 my-2">
         <div className="bg-green-500 rounded-lg shadow-lg">
-          <div className="text-white font-bold uppercase p-8">Success</div>
-          <div className="p-8">
+          <div className="text-white font-bold uppercase p-2">Success</div>
+          <div className="p-2">
             <p className="text-white text-lg font-bold mb-4">
               Congratulations! Your order has been successfully completed.
             </p>
-            <p className="text-white mb-4">
+            <p className="text-white mb-1">
               Thank you for your purchase. We appreciate your business and hope
               you enjoy your new items.
             </p>
@@ -110,9 +132,13 @@ export default function Result() {
           </div>
         </div>
       </div>
-      <pre>
+      <h1 className="ml-4 mt-4 text-lg font-bold">Continue shopping...</h1>
+      <div className="ml-2">
+        <ScrollableProducts products={promoData?.promoProducts} />
+      </div>
+      {/* <pre>
         {sessionData ? JSON.stringify(sessionData, null, 2) : "Loading..."}
-      </pre>
+      </pre> */}
     </>
   );
 }

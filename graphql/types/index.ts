@@ -7,3 +7,4 @@ export * from "./OrderItem";
 export * from "./PaymentTransaction";
 export * from "./Profile";
 export * from "./Cart";
+export * from "./PromoProducts";

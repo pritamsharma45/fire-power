@@ -127,6 +127,14 @@ type Profile {
   zip: String
 }
 
+type PromoProducts {
+  createdAt: String
+  id: Int
+  product: Product
+  productId: Int
+  updatedAt: String
+}
+
 type Query {
   cartByUserId(userId: String!): Cart!
   commentsByProductId(productId: Int!): [Comment]!
@@ -135,6 +143,7 @@ type Query {
   orderItems(userId: String!): [OrderItem]
   product(id: Int!): Product!
   products(after: Int, first: Int): Response
+  promoProducts: [PromoProducts]
   topProducts: [Product]
   userWithEmail(email: String!): User!
 }
