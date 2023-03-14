@@ -133,8 +133,10 @@ console.log("PromoData", promoData);
         </div>
       </div>
       <h1 className="ml-4 mt-4 text-lg font-bold">Continue shopping...</h1>
+      {/* Flexible container to hold any future stuffs - like gamification */}
       <div className="ml-2">
         <ScrollableProducts products={promoData?.promoProducts} />
+
       </div>
       {/* <pre>
         {sessionData ? JSON.stringify(sessionData, null, 2) : "Loading..."}
