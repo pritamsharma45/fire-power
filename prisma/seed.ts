@@ -45,6 +45,7 @@ const users = Array.from({ length: 100 }).map((_, i) => {
 });
 
 async function main() {
+  // await prisma.subscribers.deleteMany();
   // await prisma.like.deleteMany();
   // await prisma.comment.deleteMany();
   // await prisma.orderItem.deleteMany();
@@ -70,26 +71,26 @@ async function main() {
   //   },
   // });
   // Get products with aggregated likes. Count likes and group by product id
-  let productsWithLikes = await prisma.product.findMany({
-    select: {
-      title: true,
-      description: true,
-      likes: {
-        select: {
-          hasLiked: true,
-        },
-      },
-      _count: { select: { likes: { where: { hasLiked: true } } } },
-    },
+  // let productsWithLikes = await prisma.product.findMany({
+  //   select: {
+  //     title: true,
+  //     description: true,
+  //     likes: {
+  //       select: {
+  //         hasLiked: true,
+  //       },
+  //     },
+  //     _count: { select: { likes: { where: { hasLiked: true } } } },
+  //   },
 
-  });
+  // });
 
-  productsWithLikes =productsWithLikes.sort((a, b) => {
-    return b._count.likes - a._count.likes;
-  }).slice(0, 10);
-  console.log(productsWithLikes.length);
+  // productsWithLikes =productsWithLikes.sort((a, b) => {
+  //   return b._count.likes - a._count.likes;
+  // }).slice(0, 10);
+  // console.log(productsWithLikes.length);
 
-  console.log(productsWithLikes);
+  // console.log(productsWithLikes);
 }
 
 main()

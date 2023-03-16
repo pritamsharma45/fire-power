@@ -101,12 +101,17 @@ function Home() {
   return (
     <div>
       <Head>
-        <title>People</title>
+        <title>Xtreme Passion</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="container mx-auto max-w-5xl my-5 px-5">
-        <div>
-          <h1 className="text-4xl font-bold mb-4">Products</h1>
+        <div className="flex flex-row justify-between">
+          <h1 className="text-3xl font-bold mb-4">Xtreme Passion</h1>
+          <Link href="/wholesale">
+            <button className="bg-blue-600 text-white rounded-lg px-4 h-8">
+              Wholesale Purchase
+            </button>
+          </Link>
         </div>
 
         {/* <pre>{JSON.stringify(cartItems,null,2)}</pre> */}

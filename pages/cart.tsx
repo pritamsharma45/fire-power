@@ -143,7 +143,6 @@ export default function Cart({ cartItems }) {
     }
   };
 
-
   const handleDelete = async (id) => {
     try {
       const res = await deleteCartItem({
@@ -179,94 +178,99 @@ export default function Cart({ cartItems }) {
   }
 
   return (
-    <div className={styles.container}>
+    <div>
       {cart?.length === 0 ? (
         <h1>Your Cart is Empty!</h1>
       ) : (
         <>
-          <div className={styles.header}>
-            <div>Image</div>
-            <div>Product</div>
-            <div>Price</div>
-            <div>Quantity</div>
-            <div></div>
-            <div className="text-left mr-10">Total Price</div>
-          </div>
-          {cart.map((item) => (
-            <>
-              <div className={styles.body}>
-                <div className={styles.image}>
-                  <Image
-                    src={
-                      "https://drive.google.com/uc?export=view&id=" + item.image
-                    }
-                    height="90"
-                    width="65"
-                  />
-                </div>
-                <div className="flex-col">
-                  <p className="text-xs font-bold text-left">{item.title}</p>
-                  <p className="text-xs font-light text-left w-80">
-                    {item.description}
-                  </p>
-                </div>
-                <p className="ml-10">$ {item.price}</p>
+          <div className="container mx-auto max-w-5xl my-5 px-5">
+            <div className="flex flex-row justify-between">
+              <h1 className="text-3xl font-bold mb-4">Xtreme Passion</h1>
+            </div>
+            <div className="flex flex-column gap-2 my-2">
+              <div className=" w-36 text-center font-bold">Image</div>
+              <div className=" w-72  font-bold">Product</div>
+              <div className=" w-32 text-center font-bold">Unit Price</div>
+              <div className=" w-32 text-center font-bold">Quantity</div>
+              <div className=" w-32 text-center font-bold"></div>
+              <div className=" w-32 text-center font-bold">Total Price</div>
+            </div>
+            {cart.map((item) => (
+              <>
+                <div className={styles.body}>
+                  <div className={styles.image}>
+                    <Image
+                      src={
+                        "https://drive.google.com/uc?export=view&id=" +
+                        item.image
+                      }
+                      height="90"
+                      width="65"
+                    />
+                  </div>
+                  <div className="flex-col">
+                    <p className="text-xs font-bold text-left">{item.title}</p>
+                    <p className="text-xs font-light text-left w-80">
+                      {item.description}
+                    </p>
+                  </div>
+                  <p className="ml-10">$ {item.price}</p>
 
-                <p>
-                  <div className="flex items-center justify-center">
-                    <button
-                      className="bg-gray-200 text-gray-700 rounded-l px-4 py-2"
-                      onClick={() =>{
-                        dispatch(decrementQuantity(item.id));
-                        handleUpdate(item.id, item.quantity - 1);
-                      }}
-                    >
-                      -
-                    </button>
-                    <div className="bg-gray-100 text-gray-800 px-1 py-2 w-12 text-center">
-                      {item.quantity}
+                  <p>
+                    <div className="flex items-center justify-center">
+                      <button
+                        className="bg-gray-200 text-gray-700 rounded-l px-4 py-2"
+                        onClick={() => {
+                          dispatch(decrementQuantity(item.id));
+                          handleUpdate(item.id, item.quantity - 1);
+                        }}
+                      >
+                        -
+                      </button>
+                      <div className="bg-gray-100 text-gray-800 px-1 py-2 w-12 text-center">
+                        {item.quantity}
+                      </div>
+                      <button
+                        className="bg-gray-200 text-gray-700 rounded-r px-4 py-2"
+                        onClick={() => {
+                          dispatch(incrementQuantity(item.id));
+                          handleUpdate(item.id, item.quantity + 1);
+                        }}
+                      >
+                        +
+                      </button>
                     </div>
+                  </p>
+                  <div>
                     <button
-                      className="bg-gray-200 text-gray-700 rounded-r px-4 py-2"
+                      className="flex items-center justify-center px-2 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
                       onClick={() => {
-                        dispatch(incrementQuantity(item.id));
-                       handleUpdate(item.id, item.quantity + 1);
+                        dispatch(removeFromCart(item.id));
+                        handleDelete(item.id);
                       }}
                     >
-                      +
+                      <FaTrash className=" h-4 mr-1" />
+                      Delete
                     </button>
                   </div>
-                </p>
-                <div>
-                  <button
-                    className="flex items-center justify-center px-2 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-                    onClick={() => {
-                      dispatch(removeFromCart(item.id));
-                      handleDelete(item.id);
-                    }}
-                  >
-                    <FaTrash className=" h-4 mr-1" />
-                    Delete
-                  </button>
+                  <p className="text-right mr-32">
+                    $ {(item.quantity * item.price).toFixed(2)}
+                  </p>
                 </div>
-                <p className="text-right mr-32">
-                  $ {(item.quantity * item.price).toFixed(2)}
-                </p>
-              </div>
-              {/* <hr /> */}
-            </>
-          ))}
-          <h2 className="text-right mr-32">
-            <strong>Grand Total: $ {getTotalPrice().toFixed(2)}</strong>
-          </h2>
-          <div className="flex justify-end mt-4 mr-28">
-
-            <button
-              className="bg-blue-100 text-blue-600 rounded-full px-2 py-1  text-sm font-bold  w-24"
-              onClick={handleCheckout}
-            >
-              Buy Now
-            </button>
+                {/* <hr /> */}
+              </>
+            ))}
+            <h2 className="text-right mr-32">
+              <strong>Grand Total: $ {getTotalPrice().toFixed(2)}</strong>
+            </h2>
+            <div className="flex justify-end mt-4 mr-28">
+              <button
+                className="bg-blue-100 text-blue-600 rounded-full px-2 py-1  text-sm font-bold  w-24"
+                onClick={handleCheckout}
+              >
+                Buy Now
+              </button>
+            </div>
           </div>
         </>
       )}

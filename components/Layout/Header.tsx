@@ -44,9 +44,9 @@ const Header = () => {
             </svg> */}
           </a>
         </Link>
-        <div className="flex-row">
-          <div className="block lg:inline-block lg:mt-0 text-red-500  text-5xl font-bold mx-2 mb-1">
-            Xxray
+        <div className="flex-row ">
+          <div className=" w-60 mt-0 text-red-500  text-5xl font-bold mx-1 mb-1">
+           Fire Power
           </div>
           <div className="text-white text-xs mx-2">Everything Herbal</div>
         </div>

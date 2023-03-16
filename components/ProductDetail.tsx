@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { Suspense } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import Comments from "./Comments";
 import ShareButtons from "./ShareButton";
 import ProductSimple from "./ProductSimple";
-import AddToCart from "../features/cart/AddToCart";
 import { TCartItem } from "../features/cart/AddToCart";
-import classNames from "classnames";
 import { useSession } from "next-auth/react";
 import { useAppDispatch } from "../hooks/hooks";
 import { addTocart } from "../features/cart/cartSlice";
@@ -167,6 +163,7 @@ const ProductDetail = ({
   const imageUrl = "https://drive.google.com/uc?export=view&id=" + image;
   return (
     <>
+    <h1 className="text-3xl font-bold mb-4">Xtreme Passion</h1>
       <div className="max-w-md ml-2 mr-0 bg-white rounded-xl shadow-md overflow-ds md:max-w-5xl">
         <div className="md:flex">
           <div className="md:flex-shrink-0 mt-4 ml-2">

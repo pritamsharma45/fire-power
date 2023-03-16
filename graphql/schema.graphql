@@ -49,6 +49,7 @@ type Mutation {
   addItemsToCart(items: Json!, userId: String!): Cart!
   addOrUpdateLike(hasLiked: Boolean!, productId: Int!, userId: String!): Like!
   addProfile(address: String!, city: String!, firstName: String!, lastName: String!, street: String!, zip: String!): Profile!
+  addSubscriber(userId: String!): Subscriber!
   createOrder(items: [OrderItemInput!]!, payment: PaymentTransactionInput!, userId: String!): Order
   createProduct(description: String!, image: String!, price: Float!, stockQuantity: Int!, title: String!): Product!
   deleteCartByUserId(userId: String!): Cart!
@@ -139,18 +140,28 @@ type Query {
   cartByUserId(userId: String!): Cart!
   commentsByProductId(productId: Int!): [Comment]!
   getProfileByEmail(userId: String!): Profile!
+  isSubscribed(userId: String!): Boolean
   likeByProductId(productId: Int!, userId: String!): [Like]!
   orderItems(userId: String!): [OrderItem]
   product(id: Int!): Product!
   products(after: Int, first: Int): Response
   promoProducts: [PromoProducts]
+  subscribers: [Subscriber]
   topProducts: [Product]
   userWithEmail(email: String!): User!
+  wholesaleProducts: [WholesaleProducts]
 }
 
 type Response {
   edges: [Edge]!
   pageInfo: PageInfo!
+}
+
+type Subscriber {
+  createdAt: String
+  id: String
+  user: User
+  userId: String
 }
 
 type User {
@@ -163,4 +174,11 @@ type User {
   orders: Order
   password: String
   updatedAt: String
+}
+
+type WholesaleProducts {
+  createdAt: String
+  id: Int
+  product: Product
+  productId: Int
 }
