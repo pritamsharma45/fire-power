@@ -45,10 +45,10 @@ const Header = () => {
           </a>
         </Link>
         <div className="flex-row ">
-          <div className=" w-60 mt-0 text-red-500  text-5xl font-bold mx-1 mb-1">
+          <div className=" w-72 mt-0 text-red-500  text-5xl font-bold mx-1 mb-1">
            Fire Power
           </div>
-          <div className="text-white text-xs mx-2">Everything Herbal</div>
+          <div className="text-white text-xs mx-2">Everything Herbal - Natural testerone boosters</div>
         </div>
 
         <nav className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center mr-10">
