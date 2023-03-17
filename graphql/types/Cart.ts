@@ -4,8 +4,6 @@ import {
   stringArg,
   extendType,
   intArg,
-  floatArg,
-  asNexusMethod,
   scalarType,
 } from "nexus";
 
@@ -58,8 +56,7 @@ export const CartByUserId = extendType({
             userId: args.userId,
           },
         });
-        // results.items = JSON.stringify(results.items);
-        // console.log(results.items);
+
         return results;
       },
     });

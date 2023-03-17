@@ -48,7 +48,7 @@ type Mutation {
   addItemToCart(productId: Int!, quantity: Int!, userId: String!): Cart!
   addItemsToCart(items: Json!, userId: String!): Cart!
   addOrUpdateLike(hasLiked: Boolean!, productId: Int!, userId: String!): Like!
-  addProfile(address: String!, city: String!, firstName: String!, lastName: String!, street: String!, zip: String!): Profile!
+  addProfile(address: String!, city: String!, dob_day: Int!, dob_month: Int!, email: String!, firstName: String!, lastName: String!, street: String!, zip: String!): Profile!
   addSubscriber(userId: String!): Subscriber!
   createOrder(items: [OrderItemInput!]!, payment: PaymentTransactionInput!, userId: String!): Order
   createProduct(description: String!, image: String!, price: Float!, stockQuantity: Int!, title: String!): Product!
@@ -120,6 +120,9 @@ type Profile {
   address: String
   city: String
   createdAt: String
+  dob_day: Int
+  dob_month: Int
+  email: String
   firstName: String
   id: String
   lastName: String
@@ -178,7 +181,9 @@ type User {
 
 type WholesaleProducts {
   createdAt: String
+  discount: Float
   id: Int
+  minQty: Int
   product: Product
   productId: Int
 }

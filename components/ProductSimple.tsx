@@ -1,9 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { gql, useMutation } from "@apollo/client";
-import { useState } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+
 import "react-toastify/dist/ReactToastify.css";
 
 const ProductSimple = ({

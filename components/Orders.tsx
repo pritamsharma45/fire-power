@@ -23,7 +23,9 @@ const OrderList = ({ orders }) => {
                     <strong>{order.product.title}</strong>
                   </div>
                   {/* Description */}
-                  <div className="mb-2 text-xs">{order.product.description}</div>
+                  <div className="mb-2 text-xs">
+                    {order.product.description}
+                  </div>
                 </div>
                 <div className="flex-col mx-2">
                   {/* Price */}
@@ -31,21 +33,6 @@ const OrderList = ({ orders }) => {
                   {/* Quantity */}
                   <div className="mb-2 text-xs">Qty:{order.quantity}</div>
                 </div>
-
-                {/* Status */}
-                {/* <div
-                  className={`font-semibold py-1 rounded-lg text-center text-white ${
-                    order.status === "Processing"
-                      ? "bg-yellow-500"
-                      : order.status === "Shipped"
-                      ? "bg-green-500"
-                      : order.status === "Delivered"
-                      ? "bg-blue-500"
-                      : "bg-gray-500"
-                  }`}
-                >
-                  {order.status}
-                </div> */}
               </div>
             </div>
           </div>

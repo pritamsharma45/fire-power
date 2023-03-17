@@ -35,7 +35,6 @@ export default NextAuth({
   ],
   callbacks: {
     async session({ session, user, token }) {
-      // console.log("session called:", user);
       const myUser = user as MyUser;
       myUser.userId = user.id;
       session.user = myUser;

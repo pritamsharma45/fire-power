@@ -88,6 +88,10 @@ export const orderItems = extendType({
           include: {
             product: true,
           },
+          orderBy: {
+            createdAt: "desc",
+          }
+          
         });
 
         return orderItems;

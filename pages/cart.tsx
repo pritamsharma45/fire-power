@@ -7,24 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadStripe } from "@stripe/stripe-js";
 import { useSession } from "next-auth/react";
 
-const CREATE_ORDER = gql`
-  mutation Mutation(
-    $total: Float!
-    $items: [OrderItemInput!]!
-    $userId: String!
-    $payment: PaymentTransactionInput!
-  ) {
-    createOrder(
-      total: $total
-      items: $items
-      userId: $userId
-      payment: $payment
-    ) {
-      total
-    }
-  }
-`;
-
 const FETCH_CART = gql`
   query Query($userId: String!) {
     cartByUserId(userId: $userId) {
@@ -41,13 +23,6 @@ const DELETE_CART_ITEM = gql`
   }
 `;
 
-const ADD_TO_CART = gql`
-  mutation Mutation($userId: String!, $items: Json!) {
-    addItemsToCart(userId: $userId, items: $items) {
-      id
-    }
-  }
-`;
 const UPDATE_ITEM_IN_CART = gql`
   mutation UpdateItemQuantityInCart(
     $userId: String!
@@ -79,7 +54,7 @@ import styles from "../styles/CartPage.module.css";
 
 export default function Cart({ cartItems }) {
   console.log("Cart items in cart page", cartItems);
-  const [addToCart, { data, loading, error }] = useMutation(ADD_TO_CART);
+
   const [deleteCartItem, { data: deleteData, loading: deleteLoading }] =
     useMutation(DELETE_CART_ITEM);
   const [updateItemInCart, { data: updateData, loading: updateLoading }] =
@@ -188,17 +163,17 @@ export default function Cart({ cartItems }) {
               <h1 className="text-3xl font-bold mb-4">Xtreme Passion</h1>
             </div>
             <div className="flex flex-column gap-2 my-2">
-              <div className=" w-36 text-center font-bold">Image</div>
-              <div className=" w-72  font-bold">Product</div>
-              <div className=" w-32 text-center font-bold">Unit Price</div>
-              <div className=" w-32 text-center font-bold">Quantity</div>
-              <div className=" w-32 text-center font-bold"></div>
+              <div className=" w-24 text-center font-bold">Image</div>
+              <div className=" w-72  text-left font-bold">Product</div>
+              <div className=" w-32 text-center  font-bold">Unit Price</div>
+              <div className=" w-16  font-bold">Quantity</div>
+              <div className=" w-36 text-right font-bold"></div>
               <div className=" w-32 text-center font-bold">Total Price</div>
             </div>
             {cart.map((item) => (
               <>
-                <div className={styles.body}>
-                  <div className={styles.image}>
+                <div className="flex flex-column gap-2 my-2">
+                  <div className="w-36 text-center">
                     <Image
                       src={
                         "https://drive.google.com/uc?export=view&id=" +
@@ -208,13 +183,15 @@ export default function Cart({ cartItems }) {
                       width="65"
                     />
                   </div>
-                  <div className="flex-col">
-                    <p className="text-xs font-bold text-left">{item.title}</p>
+                  <div className="flex-col w-80">
+                    <p className="text-xs font-bold text-left w-72">
+                      {item.title}
+                    </p>
                     <p className="text-xs font-light text-left w-80">
                       {item.description}
                     </p>
                   </div>
-                  <p className="ml-10">$ {item.price}</p>
+                  <p className=" w-32">$ {item.price}</p>
 
                   <p>
                     <div className="flex items-center justify-center">
@@ -241,7 +218,7 @@ export default function Cart({ cartItems }) {
                       </button>
                     </div>
                   </p>
-                  <div>
+                  <div className="w-32">
                     <button
                       className="flex items-center justify-center px-2 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
                       onClick={() => {
@@ -253,7 +230,7 @@ export default function Cart({ cartItems }) {
                       Delete
                     </button>
                   </div>
-                  <p className="text-right mr-32">
+                  <p className="w-32 text-right mr-32">
                     $ {(item.quantity * item.price).toFixed(2)}
                   </p>
                 </div>

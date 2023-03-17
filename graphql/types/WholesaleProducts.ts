@@ -7,11 +7,12 @@ import {
   floatArg,
 } from "nexus";
 
-
 export const WholesaleProducts = objectType({
   name: "WholesaleProducts",
   definition(t) {
     t.int("id");
+    t.int("minQty");
+    t.float("discount");
     t.string("createdAt");
     t.int("productId");
     t.field("product", { type: "Product" });

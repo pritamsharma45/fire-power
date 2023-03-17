@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
+import {signOut, useSession } from "next-auth/react";
 
 function ProfileDropdown({ user }) {
   const [isOpen, setIsOpen] = useState(false);

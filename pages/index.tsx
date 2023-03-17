@@ -114,7 +114,6 @@ function Home() {
           </Link>
         </div>
 
-        {/* <pre>{JSON.stringify(cartItems,null,2)}</pre> */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {data?.products.edges.map(({ node }, i) => {
             const inCartBl = cartItems.find((item) => item.id === node.id);
@@ -148,9 +147,6 @@ function Home() {
                 variables: { after: endCursor },
                 updateQuery: (prev, { fetchMoreResult }) => {
                   setBottomLoading(false);
-                  // console.log("More", fetchMoreResult);
-                  // console.log("Prev", prev);
-                  // if (!fetchMoreResult) return prev;
 
                   fetchMoreResult.products.edges = [
                     ...prev.products.edges,

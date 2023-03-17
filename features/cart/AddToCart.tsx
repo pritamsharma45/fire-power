@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useAppDispatch } from "../../hooks/hooks";
 import { addTocart } from "./cartSlice";
 
-import styles from "./Counter.module.css";
+
 
 export interface TCartItem {
   id: string;

@@ -8,13 +8,15 @@ import {
 } from "nexus";
 
 
-
 export const Profile = objectType({
   name: "Profile",
   definition(t) {
     t.string("id");
     t.string("firstName");
     t.string("lastName");
+    t.string("email");
+    t.int("dob_day");
+    t.int("dob_month");
     t.string("address");
     t.string("street");
     t.string("city");
@@ -32,6 +34,9 @@ export const AddProfile = extendType({
       args: {
         firstName: nonNull(stringArg()),
         lastName: nonNull(stringArg()),
+        email: nonNull(stringArg()),
+        dob_day: nonNull(intArg()),
+        dob_month: nonNull(intArg()),
         address: nonNull(stringArg()),
         street: nonNull(stringArg()),
         city: nonNull(stringArg()),
@@ -48,6 +53,9 @@ export const AddProfile = extendType({
                 create: {
                   firstName: args.firstName,
                   lastName: args.lastName,
+                  email: args.email,
+                  dob_day: args.dob_day,
+                  dob_month: args.dob_month,
                   address: args.address,
                   street: args.street,
                   city: args.city,
@@ -56,6 +64,9 @@ export const AddProfile = extendType({
                 update: {
                   firstName: args.firstName,
                   lastName: args.lastName,
+                  email: args.email,
+                  dob_day: args.dob_day,
+                  dob_month: args.dob_month,
                   address: args.address,
                   street: args.street,
                   city: args.city,

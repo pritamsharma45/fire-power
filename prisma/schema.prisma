@@ -52,7 +52,7 @@ model User {
   profile       Profile?
   cartItems     CartItem[]
   cart          Cart?
-  subscriber  Subscriber?
+  subscriber    Subscriber?
 }
 
 model Subscriber {
@@ -66,6 +66,9 @@ model Profile {
   id        Int      @id @default(autoincrement())
   firstName String
   lastName  String
+  email     String   @unique
+  dob_day   Int
+  dob_month Int
   address   String
   street    String
   city      String
@@ -117,6 +120,8 @@ model PromoProducts {
 
 model WholesaleProducts {
   id        Int      @id @default(autoincrement())
+  minQty    Int     @default(10)
+  discount  Float   @default(0.04)
   createdAt DateTime @default(now())
   // Relationships
   product   Product  @relation(fields: [productId], references: [id])

@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
 
-export default function Cart({ count,cartItems }) {
+export default function Cart({ cartItems }) {
   const { push } = useRouter();
   const handleCheckout = () => {
     console.log("Cart items pushed to router", cartItems);
     push({
-      pathname: '/cart',
+      pathname: "/cart",
       query: { cart: JSON.stringify(cartItems) },
     });
   };

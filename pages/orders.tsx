@@ -36,12 +36,9 @@ export default function AllOrders() {
   console.log(orders);
 
   return (
-    <div>
-      <h1 className="text-xl font-bold mt-2 ml-20">Orders</h1>
-      {
-        (orders?.orderItems && <Orders orders={orders?.orderItems} />)
-      }
-      
+    <div  className="container mx-auto max-w-5xl my-5 px-5">
+      <h1 className="text-xl font-bold mt-2">Orders</h1>
+      {orders?.orderItems && <Orders orders={orders?.orderItems} />}
     </div>
   );
 }

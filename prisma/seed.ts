@@ -45,6 +45,7 @@ const users = Array.from({ length: 100 }).map((_, i) => {
 });
 
 async function main() {
+   await prisma.profile.deleteMany();
   // await prisma.subscribers.deleteMany();
   // await prisma.like.deleteMany();
   // await prisma.comment.deleteMany();
