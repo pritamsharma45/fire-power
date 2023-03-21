@@ -21,10 +21,6 @@ We will try to dockerize it
 13. Stripe ( payment integration)
 14. Apache KAFKA
 
-
-
-
-
 # Run commands to get started
 
 - npm install (install all the dependencies)
@@ -71,3 +67,22 @@ We will try to dockerize it
 - heroku create
 - heroku stack:set container
 - git push heroku master
+
+
+# Spin up your Database
+
+- [Supabase DB setup](docs/Database setup.md)
+
+
+# Configuration Requirements
+- next.config.js
+    - ensure you have listed all the domains you will be using for images in next.config.js. Like drive.google.com or cloudinary.com etc.
+- .env
+    - Replace DATABASE_URL with actual database url from Supabase dashboard.
+    - NEXTAUTH_URL has to be replaced with your domain.
+    - SECRET can be generate using secret generator site like - 
+    - Ensure you have duly populated all the id and secret field for different auth provider like Google, Facebook, Twitter etc.
+- .env.local
+    - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY has to be obtained from Stripe dashboard.
+    - STRIPE_SECRET_KEY has to be obtained from stripe dashboard.
+    - STRIPE_WEBHOOK_SECRET has to be generated using CLI or using Stripe dashboard.

@@ -210,7 +210,14 @@ export default function Result() {
         <div className="container mx-auto max-w-5xl my-5 px-5">
           <div className="my-2">
             <div className="bg-green-500 rounded-lg shadow-lg">
-              <div className="text-white font-bold uppercase p-2">Success</div>
+              <div className="flex flex-row justify-between ">
+                <div className="text-white font-bold uppercase p-2">
+                  Success
+                </div>
+                <div className="text-yellow-300 font-bold uppercase p-2">
+                  Bulk Purchase
+                </div>
+              </div>
               <div className="p-2">
                 <p className="text-white text-lg font-bold mb-4">
                   Congratulations! Your order has been successfully completed.
