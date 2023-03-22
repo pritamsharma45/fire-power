@@ -3,16 +3,11 @@ import React, { useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 import Link from "next/link";
 import Product from "../components/Product";
-import { Suspense } from "react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useAppSelector, useAppDispatch } from "../hooks/hooks";
-import {
-  selectCount,
-  selectCartItems,
-  updateCart,
-} from "../features/cart/cartSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppSelector } from "../hooks/hooks";
+import { selectCartItems, updateCart } from "../features/cart/cartSlice";
+import { useDispatch } from "react-redux";
 
 const AllProducts = gql`
   query allProductsQuer($first: Int, $after: Int) {
@@ -61,7 +56,6 @@ function Home() {
     variables: { first: 20 },
   });
   const [bottomLoading, setBottomLoading] = useState(false);
-  // console.log(data);
 
   // Handle when product card is clicked
   const dispatch = useDispatch();

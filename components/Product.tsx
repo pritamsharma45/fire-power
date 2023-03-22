@@ -2,16 +2,10 @@ import React from "react";
 import { Suspense } from "react";
 import Link from "next/link";
 import { gql, useMutation } from "@apollo/client";
-import { useState } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-
-// import AddToCart from "../features/counter/AddToCart";
 import AddToCart from "../features/cart/AddToCart";
 import { TCartItem } from "../features/cart/AddToCart";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import styles from "./product.module.css";
 
 const UPDATE_LIKE = gql`
   mutation AddOrUpdateLike(
@@ -25,14 +19,6 @@ const UPDATE_LIKE = gql`
       hasLiked: $hasLiked
     ) {
       hasLiked
-    }
-  }
-`;
-
-const ADD_TO_CART = gql`
-  mutation Mutation($userId: String!, $items: Json!) {
-    addItemsToCart(userId: $userId, items: $items) {
-      id
     }
   }
 `;
@@ -124,11 +110,6 @@ const Product = ({
                 <p className="text-gray-500 text-xs font-nunito">
                   {description}
                 </p>
-                {/* {stockQuantity < 1 && (
-                  <div className="bg-red-100 text-red-500 rounded-full px-2 py-1 text-xs font-medium  w-24">
-                    Out of Stock
-                  </div>
-                )} */}
               </div>
               <div className="p-2 text-right">
                 {/* If stockeQuantity is greater than 0 then render below component or else render out of stock */}
@@ -137,18 +118,12 @@ const Product = ({
                     <div className="text-teal-500 text-md font-semibold  font-poppins">
                       ${price}
                     </div>
-                    {/* <div className="text-xs text-gray-500  line-through font-poppins">
-                      $80
-                    </div> */}
                   </>
                 ) : (
                   <>
                     <div className="text-gray-500 text-md font-semibold  font-poppins">
                       ${price}
                     </div>
-                    {/* <div className="text-xs text-gray-500  line-through font-poppins">
-                      $80
-                    </div> */}
                   </>
                 )}
               </div>

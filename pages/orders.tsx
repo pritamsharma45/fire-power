@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import Image from "next/image";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import React from "react";
+
+import { gql, useQuery } from "@apollo/client";
 import Orders from "../components/Orders";
 
 import { useSession } from "next-auth/react";
@@ -36,7 +36,7 @@ export default function AllOrders() {
   console.log(orders);
 
   return (
-    <div  className="container mx-auto max-w-5xl my-5 px-5">
+    <div className="container mx-auto max-w-5xl my-5 px-5">
       <h1 className="text-xl font-bold mt-2">Orders</h1>
       {orders?.orderItems && <Orders orders={orders?.orderItems} />}
     </div>

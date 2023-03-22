@@ -1,16 +1,9 @@
 import React from "react";
-import Image from "next/image";
-import { prisma } from "../../lib/prisma";
-import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { gql, useQuery } from "@apollo/client";
-import toast, { Toaster } from "react-hot-toast";
-import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import Link from "next/link";
 import ProductDetail from "../../components/ProductDetail";
-import { Suspense } from "react";
 
 const SingleProduct = gql`
   query Query($id: Int!) {

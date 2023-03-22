@@ -4,7 +4,7 @@ import Image from "next/image";
 import { signIn, useSession } from "next-auth/react";
 import Profile from "./Profile";
 import Cart from "./cart";
-import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
+import { useAppSelector } from "../../hooks/hooks";
 import {  selectCartItems } from "../../features/cart/cartSlice";
 import { useRouter } from "next/router";
 

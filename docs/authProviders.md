@@ -18,9 +18,7 @@
 
 - Provide Authorized redirect URIs as this `http://localhost:3000/api/auth/callback/google`. Local host to be replaced with actual domain when the application is made live.
 
-or follow this video
-
-- [Add google auth](https://youtu.be/QXgFaHEuJOE)
+or follow this video:[Add google auth](https://youtu.be/QXgFaHEuJOE)
 
 2. Facebook
 
@@ -39,13 +37,8 @@ or follow this video
 
 ![Screenshot (79)](https://user-images.githubusercontent.com/69457813/226816985-acb60ef9-594f-4efd-a80b-9de10d279927.png)
 
-or follow this video
-
-- [Add facebook auth](https://youtu.be/eTpkgNBmrX8)
+or follow this video:[Add facebook auth](https://youtu.be/eTpkgNBmrX8)
 
 3. Twitter
 
-Follow this video
-
-- []()
-- [Add Twitter Auth](https://www.youtube.com/watch?v=Z6ibMSJIwlk&t)
+Follow this video:[Add Twitter Auth](https://www.youtube.com/watch?v=Z6ibMSJIwlk&t)

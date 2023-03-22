@@ -1,13 +1,11 @@
 import "../styles/tailwind.css";
 import Layout from "../components/Layout";
-import { ReactElement } from "react";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "../lib/apollo";
 import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
 import { Provider } from "react-redux";
 import store from "../store/store";
-// import { wrapper } from "../store/store";
 import { AppProps } from "next/app";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

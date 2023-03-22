@@ -2,9 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import Image from "next/image";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { GetServerSideProps } from "next";
-import { useDispatch, useSelector } from "react-redux";
+import { gql, useQuery } from "@apollo/client";
 import { loadStripe } from "@stripe/stripe-js";
 import { useSession } from "next-auth/react";
 
@@ -27,33 +25,12 @@ const FETCH_WHOLESALE_PRODUCTS = gql`
   }
 `;
 
-const CREATE_ORDER = gql`
-  mutation Mutation(
-    $total: Float!
-    $items: [OrderItemInput!]!
-    $userId: String!
-    $payment: PaymentTransactionInput!
-  ) {
-    createOrder(
-      total: $total
-      items: $items
-      userId: $userId
-      payment: $payment
-    ) {
-      total
-    }
-  }
-`;
-
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
-import styles from "../styles/CartPage.module.css";
-
 export default function Wholesale() {
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [grandTotal, setGrandTotal] = useState(0);
+  const [products, setProducts] = useState([]);
   const [hasError, setHasError] = useState(false);
   const [quantities, setQuantities] = useState(undefined);
   const { data: session, status } = useSession();
@@ -67,18 +44,15 @@ export default function Wholesale() {
 
   useEffect(() => {
     if (wholesaleData) {
-      console.log(
-        "Wholesale Data inside useeffect",
-        wholesaleData.wholesaleProducts
-      );
-      const initialQuantities = wholesaleData.wholesaleProducts.reduce(
+      setProducts(wholesaleData.wholesaleProducts);
+
+      const initialQuantities = products.reduce(
         (obj, item) => ({
           ...obj,
           [item.product.id]: item.minQty,
         }),
         {}
       );
-      console.log("Initial Quantities", initialQuantities);
       setQuantities(initialQuantities);
     }
   }, [wholesaleData]);
@@ -99,29 +73,25 @@ export default function Wholesale() {
   }, [quantities]);
 
   const handleQuantityChange = (productId, quantity) => {
-    console.log("Qunaity changed", quantity);
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
       [productId]: parseInt(quantity),
     }));
 
-    const gt = wholesaleData?.wholesaleProducts?.reduce((acc, item) => {
+    const gt = products.reduce((acc, item) => {
       return acc + quantities?.[item.product.id] * item.product.price;
     }, 0);
-    setGrandTotal(gt);
   };
 
   const handleDeleteClick = (productId) => {
-    const updatedWholesaleProducts = wholesaleData?.wholesaleProducts.filter(
-      ({ product }) => product.id !== productId
+    const updatedWholesaleProducts = products.filter(
+      ({ product }) => product.id != productId
     );
-    setTotalPrice(getTotalPrice(updatedWholesaleProducts));
+    setProducts(updatedWholesaleProducts);
   };
 
   const handleCheckout = async () => {
-    // console.log("Checkout clicked", wholesaleData?.wholesaleProducts);
-    // console.log("Quantities", quantities);
-    const wholeSaleItems = wholesaleData?.wholesaleProducts?.reduce(
+    const wholeSaleItems = products.reduce(
       (acc, item) => {
         if (quantities?.[item.product.id] > 0) {
           acc.items.push({
@@ -137,12 +107,11 @@ export default function Wholesale() {
       },
       { items: [] }
     );
-    // console.log("WholeSale Items", wholeSaleItems);
+
     const payloadCart = {
       userId: session?.user?.id,
       line_items: wholeSaleItems.items,
     };
-    // console.log("Payload Cart pushed to stripe session", payloadCart);
 
     // Get Stripe.js instance
 
@@ -153,7 +122,6 @@ export default function Wholesale() {
       },
       body: JSON.stringify(payloadCart),
     }).then((res) => {
-      console.log("Checkout done", JSON.stringify(res));
       return res.json();
     });
     console.log(sessionId);
@@ -189,84 +157,91 @@ export default function Wholesale() {
             <div className="text-right font-bold"></div>
           </div>
           <hr />
-          {wholesaleData?.wholesaleProducts?.map(
-            ({ minQty, discount, product }) => (
-              <>
-                <div className="flex flex-column gap-2 my-2">
-                  <div className="w-36 text-center font-bold">
-                    <Image
-                      src={
-                        "https://drive.google.com/uc?export=view&id=" +
-                        product.image
-                      }
-                      height="90"
-                      width="65"
-                    />
-                  </div>
-                  <div className="flex-col w-80">
-                    <p className="text-xs font-bold text-left w-72">
-                      {product.title}
-                    </p>
-                    <p className="text-xs font-light text-left w-80">
-                      {product.description}
-                    </p>
-                  </div>
-                  <p className=" w-32">$ {product.price.toFixed(2)}</p>
-
-                  <div className="w-32 justify-center">
-                    <input
-                      type="number"
-                      className={`w-16 p-1 border ${
-                        quantities?.[product.id] < 10
-                          ? "border-red-500"
-                          : "border-slate-300"
-                      } rounded-md`}
-                      id={product.id}
-                      value={quantities?.[product.id] ?? minQty}
-                      min={minQty}
-                      onChange={(event) =>
-                        handleQuantityChange(product.id, event.target.value)
-                      }
-                    />
-                  </div>
-                  <p className=" text-green-700 font-semibold w-32">{discount * 100} %</p>
-
-                  <p className="text-right  w-32">
-                    ${" "}
-                    {(
-                      quantities?.[product.id] *
-                      product.price *
-                      (1 - discount)
-                    ).toFixed(2)}
-                  </p>
-                  <div className="w-32 ml-4">
-                    <button
-                      className="flex items-center justify-center px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-                      onClick={() => {}}
-                    >
-                      <FaTrash className=" h-4 mr-1" />
-                      Delete
-                    </button>
-                  </div>
+          {products.map(({ minQty, discount, product }) => (
+            <>
+              <div className="flex flex-column gap-2 my-2">
+                <div className="w-36 text-center font-bold">
+                  <Image
+                    src={
+                      "https://drive.google.com/uc?export=view&id=" +
+                      product.image
+                    }
+                    height="90"
+                    width="65"
+                  />
                 </div>
-                {/* <hr /> */}
-              </>
-            )
-          )}
+                <div className="flex-col w-80">
+                  <p className="text-xs font-bold text-left w-72">
+                    {product.title}
+                  </p>
+                  <p className="text-xs font-light text-left w-80">
+                    {product.description}
+                  </p>
+                </div>
+                <p className=" w-32">$ {product.price.toFixed(2)}</p>
+
+                <div className="w-32 justify-center">
+                  <input
+                    type="number"
+                    className={`w-16 p-1 border ${
+                      quantities?.[product.id] < 10
+                        ? "border-red-500"
+                        : "border-slate-300"
+                    } rounded-md`}
+                    id={product.id}
+                    value={quantities?.[product.id] ?? minQty}
+                    min={minQty}
+                    onChange={(event) =>
+                      handleQuantityChange(product.id, event.target.value)
+                    }
+                  />
+                </div>
+                <p className=" text-green-700 font-semibold w-32">
+                  {discount * 100} %
+                </p>
+
+                <p className="text-right  w-32" id={product.id}>
+                  ${" "}
+                  {quantities?.[product.id]
+                    ? (
+                        quantities?.[product.id] *
+                        product.price *
+                        (1 - discount)
+                      ).toFixed(2)
+                    : (minQty * product.price * (1 - discount)).toFixed(2)}
+                </p>
+                <div className="w-32 ml-4">
+                  <button
+                    className="flex items-center justify-center px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                    onClick={() => handleDeleteClick(product.id)}
+                  >
+                    <FaTrash className=" h-4 mr-1" />
+                    Delete
+                  </button>
+                </div>
+              </div>
+              {/* <hr /> */}
+            </>
+          ))}
           <h2 className="text-right mr-2">
             <strong>
               Grand Total: ${" "}
-              {wholesaleData?.wholesaleProducts
+              {products
                 ?.reduce((acc, item) => {
-                  return (
-                    acc + quantities?.[item.product.id] * item.product.price*(1-item.discount)
-                  );
+                  return acc + quantities
+                    ? quantities?.[item.product.id] *
+                        item.product.price *
+                        (1 - item.discount)
+                    : item.minQty * item.product.price * (1 - item.discount);
                 }, 0)
                 .toFixed(2)}
             </strong>
           </h2>
           <div className="flex justify-between mt-4 mr-2">
-            <p className="text-left text-pink-500 font-semibold">* Please enter a quantity greater than or equal to the minimum specified quantity.</p>
+            <p className="text-left text-pink-500 font-semibold">
+              * Please enter a quantity greater than or equal to the minimum
+              specified quantity.
+            </p>
             <button
               onClick={handleCheckout}
               disabled={hasError}

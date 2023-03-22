@@ -5,7 +5,6 @@ import { useAppDispatch } from "../../hooks/hooks";
 import { addTocart } from "./cartSlice";
 
 
-
 export interface TCartItem {
   id: string;
   title: string;

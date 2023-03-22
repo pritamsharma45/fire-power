@@ -53,7 +53,7 @@ import {
 import styles from "../styles/CartPage.module.css";
 
 export default function Cart({ cartItems }) {
-  console.log("Cart items in cart page", cartItems);
+  // console.log("Cart items in cart page", cartItems);
 
   const [deleteCartItem, { data: deleteData, loading: deleteLoading }] =
     useMutation(DELETE_CART_ITEM);
