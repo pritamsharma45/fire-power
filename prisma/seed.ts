@@ -45,7 +45,7 @@ const users = Array.from({ length: 100 }).map((_, i) => {
 });
 
 async function main() {
-   await prisma.profile.deleteMany();
+  //  await prisma.profile.deleteMany();
   // await prisma.subscribers.deleteMany();
   // await prisma.like.deleteMany();
   // await prisma.comment.deleteMany();
@@ -55,9 +55,9 @@ async function main() {
   // await prisma.user.deleteMany();
   // await prisma.paymentTransaction.deleteMany();
   // await prisma.product.deleteMany();
-  // await prisma.product.createMany({
-  //   data,
-  // });
+  await prisma.product.createMany({
+    data,
+  });
   // await prisma.cart.deleteMany();
   // await prisma.cart.create({
   //   data: {
