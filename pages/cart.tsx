@@ -38,7 +38,24 @@ const UPDATE_ITEM_IN_CART = gql`
     }
   }
 `;
-
+const GET_PROFILE = gql`
+  query Query($userId: String!) {
+    getProfileByUserId(userId: $userId) {
+      id
+      firstName
+      lastName
+      email
+      dob_day
+      dob_month
+      address
+      street
+      city
+      zip
+      createdAt
+      updatedAt
+    }
+  }
+`;
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
@@ -53,14 +70,20 @@ import {
 import styles from "../styles/CartPage.module.css";
 
 export default function Cart({ cartItems }) {
-  // console.log("Cart items in cart page", cartItems);
-
+  const { data: session, status } = useSession();
+  // Fetch the user's profile from the server
+  const {
+    data: profileData,
+    loading: profileLoading,
+    error: profileError,
+  } = useQuery(GET_PROFILE, {
+    variables: { userId: session?.user?.id },
+  });
   const [deleteCartItem, { data: deleteData, loading: deleteLoading }] =
     useMutation(DELETE_CART_ITEM);
   const [updateItemInCart, { data: updateData, loading: updateLoading }] =
     useMutation(UPDATE_ITEM_IN_CART);
 
-  const { data: session, status } = useSession();
   const dispatch = useDispatch();
   // Fetch cart form server
   const {
@@ -92,7 +115,11 @@ export default function Cart({ cartItems }) {
   };
   const cart = useSelector(selectCartItems);
 
-  const payloadCart = { userId: session?.user?.id, line_items: cart };
+  const payloadCart = {
+    userId: session?.user?.id,
+    line_items: cart,
+    userProfile: profileData?.getProfileByUserId,
+  };
   console.log("Cart items in payload", payloadCart);
   const handleCheckout = async () => {
     // Get Stripe.js instance

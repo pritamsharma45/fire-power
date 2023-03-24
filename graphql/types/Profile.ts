@@ -7,7 +7,6 @@ import {
   floatArg,
 } from "nexus";
 
-
 export const Profile = objectType({
   name: "Profile",
   definition(t) {
@@ -82,10 +81,10 @@ export const AddProfile = extendType({
 });
 
 //  Get unique profile by userId
-export const GetProfileByEmail = extendType({
+export const GetProfileByUserId = extendType({
   type: "Query",
   definition(t) {
-    t.nonNull.field("getProfileByEmail", {
+    t.nonNull.field("getProfileByUserId", {
       type: Profile,
       args: {
         userId: nonNull(stringArg()),

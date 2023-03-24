@@ -50,7 +50,7 @@ type Mutation {
   addOrUpdateLike(hasLiked: Boolean!, productId: Int!, userId: String!): Like!
   addProfile(address: String!, city: String!, dob_day: Int!, dob_month: Int!, email: String!, firstName: String!, lastName: String!, street: String!, zip: String!): Profile!
   addSubscriber(userId: String!): Subscriber!
-  createOrder(items: [OrderItemInput!]!, payment: PaymentTransactionInput!, userId: String!): Order
+  createOrder(items: [OrderItemInput!]!, payment: PaymentTransactionInput!, shippingAddress: ShippingAddressInput!, userId: String!): Order
   createProduct(description: String!, image: String!, price: Float!, stockQuantity: Int!, title: String!): Product!
   deleteCartByUserId(userId: String!): Cart!
   deleteItemFromCart(productId: Int!, userId: String!): Cart!
@@ -142,7 +142,7 @@ type PromoProducts {
 type Query {
   cartByUserId(userId: String!): Cart!
   commentsByProductId(productId: Int!): [Comment]!
-  getProfileByEmail(userId: String!): Profile!
+  getProfileByUserId(userId: String!): Profile!
   isSubscribed(userId: String!): Boolean
   likeByProductId(productId: Int!, userId: String!): [Like]!
   orderItems(userId: String!): [OrderItem]
@@ -158,6 +158,16 @@ type Query {
 type Response {
   edges: [Edge]!
   pageInfo: PageInfo!
+}
+
+input ShippingAddressInput {
+  city: String!
+  country: String!
+  line1: String!
+  line2: String!
+  name: String!
+  postal_code: String!
+  state: String!
 }
 
 type Subscriber {

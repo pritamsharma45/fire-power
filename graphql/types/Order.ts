@@ -90,8 +90,7 @@ export const orderItems = extendType({
           },
           orderBy: {
             createdAt: "desc",
-          }
-          
+          },
         });
 
         return orderItems;
@@ -131,8 +130,26 @@ export const createOrder = extendType({
             },
           })
         ),
+        shippingAddress: nonNull(
+          inputObjectType({
+            name: "ShippingAddressInput",
+            definition(t) {
+              t.nonNull.string("name");
+              t.nonNull.string("line1");
+              t.nonNull.string("line2");
+              t.nonNull.string("city");
+              t.nonNull.string("state");
+              t.nonNull.string("country");
+              t.nonNull.string("postal_code");
+            },
+          })
+        ),
       },
-      resolve: async (_, { total, items, userId, payment }, ctx) => {
+      resolve: async (
+        _,
+        { total, items, userId, payment, shippingAddress },
+        ctx
+      ) => {
         const orderItems = items.map((item) => ({
           quantity: item.quantity,
           price: item.price,
@@ -148,6 +165,20 @@ export const createOrder = extendType({
             order: { create: { user: { connect: { id: userId } } } },
           },
         });
+        const shippingAddressCreation = await ctx.prisma.shippingAddress.create(
+          {
+            data: {
+              name:shippingAddress.name,
+              line1: shippingAddress.line1,
+              line2: shippingAddress.line2,
+              city: shippingAddress.city,
+              state: shippingAddress.state,
+              country: shippingAddress.country,
+              postal_code: shippingAddress.postal_code,
+              order: { create: { user: { connect: { id: userId } } } },
+            },
+          }
+        );
 
         const order = await ctx.prisma.order.update({
           where: { id: paymentTransaction.orderId },

@@ -120,8 +120,8 @@ model PromoProducts {
 
 model WholesaleProducts {
   id        Int      @id @default(autoincrement())
-  minQty    Int     @default(10)
-  discount  Float   @default(0.04)
+  minQty    Int      @default(10)
+  discount  Float    @default(0.04)
   createdAt DateTime @default(now())
   // Relationships
   product   Product  @relation(fields: [productId], references: [id])
@@ -182,16 +182,17 @@ model Like {
 
 // Order model
 model Order {
-  id             Int                  @id @default(autoincrement())
-  createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @updatedAt
-  status         OrderStatus          @default(PENDING)
-  deliveryStatus DeliveryStatus?      @default(PENDING)
+  id              Int                  @id @default(autoincrement())
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  status          OrderStatus          @default(PENDING)
+  deliveryStatus  DeliveryStatus?      @default(PENDING)
   // Relationships
-  items          OrderItem[]
-  user           User                 @relation(fields: [userId], references: [id])
-  transactions   PaymentTransaction[]
-  userId         String
+  items           OrderItem[]
+  user            User                 @relation(fields: [userId], references: [id])
+  transactions    PaymentTransaction[]
+  userId          String
+  ShippingAddress ShippingAddress[]
 }
 
 // OrderItem model
@@ -206,6 +207,23 @@ model OrderItem {
   product   Product  @relation(fields: [productId], references: [id])
   orderId   Int
   productId Int
+}
+
+// Shipping Address from Stripe
+model ShippingAddress {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  name        String
+  line1       String
+  line2       String
+  city        String
+  state       String
+  country     String
+  postal_code String
+  // Relationships
+  order       Order    @relation(fields: [orderId], references: [id])
+  orderId     Int
+
 }
 
 // PaymentTransaction model

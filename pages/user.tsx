@@ -41,22 +41,22 @@ const UPDATE_PROFILE = gql`
   }
 `;
 const GET_PROFILE = gql`
-  query Query($userId: String!) {
-    getProfileByEmail(userId: $userId) {
-      id
-      firstName
-      lastName
-      email
-      dob_day
-      dob_month
-      address
-      street
-      city
-      zip
-      createdAt
-      updatedAt
-    }
+query Query($userId: String!) {
+  getProfileByUserId(userId: $userId) {
+    id
+    firstName
+    lastName
+    email
+    dob_day
+    dob_month
+    address
+    street
+    city
+    zip
+    createdAt
+    updatedAt
   }
+}
 `;
 function UserProfile() {
   // State to hold the form data
@@ -87,15 +87,15 @@ function UserProfile() {
     if (profileData) {
       setFormData((prevState) => ({
         ...prevState,
-        firstName: profileData.getProfileByEmail.firstName,
-        lastName: profileData.getProfileByEmail.lastName,
-        email: profileData.getProfileByEmail.email,
-        dob_day: profileData.getProfileByEmail.dob_day,
-        dob_month: profileData.getProfileByEmail.dob_month,
-        address: profileData.getProfileByEmail.address,
-        street: profileData.getProfileByEmail.street,
-        city: profileData.getProfileByEmail.city,
-        zip: profileData.getProfileByEmail.zip,
+        firstName: profileData.getProfileByUserId.firstName,
+        lastName: profileData.getProfileByUserId.lastName,
+        email: profileData.getProfileByUserId.email,
+        dob_day: profileData.getProfileByUserId.dob_day,
+        dob_month: profileData.getProfileByUserId.dob_month,
+        address: profileData.getProfileByUserId.address,
+        street: profileData.getProfileByUserId.street,
+        city: profileData.getProfileByUserId.city,
+        zip: profileData.getProfileByUserId.zip,
       }));
     }
   }, [profileData]);

@@ -21,6 +21,7 @@ const GET_ORDERS = gql`
 `;
 
 export default function AllOrders() {
+  
   const { data: session, status } = useSession();
   console.log("Session", session);
 
@@ -34,6 +35,9 @@ export default function AllOrders() {
     },
   });
   console.log(orders);
+
+
+
 
   return (
     <div className="container mx-auto max-w-5xl my-5 px-5">

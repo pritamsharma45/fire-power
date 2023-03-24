@@ -40,7 +40,7 @@ export default async function handler(
         quantity: Number(quantity),
       };
     });
-  } 
+  }
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: lineItems,
@@ -51,6 +51,9 @@ export default async function handler(
     metadata: {
       line_items: stringifiedLineItems,
       user_Id: userId,
+    },
+    shipping_address_collection: {
+      allowed_countries: ["IN", "GB"],
     },
   });
 

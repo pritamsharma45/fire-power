@@ -8,7 +8,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { line_items, userId } = req.body;
+  const { line_items, userId, userProfile } = req.body;
+  console.log("Userprofile in cehckout session", userProfile);
 
   let arr = [...line_items].map((item) => {
     return {
@@ -40,7 +41,7 @@ export default async function handler(
         quantity: Number(quantity),
       };
     });
-  } 
+  }
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: lineItems,
@@ -51,6 +52,9 @@ export default async function handler(
     metadata: {
       line_items: stringifiedLineItems,
       user_Id: userId,
+    },
+    shipping_address_collection: {
+      allowed_countries: ["IN", "GB"],
     },
   });
 

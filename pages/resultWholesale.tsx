@@ -9,12 +9,18 @@ import Orders from "../components/Orders";
 import "react-toastify/dist/ReactToastify.css";
 
 const CREATE_ORDER = gql`
-  mutation CreateOrder(
+  mutation Mutation(
     $items: [OrderItemInput!]!
     $userId: String!
+    $shippingAddress: ShippingAddressInput!
     $payment: PaymentTransactionInput!
   ) {
-    createOrder(items: $items, userId: $userId, payment: $payment) {
+    createOrder(
+      items: $items
+      userId: $userId
+      shippingAddress: $shippingAddress
+      payment: $payment
+    ) {
       id
     }
   }
@@ -159,8 +165,13 @@ export default function Result() {
       // Create order after receiving session object
       console.log("Now creating Order");
       // await createOrder({ variables: { /* Order variables */ } });
-      const { payment_intent, status, amount_total, client_reference_id } =
-        data.session;
+      const {
+        payment_intent,
+        status,
+        amount_total,
+        client_reference_id,
+        shipping,
+      } = data.session;
       const { PAYEMENT_RECEIVED } = data.session.payment_intent;
       let { line_items } = data.session.metadata;
       line_items = JSON.parse(line_items);
@@ -171,14 +182,15 @@ export default function Result() {
           productId: item.id,
         };
       });
-      console.log("LineItems", line_items);
-      console.log("Payment Intent", status);
+      // console.log("LineItems", line_items);
+      // console.log("Payment Intent", status);
 
       await createOrder({
         variables: {
           items: line_items,
           userId: client_reference_id,
           payment: { amount: amount_total, status: "success" },
+          shippingAddress: { ...shipping.address, name: shipping.name },
         },
       });
 
