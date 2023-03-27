@@ -68,7 +68,7 @@ const Product = ({
   };
 
   return (
-    <Suspense fallback={<h1>Loading persons...</h1>}>
+    <Suspense fallback={<h1>Loading ...</h1>}>
       <div key={id} className="">
         <div className="flex flex-col justify-around bg-white h-72 shadow-lg hover:shadow-xl rounded-lg transition-transform duration-500 transform hover:scale-105">
           <div>

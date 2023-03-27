@@ -163,17 +163,26 @@ const ProductDetail = ({
   const imageUrl = "https://drive.google.com/uc?export=view&id=" + image;
   return (
     <>
-    <h1 className="text-3xl font-bold mb-4">Xtreme Passion</h1>
+      <h1 className="text-3xl font-bold mb-4">Xtreme Passion</h1>
       <div className="max-w-md ml-2 mr-0 bg-white rounded-xl shadow-md overflow-ds md:max-w-5xl">
         <div className="md:flex">
           <div className="md:flex-shrink-0 mt-4 ml-2">
-            <Image
+            {/* <Image
               className="h-48 w-full object-cover md:w96 md:h-auto"
               src={imageUrl}
               alt="Product Image"
               width={300}
               height={300}
-            />
+            /> */}
+            <img
+              className="h-48 w-full object-cover md:w96 md:h-auto"
+              src={imageUrl}
+              alt="Product Image"
+              width={300}
+              height={300}
+            >
+              {" "}
+            </img>
           </div>
           <div className="px-8 pt-2 flex flex-col justify-between">
             {/* <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
