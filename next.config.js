@@ -5,6 +5,6 @@ module.exports = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ["drive.google.com"],
+    domains: ["nextjs-ecommerce-ten-delta.vercel.app","drive.google.com"],
   },
 };

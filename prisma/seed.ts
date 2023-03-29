@@ -45,13 +45,13 @@ const users = Array.from({ length: 100 }).map((_, i) => {
 });
 
 async function main() {
+  
   //  await prisma.profile.deleteMany();
   // await prisma.subscribers.deleteMany();
   // await prisma.like.deleteMany();
   // await prisma.comment.deleteMany();
   // await prisma.orderItem.deleteMany();
   // await prisma.order.deleteMany();
-
   // await prisma.user.deleteMany();
   // await prisma.paymentTransaction.deleteMany();
   // await prisma.product.deleteMany();
