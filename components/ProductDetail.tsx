@@ -160,7 +160,12 @@ const ProductDetail = ({
     setTimeout(() => setShowShareButtons(false), 5000);
   };
 
-  const imageUrl = "https://drive.google.com/uc?export=view&id=" + image;
+  // const imageUrl = "https://drive.google.com/uc?export=view&id=" + image;
+  const imageUrl =
+    "_next/image?url=" +
+    encodeURIComponent("https://drive.google.com/uc?export=view&id=" + image) +
+    "&w=640&q=75";
+
   return (
     <>
       <h1 className="text-3xl font-bold mb-4">Xtreme Passion</h1>
