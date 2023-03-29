@@ -6,5 +6,11 @@ module.exports = {
   },
   images: {
     domains: ["nextjs-ecommerce-ten-delta.vercel.app","drive.google.com"],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '"drive.google.com"',
+      },
+    ],
   },
 };
