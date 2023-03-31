@@ -38,7 +38,7 @@ const Header = () => {
           </Link>
           <div className="md:flex md:flex-col md:items-start md:ml-4">
             <div className="md:text-5xl md:font-bold text-red-500 mx-2 mb-1">
-              Fire Power
+              Love Joint
             </div>
             <div className="text-white text-xs mx-2">
               Everything Herbal - Natural testosterone boosters
@@ -235,7 +235,7 @@ const Header = () => {
     //     </Link>
     //     <div className="flex-row ">
     //       <div className=" w-72 mt-0 text-red-500  text-5xl font-bold mx-1 mb-1">
-    //        Fire Power
+    //        Love Joint
     //       </div>
     //       <div className="text-white text-xs mx-2">Everything Herbal - Natural testerone boosters</div>
     //     </div>
