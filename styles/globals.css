@@ -1,0 +1,42 @@
+html {
+    font-size: 15px;
+  }
+
+  
+  /* Small screens */
+@media screen and (max-width: 600px) {
+    html {
+      font-size: 13px;
+    }
+    h1 {
+      font-size: 1.0rem;
+    }
+    
+    p {
+      font-size: 1rem;
+    }
+    
+  }
+  
+  /* Medium screens */
+  @media screen and (min-width: 601px) and (max-width: 900px) {
+    html {
+      font-size: 16px;
+    }
+  }
+  
+  /* Large screens */
+  @media screen and (min-width: 901px) {
+    html {
+      font-size: 16px;
+    }
+  }
+  
+  /* h1 {
+    font-size: 1.8rem;
+  }
+  
+  p {
+    font-size: 1rem;
+  }
+   */

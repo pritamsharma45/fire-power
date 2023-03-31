@@ -137,102 +137,105 @@ export default function Wholesale() {
 
   return (
     <>
-      <div className="container mx-auto max-w-5xl my-5 px-5">
-        <div className="flex flex-row justify-between">
-          <h1 className="text-3xl font-bold mb-4">Xtreme Passion</h1>
-          <h1 className="bg-gray-100 rounded-sm font-bold px-4 pt-1  h-8 mt-1">
-            {" "}
-            Wholesale Purchase<span></span>
-          </h1>
+      {products?.length === 0 ? (
+        <div className="text-center text-2xl font-bold m-4">
+          No wholesale products to display! Check again later!
         </div>
-        <hr />
-        <>
-          <div className="flex flex-column gap-2 my-2">
-            <div className=" w-28 text-center font-bold">Image</div>
-            <div className=" w-72  text-left font-bold">Product</div>
-            <div className=" w-32 text-center  font-bold">Unit Price</div>
-            <div className=" w-20  font-bold">Quantity</div>
-            <div className=" w-32  font-bold">Discount</div>
-            <div className=" w-32 text-center font-bold">Total Price</div>
-            <div className="text-right font-bold"></div>
+      ) : (
+        <div className="container mx-auto max-w-5xl my-5 px-5">
+          <div className="flex flex-row justify-between">
+            <h1 className="font-bold mb-4">Xtreme Passion</h1>
+            <h1 className="bg-gray-100 rounded-sm font-bold px-4 pt-1  h-8 mt-1">
+              {" "}
+              Wholesale Purchase<span></span>
+            </h1>
           </div>
           <hr />
           {products.map(({ minQty, discount, product }) => (
-            <>
-              <div className="flex flex-column gap-2 my-2">
-                <div className="w-36 text-center font-bold">
-                  <Image
-                    src={
-                      "https://drive.google.com/uc?export=view&id=" +
-                      product.image
-                    }
-                    height="90"
-                    width="65"
-                  />
-                </div>
-                <div className="flex-col w-80">
-                  <p className="text-xs font-bold text-left w-72">
-                    {product.title}
-                  </p>
-                  <p className="text-xs font-light text-left w-80">
-                    {product.description}
-                  </p>
-                </div>
-                <p className=" w-32">$ {product.price.toFixed(2)}</p>
-
-                <div className="w-32 justify-center">
-                  <input
-                    type="number"
-                    className={`w-16 p-1 border ${
-                      quantities?.[product.id] < 10
-                        ? "border-red-500"
-                        : "border-slate-300"
-                    } rounded-md`}
-                    id={product.id}
-                    value={quantities?.[product.id] ?? minQty}
-                    min={minQty}
-                    onChange={(event) =>
-                      handleQuantityChange(product.id, event.target.value)
-                    }
-                  />
-                </div>
-                <p className=" text-green-700 font-semibold w-32">
-                  {discount * 100} %
-                </p>
-
-                <p className="text-right  w-32" id={product.id}>
-                  ${" "}
-                  {quantities?.[product.id]
-                    ? (
-                        quantities?.[product.id] *
-                        product.price *
-                        (1 - discount)
-                      ).toFixed(2)
-                    : (minQty * product.price * (1 - discount)).toFixed(2)}
-                </p>
-                <div className="w-32 ml-4">
-                  <button
-                    className="flex items-center justify-center px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-                    onClick={() => handleDeleteClick(product.id)}
-                  >
-                    <FaTrash className=" h-4 mr-1" />
-                    Delete
-                  </button>
-                </div>
+            <div className="bg-white shadow-lg  overflow-hidden flex flex-col md:flex-row">
+              <div className="md:w-1/3">
+                <img
+                  className="w-40 h-40 object-cover"
+                  src={
+                    "https://drive.google.com/uc?export=view&id=" +
+                    product.image
+                  }
+                  alt="Image"
+                />
               </div>
-              {/* <hr /> */}
-            </>
+              <div className="p-4 md:w-2/3">
+                <h2 className="font-bold text-xl mb-2"> {product.title}</h2>
+                <p className="text-gray-700 text-base mb-4">
+                  {" "}
+                  {product.description}
+                </p>
+                <div className="flex items-center mb-4">
+                  <div>
+                    <p className=" w-20">Price</p>
+                    <p className=" w-20"> $ {product.price.toFixed(2)}</p>
+                  </div>
+                  <div>
+                    <p className="w-20">Qty</p>
+                    <p className=" w-20">
+                      {" "}
+                      <input
+                        type="number"
+                        className={`w-16 p-0 m-1 border ${
+                          quantities?.[product.id] < 10
+                            ? "border-red-500"
+                            : "border-slate-300"
+                        } rounded-md`}
+                        id={product.id}
+                        value={quantities?.[product.id] ?? minQty}
+                        min={minQty}
+                        onChange={(event) =>
+                          handleQuantityChange(product.id, event.target.value)
+                        }
+                        placeholder="Qty"
+                      />
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className=" w-20 text-green-700">Discount</p>
+                    <p className=" w-20  text-green-700"> {discount * 100} %</p>
+                  </div>
+
+                  <div>
+                    <p className=" w-20">Total</p>
+                    <p className="font-bold w-20" id={product.id}>
+                      ${" "}
+                      {quantities?.[product.id]
+                        ? (
+                            quantities?.[product.id] *
+                            product.price *
+                            (1 - discount)
+                          ).toFixed(2)
+                        : (minQty * product.price * (1 - discount)).toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  className="flex items-center justify-center px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                  onClick={() => handleDeleteClick(product.id)}
+                >
+                  <FaTrash className=" h-4 mr-1" />
+                  Delete
+                </button>
+              </div>
+            </div>
           ))}
+
           <h2 className="text-right mr-2">
             <strong>
               Grand Total: ${" "}
               {products
                 ?.reduce((acc, item) => {
-                  return acc + quantities
-                    ? quantities?.[item.product.id] *
-                        item.product.price *
-                        (1 - item.discount)
+                  const qty = quantities?.[item.product.id];
+                  const itemTotal = qty
+                    ? qty * item.product.price * (1 - item.discount)
                     : item.minQty * item.product.price * (1 - item.discount);
+                  return acc + itemTotal;
                 }, 0)
                 .toFixed(2)}
             </strong>
@@ -247,13 +250,13 @@ export default function Wholesale() {
               disabled={hasError}
               className={`bg-${hasError ? "gray-200" : "blue-100"} text-${
                 hasError ? "gray-400" : "blue-600"
-              } rounded-full px-2 py-1 text-sm font-bold w-24`}
+              } rounded-full px-2 py-1 text-sm font-bold w-32`}
             >
               Buy Now
             </button>
           </div>
-        </>
-      </div>
+        </div>
+      )}
     </>
   );
 }

@@ -189,82 +189,80 @@ export default function Cart({ cartItems }) {
             <div className="flex flex-row justify-between">
               <h1 className="text-3xl font-bold mb-4">Xtreme Passion</h1>
             </div>
-            <div className="flex flex-column gap-2 my-2">
-              <div className=" w-24 text-center font-bold">Image</div>
-              <div className=" w-72  text-left font-bold">Product</div>
-              <div className=" w-32 text-center  font-bold">Unit Price</div>
-              <div className=" w-16  font-bold">Quantity</div>
-              <div className=" w-36 text-right font-bold"></div>
-              <div className=" w-32 text-center font-bold">Total Price</div>
-            </div>
             {cart.map((item) => (
-              <>
-                <div className="flex flex-column gap-2 my-2">
-                  <div className="w-36 text-center">
-                    <Image
-                      src={
-                        "https://drive.google.com/uc?export=view&id=" +
-                        item.image
-                      }
-                      height="90"
-                      width="65"
-                    />
-                  </div>
-                  <div className="flex-col w-80">
-                    <p className="text-xs font-bold text-left w-72">
-                      {item.title}
-                    </p>
-                    <p className="text-xs font-light text-left w-80">
-                      {item.description}
-                    </p>
-                  </div>
-                  <p className=" w-32">$ {item.price}</p>
+              <div className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row">
+                <div className="md:w-1/6">
+                  <Image
+                    src={
+                      "https://drive.google.com/uc?export=view&id=" + item.image
+                    }
+                    height="90"
+                    width="65"
+                  />
+                </div>
+                <div className="p-4 md:w-2/3">
+                  <p className="text-xs font-bold text-left w-72">
+                    {item.title}
+                  </p>
+                  <p className="text-xs font-light text-left w-80">
+                    {item.description}
+                  </p>
+                  <div className="flex items-center mb-4">
+                    <div className=" w-24">
+                      <p>Unit Price</p>
+                      <p>$ {item.price}</p>
+                    </div>
 
-                  <p>
-                    <div className="flex items-center justify-center">
+                    <div className=" w-36">
+                      <p className="text-center">Quantity</p>
+                      <p>
+                        <div className="flex items-center justify-center">
+                          <button
+                            className="bg-gray-200 text-gray-700 rounded-l px-2 py-0"
+                            onClick={() => {
+                              dispatch(decrementQuantity(item.id));
+                              handleUpdate(item.id, item.quantity - 1);
+                            }}
+                          >
+                            -
+                          </button>
+                          <div className="bg-gray-100 text-gray-800 px-1 py-0 w-8 text-center">
+                            {item.quantity}
+                          </div>
+                          <button
+                            className="bg-gray-200 text-gray-700 rounded-r px-2 py-0"
+                            onClick={() => {
+                              dispatch(incrementQuantity(item.id));
+                              handleUpdate(item.id, item.quantity + 1);
+                            }}
+                          >
+                            +
+                          </button>
+                        </div>
+                      </p>
+                    </div>
+                    <div className="w-32 ml-1 md:ml-8">
+                      <p>Total</p>
+                      <p>$ {(item.quantity * item.price).toFixed(2)}</p>
+                    </div>
+                    <div className="w-32">
                       <button
-                        className="bg-gray-200 text-gray-700 rounded-l px-4 py-2"
+                        className="flex items-center justify-center mt-2 px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
                         onClick={() => {
-                          dispatch(decrementQuantity(item.id));
-                          handleUpdate(item.id, item.quantity - 1);
+                          dispatch(removeFromCart(item.id));
+                          handleDelete(item.id);
                         }}
                       >
-                        -
-                      </button>
-                      <div className="bg-gray-100 text-gray-800 px-1 py-2 w-12 text-center">
-                        {item.quantity}
-                      </div>
-                      <button
-                        className="bg-gray-200 text-gray-700 rounded-r px-4 py-2"
-                        onClick={() => {
-                          dispatch(incrementQuantity(item.id));
-                          handleUpdate(item.id, item.quantity + 1);
-                        }}
-                      >
-                        +
+                        <FaTrash className=" h-4 mr-1" />
+                        Delete
                       </button>
                     </div>
-                  </p>
-                  <div className="w-32">
-                    <button
-                      className="flex items-center justify-center px-2 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-                      onClick={() => {
-                        dispatch(removeFromCart(item.id));
-                        handleDelete(item.id);
-                      }}
-                    >
-                      <FaTrash className=" h-4 mr-1" />
-                      Delete
-                    </button>
                   </div>
-                  <p className="w-32 text-right mr-32">
-                    $ {(item.quantity * item.price).toFixed(2)}
-                  </p>
                 </div>
-                {/* <hr /> */}
-              </>
+              </div>
             ))}
-            <h2 className="text-right mr-32">
+
+            <h2 className="text-right mr-32 mt-4">
               <strong>Grand Total: $ {getTotalPrice().toFixed(2)}</strong>
             </h2>
             <div className="flex justify-end mt-4 mr-28">

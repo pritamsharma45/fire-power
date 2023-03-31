@@ -24,18 +24,32 @@ const fakeImageIds = [
   "1vjtSVX8nUyIGeUWs4T32vCL375x3VtDt",
 ];
 
-const data = Array.from({ length: 100 }).map((_, i) => {
+// const data = Array.from({ length: 100 }).map((_, i) => {
+//   return {
+//     title: faker.commerce.productName(),
+//     description: faker.commerce.productDescription(),
+//     price: 10.234,
+//     image: fakeImageIds[i % 19],
+//     stockQuantity: faker.datatype.number({
+//       min: 0,
+//       max: 10,
+//     }),
+//   };
+// });
+
+const data = fakeImageIds.map((id) => {
   return {
     title: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
     price: 10.234,
-    image: fakeImageIds[i % 19],
+    image: id,
     stockQuantity: faker.datatype.number({
       min: 0,
       max: 10,
     }),
   };
 });
+
 const users = Array.from({ length: 100 }).map((_, i) => {
   return {
     name: faker.name.firstName(),
@@ -45,7 +59,7 @@ const users = Array.from({ length: 100 }).map((_, i) => {
 });
 
 async function main() {
-  
+
   //  await prisma.profile.deleteMany();
   // await prisma.subscribers.deleteMany();
   // await prisma.like.deleteMany();
@@ -54,7 +68,7 @@ async function main() {
   // await prisma.order.deleteMany();
   // await prisma.user.deleteMany();
   // await prisma.paymentTransaction.deleteMany();
-  // await prisma.product.deleteMany();
+  await prisma.product.deleteMany();
   await prisma.product.createMany({
     data,
   });

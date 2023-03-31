@@ -72,38 +72,41 @@ const Product = ({
       <div key={id} className="">
         <div className="flex flex-col justify-around bg-white h-72 shadow-lg hover:shadow-xl rounded-lg transition-transform duration-500 transform hover:scale-105">
           <div>
-            <div
-              className="bg-gray-400 h-32 rounded-t-lg p-4 bg-no-repeat bg-center bg-cover"
-              style={{
-                backgroundImage: `url(${imageUrl})`,
-                backgroundPosition: "center",
-              }}
-            >
-              <div className="text-right">
-                <button
-                  className={
-                    isLiked
-                      ? "text-red-600 bg-yellow-100 hover:text-red-400 hover:fill-green-500 p-1 rounded-full"
-                      : "text-gray-300 bg-yellow-100 hover:text-red-600 hover:fill-green-500 p-1 rounded-full"
-                  }
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleLikeProduct();
-                    setHasLiked(!hasLiked);
-                  }}
-                >
-                  <svg
-                    className={`w-5 h-5 ${loading ? "spin" : ""}`}
-                    viewBox="0 0 24 24"
+            <a href={`/product/${id}`}>
+              <div
+                className="bg-gray-400 h-32  rounded-t-lg p-4 bg-no-repeat bg-center bg-cover cursor-pointer"
+                style={{
+                  backgroundImage: `url(${imageUrl})`,
+                  backgroundPosition: "center",
+                }}
+              >
+                <div className="text-right">
+                  <button
+                    className={
+                      isLiked
+                        ? "text-red-600 bg-yellow-100 hover:text-red-400 hover:fill-green-500 p-1 rounded-full"
+                        : "text-gray-300 bg-yellow-100 hover:text-red-600 hover:fill-green-500 p-1 rounded-full"
+                    }
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLikeProduct();
+                      setHasLiked(!hasLiked);
+                    }}
                   >
-                    <path
-                      fill="currentColor"
-                      d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
-                    />
-                  </svg>
-                </button>
+                    <svg
+                      className={`w-5 h-5 ${loading ? "spin" : ""}`}
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
-            </div>
+            </a>
+
             <div className="flex justify-between items-start px-2 pt-2">
               <div className="p-2 flex-grow">
                 <h1 className="font-medium text-sm font-poppins">{title}</h1>

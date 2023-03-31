@@ -112,7 +112,7 @@ function Home() {
           {data?.products.edges.map(({ node }, i) => {
             const inCartBl = cartItems.find((item) => item.id === node.id);
             return (
-              <div className="person h-auto w-70">
+              <div className="person h-auto">
                 <Product
                   id={node.id}
                   title={node.title}
@@ -154,7 +154,7 @@ function Home() {
             Load more
           </button>
         ) : (
-          <p className="my-10 text-center font-medium">
+          <p className="my-10 text-center font-medium text-red-600 py-1 bg-red-100 rounded-lg">
             You've reached the end!
           </p>
         )}
