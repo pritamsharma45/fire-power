@@ -94,17 +94,14 @@ const Header = () => {
             className="fixed right-0 top-0 mt-2 mr-2 flex flex-col bg-slate-800 rounded-md shadow-lg w-56"
             onClick={handleToggleSidebar}
           >
-           {/*  Sidebar collapse icon */}
+            {/*  Sidebar collapse icon */}
             <div className="flex items-center justify-between px-4 py-2">
-              <div className="flex items-center"  onClick={handleToggleSidebar}>
+              <div className="flex items-center" onClick={handleToggleSidebar}>
                 <svg
                   className="w-6 h-6 fill-current text-gray-500 cursor-pointer"
                   viewBox="0 0 24 24"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M8 5l8 6-8 6z"
-                  />
+                  <path fillRule="evenodd" d="M8 5l8 6-8 6z" />
                 </svg>
               </div>
             </div>
@@ -138,50 +135,53 @@ const Header = () => {
               {session?.user && (
                 <>
                   <Cart cartItems={cartItems} />
-                
                 </>
               )}
             </div>
 
             {/* Profile */}
-            <div className={``}>
-              <span className="block px-4 py-2 text-white text-xs">
-                <small>Signed in as</small>
-                <br />
-                <small>
-                  <strong>{session?.user?.email || session?.user?.name}</strong>
-                </small>
-              </span>
-              <hr />
-              <a
-                href="/user"
-                className="block px-4 py-2 text-white hover:bg-gray-300"
-              >
-                Profile
-              </a>
-              <a
-                href="/orders"
-                className="block px-4 py-2 text-white hover:bg-gray-300"
-              >
-                Orders
-              </a>
-              {/* <a
+            {session && (
+              <div className={``}>
+                <span className="block px-4 py-2 text-white text-sm">
+                  <small>Signed in as</small>
+                  <br />
+                  <small>
+                    <strong>
+                      {session?.user?.email || session?.user?.name}
+                    </strong>
+                  </small>
+                </span>
+                <hr />
+                <a
+                  href="/user"
+                  className="block px-4 py-2 text-white hover:bg-gray-300"
+                >
+                  Profile
+                </a>
+                <a
+                  href="/orders"
+                  className="block px-4 py-2 text-white hover:bg-gray-300"
+                >
+                  Orders
+                </a>
+                {/* <a
                 href="#"
                 className="block px-4 py-2 text-white hover:bg-gray-300"
               >
                 Settings
               </a> */}
-              <a
-                href={`/api/auth/signout`}
-                className="block px-4 py-2 text-red-600 font-bold bg-gray-300 hover:bg-red-200"
-                onClick={(e) => {
-                  e.preventDefault();
-                  signOut();
-                }}
-              >
-                Logout
-              </a>
-            </div>
+                <a
+                  href={`/api/auth/signout`}
+                  className="block px-4 py-2 text-red-600 font-bold bg-gray-300 hover:bg-red-200"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    signOut();
+                  }}
+                >
+                  Logout
+                </a>
+              </div>
+            )}
           </div>
         </div>
 
