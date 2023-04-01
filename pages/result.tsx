@@ -11,14 +11,16 @@ const CREATE_ORDER = gql`
   mutation Mutation(
     $items: [OrderItemInput!]!
     $userId: String!
-    $shippingAddress: ShippingAddressInput!
+    $sessionId: String!
     $payment: PaymentTransactionInput!
+    $shippingAddress: ShippingAddressInput!
   ) {
     createOrder(
       items: $items
       userId: $userId
-      shippingAddress: $shippingAddress
+      sessionId: $sessionId
       payment: $payment
+      shippingAddress: $shippingAddress
     ) {
       id
     }
@@ -75,6 +77,8 @@ export default function Result() {
     error: promoError,
   } = useQuery(FETCH_PROMO_PRODUCTS);
   console.log("PromoData", promoData);
+
+
 
   const [
     createOrder,
@@ -155,13 +159,11 @@ export default function Result() {
           productId: item.id,
         };
       });
-      // console.log("LineItems", line_items);
-      // console.log("Payment Intent", status);
-      // console.log("Shipping address", shipping.address);
-
+   
       await createOrder({
         variables: {
           userId: client_reference_id,
+          sessionId: session_id,
           items: line_items,
           shippingAddress: { ...shipping.address, name: shipping.name },
           payment: { amount: amount_total, status: "success" },

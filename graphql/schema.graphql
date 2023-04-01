@@ -50,7 +50,7 @@ type Mutation {
   addOrUpdateLike(hasLiked: Boolean!, productId: Int!, userId: String!): Like!
   addProfile(address: String!, city: String!, dob_day: Int!, dob_month: Int!, email: String!, firstName: String!, lastName: String!, street: String!, zip: String!): Profile!
   addSubscriber(userId: String!): Subscriber!
-  createOrder(items: [OrderItemInput!]!, payment: PaymentTransactionInput!, shippingAddress: ShippingAddressInput!, userId: String!): Order
+  createOrder(items: [OrderItemInput!]!, payment: PaymentTransactionInput!, sessionId: String!, shippingAddress: ShippingAddressInput!, userId: String!): Order
   createProduct(description: String!, image: String!, price: Float!, stockQuantity: Int!, title: String!): Product!
   deleteCartByUserId(userId: String!): Cart!
   deleteItemFromCart(productId: Int!, userId: String!): Cart!
@@ -63,6 +63,7 @@ type Order {
   createdAt: String
   id: Int
   items: OrderItem
+  sessionId: String
   transactions: PaymentTransaction
   updatedAt: String
   user: User

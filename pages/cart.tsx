@@ -190,7 +190,7 @@ export default function Cart({ cartItems }) {
               <h1 className="text-3xl font-bold mb-4">Xtreme Passion</h1>
             </div>
             {cart.map((item) => (
-              <div className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row">
+              <div className="bg-white my-1 shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row">
                 <div className="md:w-1/6">
                   <Image
                     src={

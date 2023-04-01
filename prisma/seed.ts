@@ -2,7 +2,9 @@ import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
+
 const fakeImageIds = [
+  "1Xz-GuY6lzATy-PKg4-oJ7NDbeR2rsF2J",
   "17MkA8vOMiDJ1NZAzrO-zU0de9PNXTK6L",
   "1NMLd1mZfS7cIhc50U4P-3tITNgS-saXk",
   "14VTr0txyJXv3ZUdJ3d6BdOEvj8sKDY27",
@@ -23,19 +25,6 @@ const fakeImageIds = [
   "1q6M6GBR6yg2NurDspsIHyHsCOmDjS3k4",
   "1vjtSVX8nUyIGeUWs4T32vCL375x3VtDt",
 ];
-
-// const data = Array.from({ length: 100 }).map((_, i) => {
-//   return {
-//     title: faker.commerce.productName(),
-//     description: faker.commerce.productDescription(),
-//     price: 10.234,
-//     image: fakeImageIds[i % 19],
-//     stockQuantity: faker.datatype.number({
-//       min: 0,
-//       max: 10,
-//     }),
-//   };
-// });
 
 const data = fakeImageIds.map((id) => {
   return {
@@ -59,53 +48,10 @@ const users = Array.from({ length: 100 }).map((_, i) => {
 });
 
 async function main() {
-
-  //  await prisma.profile.deleteMany();
-  // await prisma.subscribers.deleteMany();
-  // await prisma.like.deleteMany();
-  // await prisma.comment.deleteMany();
-  // await prisma.orderItem.deleteMany();
-  // await prisma.order.deleteMany();
-  // await prisma.user.deleteMany();
-  // await prisma.paymentTransaction.deleteMany();
   await prisma.product.deleteMany();
   await prisma.product.createMany({
     data,
   });
-  // await prisma.cart.deleteMany();
-  // await prisma.cart.create({
-  //   data: {
-  //     user: { connect: { id: "clf19jhui0006v8vx1eq2pmle" } },
-  //     items: [
-  //       {
-  //         productId: 2,
-  //         quantity: 2,
-  //         price: 234
-  //       }
-  //     ]
-  //   },
-  // });
-  // Get products with aggregated likes. Count likes and group by product id
-  // let productsWithLikes = await prisma.product.findMany({
-  //   select: {
-  //     title: true,
-  //     description: true,
-  //     likes: {
-  //       select: {
-  //         hasLiked: true,
-  //       },
-  //     },
-  //     _count: { select: { likes: { where: { hasLiked: true } } } },
-  //   },
-
-  // });
-
-  // productsWithLikes =productsWithLikes.sort((a, b) => {
-  //   return b._count.likes - a._count.likes;
-  // }).slice(0, 10);
-  // console.log(productsWithLikes.length);
-
-  // console.log(productsWithLikes);
 }
 
 main()

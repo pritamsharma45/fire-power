@@ -15,57 +15,12 @@ export const Order = objectType({
     t.int("id");
     t.string("createdAt");
     t.string("updatedAt");
+    t.string("sessionId");
     t.field("items", { type: "OrderItem" });
     t.field("user", { type: "User" });
     t.field("transactions", { type: "PaymentTransaction" });
   },
 });
-
-// Fetch Orders for a user
-// export const createOrder = extendType({
-//   type: "Mutation",
-//   definition(t) {
-//     t.field("createOrder", {
-//       type: "Order",
-//       args: {
-//         total: nonNull(floatArg()),
-//         items: nonNull(
-//           list(
-//             nonNull(
-//               inputObjectType({
-//                 name: "OrderItemInput",
-//                 definition(t) {
-//                   t.nonNull.int("quantity");
-//                   t.nonNull.float("price");
-//                   t.nonNull.int("productId");
-//                 },
-//               })
-//             )
-//           )
-//         ),
-//         userId: nonNull(stringArg()),
-//       },
-//       resolve: async (_, { total, items, userId }, ctx) => {
-//         const orderItems = items.map((item) => ({
-//           quantity: item.quantity,
-//           price: item.price,
-//           product: { connect: { id: item.productId } },
-//         }));
-
-//         const order = await ctx.prisma.order.create({
-//           data: {
-//             total,
-//             user: { connect: { id: userId } },
-//             items: { create: orderItems },
-
-//           },
-//         });
-
-//         return order;
-//       },
-//     });
-//   },
-// });
 
 //  Fetch all orderItems for a user
 export const orderItems = extendType({
@@ -100,6 +55,7 @@ export const orderItems = extendType({
 });
 
 // Create a new order with two order items and a payment transaction
+
 export const createOrder = extendType({
   type: "Mutation",
   definition(t) {
@@ -121,6 +77,7 @@ export const createOrder = extendType({
           )
         ),
         userId: nonNull(stringArg()),
+        sessionId: nonNull(stringArg()),
         payment: nonNull(
           inputObjectType({
             name: "PaymentTransactionInput",
@@ -147,9 +104,19 @@ export const createOrder = extendType({
       },
       resolve: async (
         _,
-        { total, items, userId, payment, shippingAddress },
+        { total, items, userId, sessionId, payment, shippingAddress },
         ctx
       ) => {
+        //  check if order exist with the same session id
+
+        const orderExist = await ctx.prisma.order.findFirst({
+          where: {
+            sessionId: sessionId,
+          },
+        });
+        if (orderExist) {
+          return orderExist;
+        }
         const orderItems = items.map((item) => ({
           quantity: item.quantity,
           price: item.price,
@@ -165,10 +132,11 @@ export const createOrder = extendType({
             order: { create: { user: { connect: { id: userId } } } },
           },
         });
+
         const shippingAddressCreation = await ctx.prisma.shippingAddress.create(
           {
             data: {
-              name:shippingAddress.name,
+              name: shippingAddress.name,
               line1: shippingAddress.line1,
               line2: shippingAddress.line2,
               city: shippingAddress.city,
@@ -185,6 +153,7 @@ export const createOrder = extendType({
           data: {
             items: { create: orderItems },
             userId: userId,
+            sessionId: sessionId,
           },
         });
 

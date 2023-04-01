@@ -9,7 +9,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { line_items, userId, userProfile } = req.body;
-  console.log("Userprofile in cehckout session", userProfile);
+  console.log("User profile in checkout session", userProfile);
 
   let arr = [...line_items].map((item) => {
     return {
