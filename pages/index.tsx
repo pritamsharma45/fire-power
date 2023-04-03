@@ -103,7 +103,7 @@ function Home() {
           <h1 className="text-3xl font-bold mb-4">Xtreme Passion</h1>
           <Link href="/wholesale">
             <button className="bg-blue-600 text-white rounded-lg px-4 h-8">
-              Wholesale Purchase
+              Wholesale Agents
             </button>
           </Link>
         </div>

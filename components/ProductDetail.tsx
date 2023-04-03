@@ -131,8 +131,12 @@ const ProductDetail = ({
         price: price,
         image: image,
         description: description,
+        quantity: 1,
       },
     ];
+    payload.userProfile = null;
+
+
     // Call your backend to create the Checkout Session
     const { sessionId } = await fetch("/api/checkout/session", {
       method: "POST",
@@ -167,7 +171,7 @@ const ProductDetail = ({
       <h1 className="text-3xl font-bold mb-4">Xtreme Passion</h1>
       <div className="max-w-md ml-2 mr-0 bg-white rounded-xl shadow-md overflow-ds md:max-w-5xl">
         <div className="md:flex">
-          <div className="md:flex-shrink-0 mt-4 ml-2">
+          <div className="md:flex-shrink-0 mt-4 ml-2 cursor-pointer">
             <Image
               className="h-48 w-full object-cover md:w96 md:h-auto"
               src={imageUrl}

@@ -8,7 +8,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { line_items, userId } = req.body;
+  const { line_items, userId, userProfile } = req.body;
 
   let arr = [...line_items].map((item) => {
     return {
@@ -41,21 +41,52 @@ export default async function handler(
       };
     });
   }
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ["card"],
-    line_items: lineItems,
-    mode: "payment",
-    success_url: `${req.headers.origin}/resultWholesale?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${req.headers.origin}/checkout`,
-    client_reference_id: userId,
-    metadata: {
-      line_items: stringifiedLineItems,
-      user_Id: userId,
-    },
-    shipping_address_collection: {
-      allowed_countries: ["IN", "GB"],
-    },
-  });
+  let session = null;
+  if (!userProfile) {
+    session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: lineItems,
+      mode: "payment",
+      success_url: `${req.headers.origin}/resultWholesale?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.headers.origin}/checkout`,
+      client_reference_id: userId,
+      metadata: {
+        line_items: stringifiedLineItems,
+        user_Id: userId,
+      },
+      shipping_address_collection: {
+        allowed_countries: ["IN", "GB"],
+      },
+      custom_text: {
+        shipping_address: {
+          message:
+            "We are collecting shipping address to deliver your order as you have not provided your shipping address in your profile.",
+        },
+      },
+    });
+  } else {
+    session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: lineItems,
+      mode: "payment",
+      success_url: `${req.headers.origin}/resultWholesale?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.headers.origin}/checkout`,
+      client_reference_id: userId,
+      metadata: {
+        line_items: stringifiedLineItems,
+        user_Id: userId,
+      },
+      shipping_address_collection: {
+        allowed_countries: ["IN", "GB"],
+      },
+      custom_text: {
+        shipping_address: {
+          message:
+            "Please note that we will use shipping address from your profile.",
+        },
+      },
+    });
+  }
 
   res.status(200).json({ sessionId: session.id });
 }

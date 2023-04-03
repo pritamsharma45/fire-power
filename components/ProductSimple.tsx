@@ -16,7 +16,7 @@ const ProductSimple = ({
   return (
     <div key={id} className="">
       <Link href={`/product/${id}`} target="_blank">
-        <div className="bg-white shadow-lg hover:shadow-xl rounded-sm w-52 h-60 m-2 p-2">
+        <div className="bg-white shadow-lg hover:shadow-xl rounded-sm w-52 h-60 m-2 p-2 cursor-pointer">
           <div
             className="bg-gray-400 h-24 w-32 p-2 bg-no-repeat bg-center bg-cover"
             style={{

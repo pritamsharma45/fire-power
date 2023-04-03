@@ -5,6 +5,7 @@ import Image from "next/image";
 import { gql, useQuery } from "@apollo/client";
 import { loadStripe } from "@stripe/stripe-js";
 import { useSession } from "next-auth/react";
+import { min } from "cypress/types/lodash";
 
 const FETCH_WHOLESALE_PRODUCTS = gql`
   query Query {
@@ -25,6 +26,25 @@ const FETCH_WHOLESALE_PRODUCTS = gql`
   }
 `;
 
+const GET_PROFILE = gql`
+  query Query($userId: String!) {
+    getProfileByUserId(userId: $userId) {
+      id
+      firstName
+      lastName
+      email
+      dob_day
+      dob_month
+      address
+      street
+      city
+      zip
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
@@ -33,6 +53,7 @@ export default function Wholesale() {
   const [products, setProducts] = useState([]);
   const [hasError, setHasError] = useState(false);
   const [quantities, setQuantities] = useState(undefined);
+
   const { data: session, status } = useSession();
   const {
     data: wholesaleData,
@@ -40,7 +61,13 @@ export default function Wholesale() {
     error: wholesaleError,
   } = useQuery(FETCH_WHOLESALE_PRODUCTS);
 
-  console.log(wholesaleData);
+  const {
+    data: profileData,
+    loading: profileLoading,
+    error: profileError,
+  } = useQuery(GET_PROFILE, {
+    variables: { userId: session?.user?.id },
+  });
 
   useEffect(() => {
     if (wholesaleData) {
@@ -61,8 +88,15 @@ export default function Wholesale() {
 
   const checkForErrors = () => {
     if (!quantities) return false;
-    for (const quantity of Object.values(quantities)) {
-      if (quantity < 10) {
+    const initialQuantities = products.reduce(
+      (obj, item) => ({
+        ...obj,
+        [item.product.id]: item.minQty,
+      }),
+      {}
+    );
+    for (const [id, quantity] of Object.entries(quantities)) {
+      if (quantity < initialQuantities[id]) {
         return true;
       }
     }
@@ -111,6 +145,7 @@ export default function Wholesale() {
     const payloadCart = {
       userId: session?.user?.id,
       line_items: wholeSaleItems.items,
+      userProfile: profileData?.getProfileByUserId,
     };
 
     // Get Stripe.js instance
@@ -135,6 +170,8 @@ export default function Wholesale() {
     }
   };
 
+  if (wholesaleLoading)
+    return <div className="font-bold text-center text-2xl m-4">Loading...</div>;
   return (
     <>
       {products?.length === 0 ? (
@@ -147,7 +184,7 @@ export default function Wholesale() {
             <h1 className="font-bold mb-4">Xtreme Passion</h1>
             <h1 className="bg-gray-100 rounded-sm font-bold px-4 pt-1  h-8 mt-1">
               {" "}
-              Wholesale Purchase<span></span>
+              Wholesale Agents<span></span>
             </h1>
           </div>
           <hr />
@@ -181,7 +218,7 @@ export default function Wholesale() {
                       <input
                         type="number"
                         className={`w-16 p-0 m-1 border ${
-                          quantities?.[product.id] < 10
+                          quantities?.[product.id] < minQty
                             ? "border-red-500"
                             : "border-slate-300"
                         } rounded-md`}
