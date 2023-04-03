@@ -10,6 +10,8 @@ import { TCartItem } from "../features/cart/AddToCart";
 import { useSession } from "next-auth/react";
 import { useAppDispatch } from "../hooks/hooks";
 import { addTocart } from "../features/cart/cartSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UPDATE_LIKE = gql`
   mutation AddOrUpdateLike(
@@ -105,6 +107,16 @@ const ProductDetail = ({
 
   const handleAddToCart = async () => {
     console.log("Cart item to be added to db", cartItem);
+    if (!session?.user) {
+      toast.success("Please login to add items to your cart!", {
+        autoClose: 1000,
+      });
+      setTimeout(() => {
+        router.push("/api/auth/signin");
+      }, 2000);
+      return;
+    }
+
     let paylodCart = { ...cartItem, quantity: 1, productId: cartItem.id };
     try {
       const res = await addToCart({
@@ -135,7 +147,6 @@ const ProductDetail = ({
       },
     ];
     payload.userProfile = null;
-
 
     // Call your backend to create the Checkout Session
     const { sessionId } = await fetch("/api/checkout/session", {
@@ -179,15 +190,7 @@ const ProductDetail = ({
               width={300}
               height={300}
             />
-            {/* <img
-              className="h-48 w-full object-cover md:w96 md:h-auto"
-              src={imageUrl}
-              alt="Product Image"
-              width={300}
-              height={300}
-            >
-              {" "}
-            </img> */}
+           
           </div>
           <div className="px-8 pt-2 flex flex-col justify-between">
             {/* <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
@@ -250,6 +253,15 @@ const ProductDetail = ({
                   className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-3 w-40 h-8 rounded-full"
                   onClick={(e) => {
                     e.preventDefault();
+                    if (!session?.user) {
+                      toast.success("Please login to like products!", {
+                        autoClose: 1000,
+                      });
+                      setTimeout(() => {
+                        router.push("/api/auth/signin");
+                      }, 2000);
+                      return;
+                    }
                     updateLike({
                       variables: {
                         productId: id,
@@ -320,9 +332,15 @@ const ProductDetail = ({
           </div>
         }
       </div>
-      <div>
-        <Comments prodId={id} />
-      </div>
+      {session?.user ? (
+        <div>
+          <Comments prodId={id} />
+        </div>
+      ) : (
+        <div className="text-2xl font-bold m-4 text-gray-400">
+          Login to comment
+        </div>
+      )}
     </>
   );
 };

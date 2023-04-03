@@ -3,7 +3,8 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useAppDispatch } from "../../hooks/hooks";
 import { addTocart } from "./cartSlice";
-
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 export interface TCartItem {
   id: string;
@@ -29,10 +30,20 @@ function AddToCart({
 }) {
   const dispatch = useAppDispatch();
   const { data: session, status } = useSession();
+  const router = useRouter();
   const [addToCart, { data, loading, error }] = useMutation(ADD_TO_CART);
 
   const handleAddToCart = async () => {
     console.log("Cart item to be added to db", cartItem);
+    if (!session?.user) {
+      toast.success("Please login to add items to your cart!", {
+        autoClose: 1000,
+      });
+      setTimeout(() => {
+        router.push("/api/auth/signin");
+      }, 2000);
+      return;
+    }
     let paylodCart = { ...cartItem, quantity: 1, productId: cartItem.id };
     try {
       const res = await addToCart({

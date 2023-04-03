@@ -1,10 +1,12 @@
 import React from "react";
 import { Suspense } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { gql, useMutation } from "@apollo/client";
 import AddToCart from "../features/cart/AddToCart";
 import { TCartItem } from "../features/cart/AddToCart";
 import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
 import "react-toastify/dist/ReactToastify.css";
 
 const UPDATE_LIKE = gql`
@@ -43,12 +45,23 @@ const Product = ({
     price: price,
     image: image,
   };
-
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [updateLike, { data, loading, error }] = useMutation(UPDATE_LIKE);
 
   const [isLiked, setHasLiked] = React.useState(hasLiked);
 
   const handleLikeProduct = async () => {
+    if (!session?.user) {
+      toast.success("Please login to add items to your cart!", {
+        autoClose: 1000,
+      });
+      setTimeout(() => {
+        router.push("/api/auth/signin");
+      }, 2000);
+      return;
+    }
+
     try {
       await updateLike({
         variables: {
