@@ -5,6 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import TwitterProvider from "next-auth/providers/twitter";
 import AppleProvider from "next-auth/providers/apple";
+import LinkedInProvider from "next-auth/providers/linkedin";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "../../../lib/prisma";
 
@@ -20,15 +21,15 @@ export default NextAuth({
     }),
     FacebookProvider({
       clientId: process.env.FACEBOOK_ID,
-      clientSecret: process.env.FACEBOOK_SECRET
+      clientSecret: process.env.FACEBOOK_SECRET,
     }),
     TwitterProvider({
       clientId: process.env.TWITTER_ID,
-      clientSecret: process.env.TWITTER_SECRET
+      clientSecret: process.env.TWITTER_SECRET,
     }),
     AppleProvider({
       clientId: process.env.APPLE_ID,
-      clientSecret: process.env.APPLE_SECRET
+      clientSecret: process.env.APPLE_SECRET,
     }),
     GithubProvider({
       clientId: process.env.GITHUB_ID,
@@ -37,7 +38,10 @@ export default NextAuth({
       // @ts-ignore
       scope: "read:user",
     }),
-
+    LinkedInProvider({
+      clientId: process.env.LINKEDIN_ID,
+      clientSecret: process.env.LINKEDIN_SECRET,
+    }),
   ],
   callbacks: {
     async session({ session, user, token }) {
