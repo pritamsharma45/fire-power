@@ -48,7 +48,7 @@ const users = Array.from({ length: 100 }).map((_, i) => {
 });
 
 async function main() {
-  await prisma.product.deleteMany();
+  // await prisma.product.deleteMany();
   await prisma.product.createMany({
     data,
   });

@@ -112,7 +112,7 @@ function Home() {
           {data?.products.edges.map(({ node }, i) => {
             const inCartBl = cartItems.find((item) => item.id === node.id);
             return (
-              <div className="person h-auto">
+              <div className="person h-auto" key={node.id}>
                 <Product
                   id={node.id}
                   title={node.title}

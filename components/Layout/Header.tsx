@@ -187,7 +187,7 @@ const Header = () => {
 
         <div className="md:flex md:items-center md:ml-4 hidden">
           <div className="w-42 mt-2 mr-2">
-            <p>
+      
               {!session && (
                 <>
                   <div className="">
@@ -209,7 +209,7 @@ const Header = () => {
                   <Cart cartItems={cartItems} />
                 </>
               )}
-            </p>
+   
           </div>
           {session?.user && (
             <div>
