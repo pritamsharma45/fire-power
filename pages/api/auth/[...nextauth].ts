@@ -16,6 +16,7 @@ import nodemailer from "nodemailer";
 interface MyUser extends User {
   userId: string;
 }
+
 const verificationUrl = `${process.env.NEXTAUTH_URL}/api/auth/callback/email`;
 
 export default NextAuth({
