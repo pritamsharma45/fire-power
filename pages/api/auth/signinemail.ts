@@ -15,10 +15,43 @@ export async function CustomsendVerificationRequest(params) {
   });
   const failed = result.rejected.concat(result.pending).filter(Boolean);
   if (failed.length) {
+    console.log('failed: ', failed)
     throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`);
   }
   return result;
 }
+
+// import { createTransport } from "nodemailer";
+
+// export async function CustomsendVerificationRequest(params) {
+//   const { identifier, url, provider, theme } = params;
+//   const { host } = new URL(url);
+
+//   const transport = await new Promise((resolve, reject) => {
+//     createTransport(provider.server, (error, transport) => {
+//       if (error) {
+//         reject(error);
+//       } else {
+//         resolve(transport);
+//       }
+//     });
+//   });
+
+//   console.log('to: ', identifier);
+//   const result = await transport.sendMail({
+//     to: identifier,
+//     from: provider.from,
+//     subject: `Sign in to ${host}`,
+//     text: text({ url, host }),
+//     html: html({ url, host, theme }),
+//   });
+//   const failed = result.rejected.concat(result.pending).filter(Boolean);
+//   if (failed.length) {
+//     throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`);
+//   }
+//   return result;
+// }
+
 
 function html(params: {
   url: string;
