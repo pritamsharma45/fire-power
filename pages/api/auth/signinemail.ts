@@ -17,6 +17,7 @@ export async function CustomsendVerificationRequest(params) {
   if (failed.length) {
     throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`);
   }
+  return result;
 }
 
 function html(params: {
