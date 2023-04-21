@@ -9,7 +9,6 @@ import AppleProvider from "next-auth/providers/apple";
 import LinkedInProvider from "next-auth/providers/linkedin";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "../../../lib/prisma";
-
 import { CustomsendVerificationRequest } from "./signinemail";
 import { createTransport } from "nodemailer";
 import nodemailer from "nodemailer";
@@ -30,9 +29,11 @@ export default NextAuth({
           user: process.env.EMAIL_SERVER_USER,
           pass: process.env.EMAIL_SERVER_PASSWORD,
         },
+        from: process.env.EMAIL_FROM,
       },
       from: process.env.EMAIL_FROM,
       sendVerificationRequest({ identifier, url, provider }) {
+        console.log("sendVerificationRequest", identifier, url, provider);
         CustomsendVerificationRequest({ identifier, url, provider });
       },
     }),

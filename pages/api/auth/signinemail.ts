@@ -3,8 +3,9 @@ import { createTransport } from "nodemailer";
 export async function CustomsendVerificationRequest(params) {
   const { identifier, url, provider, theme } = params;
   const { host } = new URL(url);
-  // NOTE: You are not required to use `nodemailer`, use whatever you want.
+  
   const transport = createTransport(provider.server);
+  console.log('to: ', identifier);
   const result = await transport.sendMail({
     to: identifier,
     from: provider.from,
