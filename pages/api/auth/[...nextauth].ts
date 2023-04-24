@@ -33,17 +33,16 @@ export default NextAuth({
         from: process.env.EMAIL_FROM,
       },
       from: process.env.EMAIL_FROM,
-      sendVerificationRequest({ identifier, url, provider }) {
-        console.log("sendVerificationRequest", identifier, url, provider);
-        CustomsendVerificationRequest({
-          identifier,
-          url,
-          provider,
-        }).then((res) => {
-          console.log("sendVerificationRequest", res);
-        });
-      },
-      
+      // sendVerificationRequest({ identifier, url, provider }) {
+      //   console.log("sendVerificationRequest", identifier, url, provider);
+      //   CustomsendVerificationRequest({
+      //     identifier,
+      //     url,
+      //     provider,
+      //   }).then((res) => {
+      //     console.log("sendVerificationRequest", res);
+      //   });
+      // },
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
@@ -89,4 +88,3 @@ export default NextAuth({
 
   debug: true,
 });
-
