@@ -8,7 +8,7 @@ import type { Session } from "next-auth";
 import { Provider } from "react-redux";
 import store from "../store/store";
 import { AppProps } from "next/app";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function MyApp({

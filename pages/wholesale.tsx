@@ -182,6 +182,12 @@ export default function Wholesale() {
         <div className="container mx-auto max-w-5xl my-5 px-5">
           <div className="flex flex-row justify-between">
             <h1 className="font-bold mb-4">Xtreme Passion</h1>
+            {hasError && (
+              <p className="text-left text-pink-500 font-semibold">
+                * Please enter a quantity greater than or equal to the minimum
+                specified quantity.
+              </p>
+            )}
             <h1 className="bg-gray-100 rounded-sm font-bold px-4 pt-1  h-8 mt-1">
               {" "}
               Wholesale Agents<span></span>
@@ -278,10 +284,7 @@ export default function Wholesale() {
             </strong>
           </h2>
           <div className="flex justify-between mt-4 mr-2">
-            <p className="text-left text-pink-500 font-semibold">
-              * Please enter a quantity greater than or equal to the minimum
-              specified quantity.
-            </p>
+            <p className="text-left text-pink-500 font-semibold"></p>
             <button
               onClick={handleCheckout}
               disabled={hasError}
