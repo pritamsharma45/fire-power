@@ -111,7 +111,7 @@ const Header = () => {
                   router.pathname === "/" ? "text-green-50" : ""
                 }`}
               >
-                Home
+                Lifestyle
               </a>
             </Link>
             <Link href="/about">
