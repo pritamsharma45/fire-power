@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import nodemailer from "nodemailer";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 const ContactForm = () => {
   const {
@@ -10,7 +10,7 @@ const ContactForm = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data, e) => {
     console.log(data);
     try {
       await fetch("/api/sendMail", {
@@ -21,6 +21,7 @@ const ContactForm = () => {
 
       toast.success(<ThankYouMessage />);
       console.log("Email sent successfully");
+      e.target.reset(); // Reset the form
     } catch (error) {
       // If there was an error sending the email, show an error message to the user
       console.error(error);
