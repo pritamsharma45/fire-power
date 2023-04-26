@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import nodemailer from "nodemailer";
-import { Toast, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 
 const ContactForm = () => {
   const {
@@ -19,7 +19,6 @@ const ContactForm = () => {
         body: JSON.stringify(data),
       });
 
-      // If the email was sent successfully, show a success message to the user
       toast.success(<ThankYouMessage />);
       console.log("Email sent successfully");
     } catch (error) {

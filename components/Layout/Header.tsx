@@ -54,13 +54,13 @@ const Header = () => {
                   router.pathname === "/" ? "text-green-50" : ""
                 }`}
               >
-                Home
+                Lifestyle
               </a>
             </Link>
-            <Link href="/about">
+            <Link href="/contact">
               <a
                 className={`block lg:inline-block lg:mt-0 text-teal-200 font-bold hover:text-white mr-10 ${
-                  router.pathname === "/about" ? "text-green-50" : ""
+                  router.pathname === "/contact" ? "text-green-50" : ""
                 }`}
               >
                 Contact Us
