@@ -223,7 +223,7 @@ export default function Wholesale() {
                       {" "}
                       <input
                         type="number"
-                        className={`w-16 p-0 m-1 border ${
+                        className={`w-16 pl-1 py-0 m-1 border ${
                           quantities?.[product.id] < minQty
                             ? "border-red-500"
                             : "border-slate-300"
