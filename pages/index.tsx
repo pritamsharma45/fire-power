@@ -53,7 +53,7 @@ function Home() {
   }
 
   const { data, loading, error, fetchMore } = useQuery(AllProducts, {
-    variables: { first: 20 },
+    variables: { first: 21 },
   });
   const [bottomLoading, setBottomLoading] = useState(false);
 
@@ -84,13 +84,14 @@ function Home() {
 
   if (loading)
     return (
-      <p className="text-red-500 container mx-auto max-w-5xl my-5 px-5">
+      <p className="text-red-500 container mx-auto max-w-5xl my-5 px-5 min-h-screen">
         Loading...
       </p>
     );
   if (error) return <p>Oh no... {error.message}</p>;
 
   const { endCursor, hasNextPage } = data?.products.pageInfo;
+  console.log("Data", data);
 
   return (
     <div>
@@ -132,7 +133,7 @@ function Home() {
         {bottomLoading && (
           <p className="flex-center w-6 h-6 border-4 rounded-full animate-spin border-blue-500 border-t-blue-500 border-l-blue-500 border-b-blue-700 border-r-blue-700 border-t-gradient-to-r from-blue-400 to-blue-500 mx-auto my-10"></p>
         )}
-        {hasNextPage ? (
+        {data?.products.pageInfo.hasNextPage ? (
           <button
             className="px-4 py-2 bg-blue-500 text-white rounded my-10"
             onClick={() => {

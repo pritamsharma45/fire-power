@@ -67,7 +67,6 @@ export const ProductsQuery = extendType({
       args: { first: intArg(), after: intArg() },
       async resolve(_, args, ctx) {
         let queryResults = null;
-
         if (args.after) {
           queryResults = await ctx.prisma.product.findMany({
             take: args.first,
@@ -76,36 +75,49 @@ export const ProductsQuery = extendType({
               id: args.after,
             },
             include: { likes: true },
-            orderBy: {
-              rank: "asc",
-            },
+            orderBy: [
+              {
+                rank: "asc",
+              },
+              {
+                id: "asc", 
+              },
+            ],
           });
         } else {
           queryResults = await ctx.prisma.product.findMany({
             take: args.first,
             include: { likes: true },
-            orderBy: {
-              rank: "asc",
-            },
+            orderBy: [
+              {
+                rank: "asc",
+              },
+              {
+                id: "asc", 
+              },
+            ],
           });
         }
-
+    
         if (queryResults.length > 0) {
           const lastProductResults = queryResults[queryResults.length - 1];
           const lastProductID = lastProductResults.id;
 
           const secondQueryResults = await ctx.prisma.product.findMany({
             take: args.first,
+            skip: 1,
             cursor: {
               id: lastProductID,
             },
             include: { likes: true },
           });
+         
 
           const result = {
             pageInfo: {
               endCursor: lastProductID,
-              hasNextPage: secondQueryResults.length >= args.first,
+              hasNextPage: secondQueryResults.length > 0,
+              // hasNextPage: secondQueryResults.length >= args.first,
             },
 
             edges: queryResults.map((product) => ({
