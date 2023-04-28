@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { gql, useMutation, useQuery } from "@apollo/client";
@@ -242,6 +243,13 @@ export default function Result() {
                   If you have any questions or concerns, please do not hesitate
                   to contact us.
                 </p>
+                <Link href="/orders">
+                  <div
+                    className={`mx-10 mt-2 block p-2 bg-yellow-400 rounded-full lg:inline-block lg:mt-0 text-teal-50 font-bold hover:text-teal-200 `}
+                  >
+                    View your orders
+                  </div>
+                </Link>
               </div>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { gql, useMutation, useQuery } from "@apollo/client";
@@ -77,8 +78,6 @@ export default function Result() {
     error: promoError,
   } = useQuery(FETCH_PROMO_PRODUCTS);
   console.log("PromoData", promoData);
-
-
 
   const [
     createOrder,
@@ -159,7 +158,7 @@ export default function Result() {
           productId: item.id,
         };
       });
-   
+
       await createOrder({
         variables: {
           userId: client_reference_id,
@@ -205,10 +204,17 @@ export default function Result() {
               Thank you for your purchase. We appreciate your business and hope
               you enjoy your new items.
             </p>
-            <p className="text-white">
+            <p className="text-white mb-2">
               If you have any questions or concerns, please do not hesitate to
               contact us.
             </p>
+            <Link href="/orders">
+              <div
+                className={` mt-4 block px-4 py-1 text-sm bg-yellow-400 hover:bg-yellow-500 rounded-full lg:inline-block lg:mt-0 cursor-pointer`}
+              >
+                View your orders
+              </div>
+            </Link>
           </div>
         </div>
       </div>
