@@ -190,7 +190,6 @@ const ProductDetail = ({
               width={300}
               height={300}
             />
-           
           </div>
           <div className="px-8 pt-2 flex flex-col justify-between">
             {/* <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
@@ -208,6 +207,33 @@ const ProductDetail = ({
             </div>
 
             <div className="flex flex-col justify-end">
+              <div className="bg-gray-50 p-2 rounded-xl">
+                <div className=" text-xs m-0 p-0 font-extralight">
+                  Postage: <span className=" font-semibold">Free</span> Economy
+                  Delivery from outside UK .
+                  <a
+                    href=""
+                    className="text-xs cursor-pointer font-medium text-blue-700"
+                  >
+                    See details
+                  </a>
+                </div>
+
+                <div className=" text-xs my-0 font-extralight">
+                  Delivery: Estimated Delivery within{" "}
+                  <span className=" font-semibold">10-15</span> business days.
+                </div>
+                <div className=" text-xs my-0 font-extralight">
+                  Returns : <span className=" font-semibold">30 Days</span>{" "}
+                  Economys return. Buyer pays for return postage.
+                  <a
+                    href=""
+                    className="text-xs cursor-pointer font-medium text-blue-700"
+                  >
+                    See details
+                  </a>
+                </div>
+              </div>
               <p className="mt-2 text-gray-700 font-bold">Price: ${price}</p>
               {stockQuantity < 1 ? (
                 <div className="bg-red-100 text-red-500 rounded-full px-2 py-1 text-xs font-medium  w-24">
