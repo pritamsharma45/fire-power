@@ -93,6 +93,7 @@ model Product {
   id                Int                 @id @default(autoincrement())
   title             String
   description       String
+  allergies         String?
   image             String?
   price             Float
   rank              Int                 @default(2000)

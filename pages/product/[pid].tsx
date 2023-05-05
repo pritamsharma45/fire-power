@@ -72,6 +72,7 @@ function ProductCard() {
               id={data.product.id}
               title={data.product.title}
               description={data.product.description}
+              allergies={data.product.allergies}
               price={data.product.price}
               image={data.product.image}
               stockQuantity={data.product.stockQuantity}
