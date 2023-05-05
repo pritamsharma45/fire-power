@@ -83,7 +83,7 @@ const Product = ({
   return (
     <Suspense fallback={<h1>Loading ...</h1>}>
       <div key={id} className="">
-        <div className="flex flex-col justify-around bg-white h-72 shadow-lg hover:shadow-xl rounded-lg transition-transform duration-500 transform hover:scale-105">
+        <div className="flex flex-col justify-around  h-72 shadow-lg hover:shadow-xl rounded-lg transition-transform duration-500 transform hover:scale-105">
           <div>
             <a href={`/product/${id}`}>
               <div
@@ -120,14 +120,14 @@ const Product = ({
               </div>
             </a>
 
-            <div className="flex justify-between items-start px-2 pt-2">
-              <div className="p-2 flex-grow">
+            <div className="flex justify-between items-start px-2 pt-0 h-28 ">
+              <div className="p-1 flex-grow">
                 <h1 className="font-medium text-sm font-poppins">{title}</h1>
                 <p className="text-gray-500 text-xs font-nunito">
                   {description}
                 </p>
               </div>
-              <div className="p-2 text-right">
+              <div className="p-1 text-right">
                 {/* If stockeQuantity is greater than 0 then render below component or else render out of stock */}
                 {stockQuantity > 0 ? (
                   <>
@@ -145,7 +145,7 @@ const Product = ({
               </div>
             </div>
           </div>
-          <div className="flex px-2 pb-2">
+          <div className="flex px-2 pb-1">
             <div className="w-1/2 p-1">
               <Link href={`/product/${id}`}>
                 <button className="block w-full h-8 bg-teal-500 hover:bg-teal-600 text-white border-2 border-teal-500 hover:border-teal-600 pl-1 pb-1 rounded uppercase font-small">
