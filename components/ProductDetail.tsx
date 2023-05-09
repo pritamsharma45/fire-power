@@ -64,7 +64,7 @@ const stripePromise = loadStripe(
 const ProductDetail = ({
   title,
   description,
-
+  allergies,
   price,
   image,
   id,
@@ -82,7 +82,7 @@ const ProductDetail = ({
   const { data: session, status } = useSession();
   const router = useRouter();
   const dispatch = useAppDispatch();
-  let allergies = "Example allergies text will be  here ..";
+
   const {
     data: likeData,
     loading: likeLoading,
@@ -206,19 +206,21 @@ const ProductDetail = ({
                 {title}
               </a>
               <p className="mt-2 text-gray-500">{description}</p>
-              <div className="bg-pink-50 mb-2 p-1 rounded-lg">
-                <span className="text-xs text-pink-600 font-medium">
-                  Known Allergies :{" "}
-                </span>
-                <span className="text-xs text-pink-600">{allergies}</span>
-              </div>
+              {allergies && (
+                <div className="bg-pink-50 mb-2 p-1 rounded-lg">
+                  <span className="text-xs text-pink-600 font-medium">
+                    Known Allergies :{" "}
+                  </span>
+                  <span className="text-xs text-pink-600">{allergies}</span>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col justify-end">
               <div className="bg-gray-50 p-2 rounded-xl">
                 <div className=" text-xs m-0 p-0 font-extralight">
-                  Postage: <span className=" font-semibold">Free</span> Economy
-                  Delivery from outside UK .
+                  Postage: <span className=" font-semibold">Standard</span>{" "}
+                  Delivery
                   {/* <a
                     href=""
                     className="text-xs cursor-pointer font-medium text-blue-700"

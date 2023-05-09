@@ -108,6 +108,7 @@ input PaymentTransactionInput {
 }
 
 type Product {
+  allergies: String
   description: String
   id: Int
   image: String

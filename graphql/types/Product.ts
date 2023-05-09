@@ -5,6 +5,7 @@ import {
   extendType,
   intArg,
   floatArg,
+  nullable,
 } from "nexus";
 // import { connectionFromArraySlice, cursorToOffset,connectionDefinitions } from 'graphql-relay';
 
@@ -39,6 +40,8 @@ export const Product = objectType({
     t.string("title");
     t.float("price");
     t.string("description");
+    // optional allergies field
+    t.nullable.string("allergies");
     t.string("image");
     t.int("stockQuantity");
 
@@ -80,7 +83,7 @@ export const ProductsQuery = extendType({
                 rank: "asc",
               },
               {
-                id: "asc", 
+                id: "asc",
               },
             ],
           });
@@ -93,12 +96,12 @@ export const ProductsQuery = extendType({
                 rank: "asc",
               },
               {
-                id: "asc", 
+                id: "asc",
               },
             ],
           });
         }
-    
+
         if (queryResults.length > 0) {
           const lastProductResults = queryResults[queryResults.length - 1];
           const lastProductID = lastProductResults.id;
@@ -111,7 +114,6 @@ export const ProductsQuery = extendType({
             },
             include: { likes: true },
           });
-         
 
           const result = {
             pageInfo: {

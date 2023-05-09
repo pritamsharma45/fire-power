@@ -10,6 +10,7 @@ const SingleProduct = gql`
     product(id: $id) {
       id
       description
+      allergies
       image
       price
       title
