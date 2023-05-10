@@ -35,10 +35,12 @@ function ProductCard() {
   const router = useRouter();
   const { pid } = router.query;
   console.log(pid);
+
   const { data, loading, error } = useQuery(SingleProduct, {
     variables: { id: Number(pid) },
   });
 
+  console.log("Single Product in pid.tsx", data);
   const {
     data: cartData,
     loading: cartLoading,
