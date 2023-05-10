@@ -30,7 +30,8 @@ const data = fakeImageIds.map((id) => {
   return {
     title: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
-    price: 10.234,
+    allergies: faker.lorem.words(3),
+    price: 16.234,
     image: id,
     stockQuantity: faker.datatype.number({
       min: 0,
@@ -48,7 +49,7 @@ const users = Array.from({ length: 100 }).map((_, i) => {
 });
 
 async function main() {
-  // await prisma.product.deleteMany();
+  await prisma.product.deleteMany();
   await prisma.product.createMany({
     data,
   });

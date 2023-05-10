@@ -346,7 +346,7 @@ const ProductDetail = ({
         </div>
       </div>
       <div>
-        <h1 className="text-2xl font-bold text-gray-700 mt-8 ml-1 mr-2">
+        <h1 className="text-2xl font-bold text-gray-700 mt-7 ml-1 mr-2">
           You may like these products
         </h1>
       </div>

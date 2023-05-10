@@ -175,10 +175,10 @@ export const TopProductsQuery = extendType({
             id: true,
             title: true,
             description: true,
+            allergies: true,
             price: true,
             image: true,
             stockQuantity: true,
-
             likes: {
               select: {
                 hasLiked: true,
