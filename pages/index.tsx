@@ -22,6 +22,7 @@ const AllProducts = gql`
           id
           title
           description
+          allergies
           price
           image
           stockQuantity
@@ -118,6 +119,7 @@ function Home() {
                   id={node.id}
                   title={node.title}
                   description={node.description}
+                  allergies={node.allergies}
                   price={node.price}
                   image={node.image}
                   stockQuantity={node.stockQuantity}

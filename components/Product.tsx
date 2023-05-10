@@ -28,6 +28,7 @@ const UPDATE_LIKE = gql`
 const Product = ({
   title,
   description,
+  allergies,
   price,
   image,
   id,
