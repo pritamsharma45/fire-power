@@ -41,7 +41,7 @@ export const Product = objectType({
     t.float("price");
     t.string("description");
     // optional allergies field
-    t.nullable.string("allergies");
+    t.string("allergies");
     t.string("image");
     t.int("stockQuantity");
 
@@ -149,12 +149,14 @@ export const ProductByIDQuery = extendType({
     t.nonNull.field("product", {
       type: "Product",
       args: { id: nonNull(intArg()) },
-      resolve(_parent, args, ctx) {
-        const product = ctx.prisma.product.findUnique({
+      async resolve(_parent, args, ctx) {
+        const product = await ctx.prisma.product.findUnique({
           where: {
             id: args.id,
           },
         });
+
+        console.log("Single Product", product);
         return product;
       },
     });
