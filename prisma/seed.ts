@@ -40,6 +40,18 @@ const data = fakeImageIds.map((id) => {
   };
 });
 
+type dataType = {
+  title: string;
+  description: string;
+  allergies: string;
+  price: number;
+  image: string;
+  stockQuantity: number;
+  rank: number;
+};
+
+//  fetch data from api routes
+
 const users = Array.from({ length: 100 }).map((_, i) => {
   return {
     name: faker.name.firstName(),
@@ -49,9 +61,43 @@ const users = Array.from({ length: 100 }).map((_, i) => {
 });
 
 async function main() {
+  const res = await fetch("http://localhost:3000/api/seedData");
+  const data = await res.json();
+  console.log(data);
+
+  const seedData: dataType = data.products.map((product) => {
+    return {
+      title:
+        product.title === "" ? faker.commerce.productName() : product.title,
+      description:
+        product.description === ""
+          ? faker.commerce.productDescription()
+          : product.description,
+      allergies:
+        product.allergies === "" ? faker.lorem.words(3) : product.allergies,
+      price:
+        product.price === ""
+          ? faker.datatype.number({
+              min: 0,
+              max: 100,
+              precision: 0.01,
+            })
+          : Number(product.price),
+      rank: product.rank === "" ? 2000 : Number(product.rank),
+
+      image: product.image,
+      stockQuantity:
+        product.stockQuantity === ""
+          ? faker.datatype.number({
+              min: 0,
+              max: 10,
+            })
+          : Number(product.stockQuantity),
+    };
+  });
   await prisma.product.deleteMany();
   await prisma.product.createMany({
-    data,
+    data: seedData,
   });
 }
 

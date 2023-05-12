@@ -41,7 +41,7 @@ export const Product = objectType({
     t.float("price");
     t.string("description");
     // optional allergies field
-    t.string("allergies");
+    t.nullable.string("allergies");
     t.string("image");
     t.int("stockQuantity");
 

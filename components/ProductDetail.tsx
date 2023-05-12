@@ -234,8 +234,14 @@ const ProductDetail = ({
                   <span className=" font-semibold">10-15</span> business days.
                 </div>
                 <div className=" text-xs my-0 font-extralight">
-                  Returns : <span className=" font-semibold">30 Days</span>{" "}
-                  Economys return. Buyer pays for return postage.
+                  {/* Returns : <span className=" font-semibold">30 Days</span>{" "}
+                  Economys return. Buyer pays for return postage. */}
+                  <Image
+                    src="/return-warranty.png"
+                    alt="logo"
+                    width={190}
+                    height={90}
+                  />
                   {/* <a
                     href=""
                     className="text-xs cursor-pointer font-medium text-blue-700"

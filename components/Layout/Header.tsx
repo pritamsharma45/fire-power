@@ -25,31 +25,32 @@ const Header = () => {
     <>
       <header className="text-gray-600 body-font">
         <div className="flex flex-row  items-center justify-between bg-gray-800 p-2">
-          <div className="flex items-center">
-            <Link href="/">
-              <a className="w-10 flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-                <Image
-                  src="/xxray-icon.png"
-                  alt="logo"
-                  width={50}
-                  height={50}
-                  className="w-10 h-10 text-white p-2 bg-blue-500 rounded-full"
-                />
-              </a>
-            </Link>
+          <div className="flex items-center ">
+            <a
+              href="/"
+              className="w-10 flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
+            >
+              <Image
+                src="/xxray-icon.png"
+                alt="logo"
+                width={50}
+                height={50}
+                className="w-10 h-10 text-white p-2 bg-blue-500 rounded-full"
+              />
+            </a>
             <div className="md:flex md:flex-col md:items-start md:ml-4">
               <div className="md:text-5xl md:font-bold text-red-500 mx-2 mb-1">
-                Love Joint
+                <a href="/">Love Joint</a>
               </div>
               <div className="text-white text-xs mx-2">
-                Everything Herbal - Natural testosterone boosters
+                Everything Herbal - Natural Lifestyle Boosters®
               </div>
             </div>
           </div>
 
-          <nav className="md:flex md:flex-row md:items-center mr-10 hidden">
-            <div className="flex flex-col md:flex-row md:justify-center md:items-center text-green-600 mr-10">
-              <Link href="/">
+          <nav className="md:flex md:flex-row md:items-center md:w-2/3 mr-0 mt-2 hidden justify-end">
+            <div className="flex flex-col md:flex-row md:justify-end justify-end md:items-center text-green-600 mr-0">
+              {/* <Link href="/">
                 <a
                   className={`mx-10 block lg:inline-block lg:mt-0 text-teal-200 font-bold hover:text-white ${
                     router.pathname === "/" ? "text-green-50" : ""
@@ -57,10 +58,10 @@ const Header = () => {
                 >
                   Lifestyle
                 </a>
-              </Link>
+              </Link> */}
               <Link href="/contact">
                 <a
-                  className={`block lg:inline-block lg:mt-0 text-teal-200 font-bold hover:text-white mr-10 ${
+                  className={`block lg:inline-block lg:mt-0 text-teal-200 font-bold hover:text-white mr-0 ${
                     router.pathname === "/contact" ? "text-green-50" : ""
                   }`}
                 >
@@ -109,7 +110,7 @@ const Header = () => {
                   </svg>
                 </div>
               </div>
-              <Link href="/">
+              {/* <Link href="/">
                 <a
                   className={`mx-2 block lg:inline-block lg:mt-0 text-teal-200 font-bold hover:text-white ${
                     router.pathname === "/" ? "text-green-50" : ""
@@ -117,7 +118,7 @@ const Header = () => {
                 >
                   Lifestyle
                 </a>
-              </Link>
+              </Link> */}
               <Link href="/about">
                 <a
                   className={`mx-2 block lg:inline-block lg:mt-0 text-teal-200 font-bold hover:text-white mr-10 ${
@@ -221,7 +222,6 @@ const Header = () => {
           </div>
         </div>
       </header>
-
     </>
   );
 };

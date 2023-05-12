@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       new Promise((resolve, reject) => {
         setTimeout(() => {
           reject(new Error("Request timed out"));
-        }, 5000); // set timeout to 10 seconds
+        }, 8000); // set timeout to 10 seconds
       }),
     ]);
 
