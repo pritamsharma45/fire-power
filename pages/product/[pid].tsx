@@ -11,6 +11,7 @@ const SingleProduct = gql`
       id
       description
       allergies
+      policyType
       image
       price
       title
@@ -76,6 +77,7 @@ function ProductCard() {
               title={data.product.title}
               description={data.product.description}
               allergies={data.product.allergies}
+              policyType={data.product.policyType}
               price={data.product.price}
               image={data.product.image}
               stockQuantity={data.product.stockQuantity}

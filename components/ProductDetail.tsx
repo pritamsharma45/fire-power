@@ -65,6 +65,7 @@ const ProductDetail = ({
   title,
   description,
   allergies,
+  policyType,
   price,
   image,
   id,
@@ -221,34 +222,27 @@ const ProductDetail = ({
                 <div className=" text-xs m-0 p-0 font-extralight">
                   Postage: <span className=" font-semibold">Standard</span>{" "}
                   Delivery
-                  {/* <a
-                    href=""
-                    className="text-xs cursor-pointer font-medium text-blue-700"
-                  >
-                    See details
-                  </a> */}
                 </div>
 
                 <div className=" text-xs my-0 font-extralight">
                   Delivery: Estimated Delivery within{" "}
                   <span className=" font-semibold">10-15</span> business days.
                 </div>
-                <div className=" text-xs my-0 font-extralight">
-                  {/* Returns : <span className=" font-semibold">30 Days</span>{" "}
-                  Economys return. Buyer pays for return postage. */}
-                  <Image
-                    src="/return-warranty.png"
-                    alt="logo"
-                    width={190}
-                    height={90}
-                  />
-                  {/* <a
-                    href=""
-                    className="text-xs cursor-pointer font-medium text-blue-700"
-                  >
-                    See details
-                  </a> */}
-                </div>
+                {policyType === "NO_RETURN_NO_WARRANTY" ? (
+                  <div className=" text-xs my-0 font-extralight">
+                    <Image
+                      src="/return-warranty.png"
+                      alt="logo"
+                      width={190}
+                      height={90}
+                    />
+                  </div>
+                ) : (
+                  <div className=" text-xs my-0 font-extralight">
+                    Returns : <span className=" font-semibold">30 Days</span>{" "}
+                    Economys return. Buyer pays for return postage.
+                  </div>
+                )}
               </div>
               <p className="mt-2 text-gray-700 font-bold">Price: ${price}</p>
               {stockQuantity < 1 ? (

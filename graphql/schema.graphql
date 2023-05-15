@@ -113,6 +113,7 @@ type Product {
   id: Int
   image: String
   likes: [Like]
+  policyType: String
   price: Float
   stockQuantity: Int
   title: String

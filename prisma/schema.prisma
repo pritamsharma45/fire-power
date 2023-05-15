@@ -94,6 +94,7 @@ model Product {
   title             String
   description       String
   allergies         String?
+  policyType        ReturnWarranty?     @default(NO_RETURN_NO_WARRANTY)
   image             String?
   price             Float
   rank              Int                 @default(2000)
@@ -265,4 +266,12 @@ enum DeliveryStatus {
   PENDING
   IN_TRANSIT
   DELIVERED
+}
+
+enum ReturnWarranty {
+  NO_RETURN_NO_WARRANTY
+  NONE
+  NO_RETURN
+  NO_WARRANTY
+  RETURN_WARRANTY
 }

@@ -40,8 +40,9 @@ export const Product = objectType({
     t.string("title");
     t.float("price");
     t.string("description");
-    // optional allergies field
     t.nullable.string("allergies");
+    // enum field
+    t.string("policyType");
     t.string("image");
     t.int("stockQuantity");
 

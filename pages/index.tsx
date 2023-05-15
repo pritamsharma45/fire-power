@@ -23,6 +23,7 @@ const AllProducts = gql`
           title
           description
           allergies
+          policyType
           price
           image
           stockQuantity
