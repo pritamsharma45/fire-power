@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Product" ALTER COLUMN "allergies" SET DEFAULT 'Please note that Love Joint does not offer any medical advice to its customers. We invite you to consult a doctor in order to have a professional opinion before using this product. Results may vary with each individual and we cannot guarantee its effects.  If you are already taking medication, have a specific health condition, are pregnant or have any other medical condition, please consult a healthcare practitioner before using this product.';

@@ -36,7 +36,7 @@ export default async function handler(
               id: item.id,
             },
           },
-          unit_amount: Number(price) * 1000,
+          unit_amount: Number(price) * 100,
         },
         quantity: Number(quantity),
       };

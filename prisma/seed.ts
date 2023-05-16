@@ -65,6 +65,8 @@ async function main() {
   const data = await res.json();
   console.log(data);
 
+  const defaultAlleries =
+    "Please note that Love Joint does not offer any medical advice to its customers. We invite you to consult a doctor in order to have a professional opinion before using this product. Results may vary with each individual and we cannot guarantee its effects.  If you are already taking medication, have a specific health condition, are pregnant or have any other medical condition, please consult a healthcare practitioner before using this product.";
   const seedData: dataType = data.products.map((product) => {
     return {
       title:
@@ -73,8 +75,7 @@ async function main() {
         product.description === ""
           ? faker.commerce.productDescription()
           : product.description,
-      allergies:
-        product.allergies === "" ? faker.lorem.words(3) : product.allergies,
+      allergies: product.allergies === "" ? defaultAlleries : product.allergies,
       price:
         product.price === ""
           ? faker.datatype.number({
