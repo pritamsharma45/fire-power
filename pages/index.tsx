@@ -121,6 +121,7 @@ function Home() {
                   title={node.title}
                   description={node.description}
                   allergies={node.allergies}
+                  policyType={node.policyType}
                   price={node.price}
                   image={node.image}
                   stockQuantity={node.stockQuantity}
