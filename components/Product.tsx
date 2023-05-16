@@ -29,6 +29,7 @@ const Product = ({
   title,
   description,
   allergies,
+  policyType,
   price,
   image,
   id,
