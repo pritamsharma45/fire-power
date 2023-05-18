@@ -122,7 +122,7 @@ const Product = ({
               </div>
             </a>
 
-            <div className="flex justify-between items-start px-2 pt-0 h-28 ">
+            <div className="flex justify-between items-start px-2 pt-0 h-32">
               <div className="p-1 flex-grow">
                 <h1 className="font-medium text-sm font-poppins">{title}</h1>
                 <p className="text-gray-500 text-xs font-nunito">
