@@ -250,11 +250,11 @@ const ProductDetail = ({
                   Out of Stock
                 </div>
               ) : (
-                <div>
+                <div className="flex flex-wrap justify-around mt-2 mb-2">
                   {" "}
                   <button
                     disabled={inCart}
-                    className="bg-orange-100 text-orange-600 rounded-full mt-4 px-2 py-1 text-xs font-medium  w-24"
+                    className="bg-orange-100 text-orange-600 rounded-full  px-2 py-1 text-xs font-medium  w-24"
                     onClick={handleAddToCart}
                   >
                     {inCart ? "In Cart" : "Add to Cart"}
@@ -276,17 +276,75 @@ const ProductDetail = ({
                     )}
                   </button>
                   <button
-                    className="bg-blue-100 text-blue-600 rounded-full mt-4 mx-2 px-2 py-1 text-xs font-medium  w-24"
+                    className="bg-blue-100 text-blue-600 rounded-full  mx-2 px-1 py-1 text-xs font-medium  w-24"
                     onClick={handleClick}
                   >
                     Buy Now
                   </button>
+                  <button
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold mr-2 py-0 px-1 w-30 h-6 rounded-full"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (!session?.user) {
+                        toast.success("Please login to like products!", {
+                          autoClose: 1000,
+                        });
+                        setTimeout(() => {
+                          router.push("/api/auth/signin");
+                        }, 2000);
+                        return;
+                      }
+                      updateLike({
+                        variables: {
+                          productId: id,
+                          hasLiked: !isLiked,
+                          userId: session?.user?.id,
+                        },
+                      });
+                      setHasLiked(!blLiked);
+                    }}
+                  >
+                    <svg className="inline w-6 h-5 mr-2" viewBox="0 0 24 24">
+                      <path
+                        fill={blLiked ? "red" : "black"}
+                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                      />
+                    </svg>
+
+                    {blLiked ? "Unlike" : "Like"}
+                  </button>
+                  <button
+                    onClick={handleShareButtonClick}
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold  mr-2  py-0 px-2 w-30 h-6 rounded-full"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      className="inline h-4 w-5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"
+                      />
+                    </svg>
+                    <span className="ml-2">Share</span>{" "}
+                  </button>
+                  <span className="mt-1">
+                    {" "}
+                    {showShareButtons && (
+                      <ShareButtons url={router.asPath} title={title} />
+                    )}
+                  </span>
                 </div>
               )}
 
-              <div className="mt-4 flex space-x-4 my-3">
+              {/* <div className="mt-4 flex space-x-4 my-3">
                 <button
-                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-3 w-40 h-8 rounded-full"
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-0 px-2 w-30 h-6 rounded-full"
                   onClick={(e) => {
                     e.preventDefault();
                     if (!session?.user) {
@@ -308,17 +366,18 @@ const ProductDetail = ({
                     setHasLiked(!blLiked);
                   }}
                 >
-                  <svg className="inline w-6 h-6 mr-2" viewBox="0 0 24 24">
+                  <svg className="inline w-6 h-5 mr-2" viewBox="0 0 24 24">
                     <path
                       fill={blLiked ? "red" : "black"}
-                      d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
+                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                     />
                   </svg>
+
                   {blLiked ? "Unlike" : "Like"}
                 </button>
                 <button
                   onClick={handleShareButtonClick}
-                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-3  w-40 h-8 rounded-full"
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold  py-0 px-2 w-30 h-6 rounded-full"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -326,7 +385,7 @@ const ProductDetail = ({
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    className="inline h-5 w-5"
+                    className="inline h-4 w-5"
                   >
                     <path
                       stroke-linecap="round"
@@ -340,7 +399,7 @@ const ProductDetail = ({
                 {showShareButtons && (
                   <ShareButtons url={router.asPath} title={title} />
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
