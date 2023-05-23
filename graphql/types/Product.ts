@@ -114,6 +114,14 @@ export const ProductsQuery = extendType({
               id: lastProductID,
             },
             include: { likes: true },
+            orderBy: [
+              {
+                rank: "asc",
+              },
+              {
+                id: "asc",
+              },
+            ],
           });
 
           const result = {
