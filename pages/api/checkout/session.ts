@@ -28,7 +28,7 @@ export default async function handler(
       const name = title;
       return {
         price_data: {
-          currency: "usd",
+          currency: "inr",
           product_data: {
             name,
             description,
@@ -56,7 +56,7 @@ export default async function handler(
         user_Id: userId,
       },
       shipping_address_collection: {
-        allowed_countries: ["US", "GB"],
+        allowed_countries: ["US", "IN"],
       },
       custom_text: {
         shipping_address: {

@@ -67,6 +67,7 @@ const ProductDetail = ({
   allergies,
   policyType,
   price,
+  mrp,
   image,
   id,
   stockQuantity,
@@ -246,7 +247,7 @@ const ProductDetail = ({
               </div>
               <p className="mt-2 text-gray-700 font-bold">Price: ${price}</p>
               {stockQuantity < 1 ? (
-                <div className="bg-red-100 text-red-500 rounded-full px-2 py-1 text-xs font-medium  w-24">
+                <div className="bg-red-100 text-red-500 rounded-full px-2 py-1 mb-2 text-xs font-medium  w-24">
                   Out of Stock
                 </div>
               ) : (
@@ -419,6 +420,7 @@ const ProductDetail = ({
                 title={product.title}
                 description={product.description}
                 price={product.price}
+                mrp={product.mrp}
                 image={product.image}
                 id={product.id}
                 stockQuantity={product.stockQuantity}

@@ -97,6 +97,7 @@ model Product {
   policyType        ReturnWarranty?     @default(NO_RETURN_NO_WARRANTY)
   image             String?
   price             Float
+  mrp               Float?
   rank              Int                 @default(2000)
   stockQuantity     Int
   createdAt         DateTime            @default(now())

@@ -31,6 +31,7 @@ const Product = ({
   allergies,
   policyType,
   price,
+  mrp,
   image,
   id,
   stockQuantity,

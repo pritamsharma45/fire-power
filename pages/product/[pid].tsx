@@ -14,6 +14,7 @@ const SingleProduct = gql`
       policyType
       image
       price
+      mrp
       title
       stockQuantity
       likes {
@@ -79,6 +80,7 @@ function ProductCard() {
               allergies={data.product.allergies}
               policyType={data.product.policyType}
               price={data.product.price}
+              mrp={data.product.mrp}
               image={data.product.image}
               stockQuantity={data.product.stockQuantity}
               isLiked={data.product.likes[0]?.hasLiked}

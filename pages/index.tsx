@@ -25,6 +25,7 @@ const AllProducts = gql`
           allergies
           policyType
           price
+          mrp
           image
           stockQuantity
           likes {
@@ -123,6 +124,7 @@ function Home() {
                   allergies={node.allergies}
                   policyType={node.policyType}
                   price={node.price}
+                  mrp={node.mrp}
                   image={node.image}
                   stockQuantity={node.stockQuantity}
                   hasLiked={node.likes[0]?.hasLiked}

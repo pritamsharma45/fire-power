@@ -7,6 +7,7 @@ const ProductSimple = ({
   title,
   description,
   price,
+  mrp,
   image,
   id,
   stockQuantity,
@@ -16,7 +17,7 @@ const ProductSimple = ({
   return (
     <div key={id} className="">
       <Link href={`/product/${id}`} target="_blank">
-        <div className="bg-white shadow-lg hover:shadow-xl rounded-sm w-52 h-60 m-2 p-2 cursor-pointer">
+        <div className="bg-white shadow-lg hover:shadow-xl rounded-sm w-56 m-2 p-2 cursor-pointer">
           <div
             className="bg-gray-400 h-24 w-32 p-2 bg-no-repeat bg-center bg-cover"
             style={{
@@ -24,8 +25,12 @@ const ProductSimple = ({
               backgroundPosition: "center",
             }}
           ></div>
-             <p className="text-gray-500 text-xs font-bold font-nunito  mt-2">{title}</p>
-          <p className="text-gray-500 text-xs font-nunito">{description}</p>
+          <p className="text-gray-500 text-xs font-bold font-nunito  mt-2">
+            {title}
+          </p>
+          <p className="text-gray-500 text-xs font-nunito h-28">
+            {description}
+          </p>
 
           <div className="flex justify-between items-start mt-2">
             <div className="text-right">
@@ -45,7 +50,6 @@ const ProductSimple = ({
               )}
             </div>
           </div>
-       
         </div>
       </Link>
     </div>

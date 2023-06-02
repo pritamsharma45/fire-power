@@ -39,6 +39,8 @@ export const Product = objectType({
     t.int("id");
     t.string("title");
     t.float("price");
+    t.nullable.float("mrp");
+
     t.string("description");
     t.nullable.string("allergies");
     // enum field
@@ -186,6 +188,7 @@ export const TopProductsQuery = extendType({
             description: true,
             allergies: true,
             price: true,
+            mrp: true,
             image: true,
             stockQuantity: true,
             likes: {
