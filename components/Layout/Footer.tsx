@@ -37,7 +37,7 @@ export default function Footer() {
         </div>
         <div className="flex items-center mt-2 space-x-4">
           {MediaIcons.map((item, index) => (
-            <a key={index} href={item.url}>
+            <a key={index} href={item.url} target="_blank">
               {item.icon}
             </a>
           ))}
