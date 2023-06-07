@@ -5,19 +5,19 @@ export default function Footer() {
   const MediaIcons = [
     {
       icon: <FaFacebook />,
-      url: "https://www.facebook.com/lovejointofficial",
+      url: "https://www.facebook.com/profile.php?id=100091973694729",
     },
     {
       icon: <FaTwitter />,
-      url: "https://twitter.com/lovejointoff",
+      url: "https://twitter.com/LJoint22454",
     },
     {
       icon: <FaWhatsapp />,
-      url: "https://wa.me/2347030000000",
+      url: "https://wa.me/447817094075",
     },
     {
       icon: <FaTelegram />,
-      url: "https://t.me/lovejointofficial",
+      url: "https://t.me/+Paa7IUttf7U5NjI0",
     },
   ];
 

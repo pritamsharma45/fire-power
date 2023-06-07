@@ -1,6 +1,7 @@
 .container {
     padding: 2rem;
     text-align: center;
+    height:65vh;
   }
   
   .header {
@@ -26,6 +27,17 @@
     align-items: center;
     text-align: center;
     margin-bottom: 1rem;
+  }
+  .emptyCart{
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    padding-bottom: 0.5rem;
+    text-transform: uppercase;
+   
+    margin-bottom: 2rem;
+    margin-top: 2rem;;
+    height:65vh;
   }
   
   .body > * {

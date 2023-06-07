@@ -245,7 +245,18 @@ const ProductDetail = ({
                   </div>
                 )}
               </div>
-              <p className="mt-2 text-gray-700 font-bold">Price: ${price}</p>
+              <p className="mt-2 text-gray-700 font-bold">
+                Price: ${price}
+                {mrp && (
+                  <>
+                    <span className="mt-2 ml-2 text-xs text-gray-500"> $</span>
+                    <span className="mt-2  text-xs text-gray-500 line-through font-bold">
+                      {mrp}
+                    </span>
+                  </>
+                )}
+              </p>
+
               {stockQuantity < 1 ? (
                 <div className="bg-red-100 text-red-500 rounded-full px-2 py-1 mb-2 text-xs font-medium  w-24">
                   Out of Stock

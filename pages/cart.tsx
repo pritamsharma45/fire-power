@@ -182,7 +182,9 @@ export default function Cart({ cartItems }) {
   return (
     <div>
       {cart?.length === 0 ? (
-        <h1>Your Cart is Empty!</h1>
+        <div className={styles.emptyCart}>
+          <h1>Your Cart is Empty!</h1>
+        </div>
       ) : (
         <>
           <div className="container mx-auto max-w-5xl my-5 px-5">

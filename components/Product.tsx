@@ -136,12 +136,34 @@ const Product = ({
                   <>
                     <div className="text-teal-500 text-md font-semibold  font-poppins">
                       ${price}
+                      {mrp && (
+                        <>
+                          <span className="mt-2 ml-2 text-xs text-gray-500">
+                            {" "}
+                            $
+                          </span>
+                          <span className="mt-2  text-xs text-gray-500 line-through font-bold">
+                            {mrp}
+                          </span>
+                        </>
+                      )}
                     </div>
                   </>
                 ) : (
                   <>
                     <div className="text-gray-500 text-md font-semibold  font-poppins">
                       ${price}
+                      {mrp && (
+                        <>
+                          <span className="mt-2 ml-2 text-xs text-gray-500">
+                            {" "}
+                            $
+                          </span>
+                          <span className="mt-2  text-xs text-gray-500 line-through font-bold">
+                            {mrp}
+                          </span>
+                        </>
+                      )}
                     </div>
                   </>
                 )}
