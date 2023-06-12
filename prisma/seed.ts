@@ -61,14 +61,19 @@ const users = Array.from({ length: 100 }).map((_, i) => {
 });
 
 async function main() {
+  flush();
+}
+async function flush() {
   await prisma.paymentTransaction.deleteMany();
   await prisma.shippingAddress.deleteMany();
   await prisma.orderItem.deleteMany();
   await prisma.order.deleteMany();
+  await prisma.subscriber.deleteMany();
+  await prisma.like.deleteMany();
+  await prisma.comment.deleteMany();
   await prisma.user.deleteMany();
   await prisma.session.deleteMany();
 }
-
 // async function main() {
 //   const res = await fetch("http://localhost:3000/api/seedData");
 //   const data = await res.json();
