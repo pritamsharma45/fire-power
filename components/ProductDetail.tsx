@@ -112,7 +112,7 @@ const ProductDetail = ({
   const handleAddToCart = async () => {
     console.log("Cart item to be added to db", cartItem);
     if (!session?.user) {
-      toast.success("Please login to add items to your cart!", {
+      toast.warning("Please login to add items to your cart!", {
         autoClose: 1000,
       });
       setTimeout(() => {
@@ -137,6 +137,15 @@ const ProductDetail = ({
   };
   // Handle checkout
   const handleClick = async (event) => {
+    if (!session?.user) {
+      toast.warning("Please login to purchase items!", {
+        autoClose: 1000,
+      });
+      setTimeout(() => {
+        router.push("/api/auth/signin");
+      }, 2000);
+      return;
+    }
     // Get Stripe.js instance
     const payload = {};
     payload.userId = session?.user?.id;
@@ -298,7 +307,7 @@ const ProductDetail = ({
                     onClick={(e) => {
                       e.preventDefault();
                       if (!session?.user) {
-                        toast.success("Please login to like products!", {
+                        toast.warning("Please login to like products!", {
                           autoClose: 1000,
                         });
                         setTimeout(() => {

@@ -36,7 +36,7 @@ function AddToCart({
   const handleAddToCart = async () => {
     console.log("Cart item to be added to db", cartItem);
     if (!session?.user) {
-      toast.success("Please login to add items to your cart!", {
+      toast.warning("Please login to add items to your cart!", {
         autoClose: 1000,
       });
       setTimeout(() => {
