@@ -61,46 +61,55 @@ const users = Array.from({ length: 100 }).map((_, i) => {
 });
 
 async function main() {
-  const res = await fetch("http://localhost:3000/api/seedData");
-  const data = await res.json();
-  console.log(data);
-
-  const defaultAlleries =
-    "Please note that Love Joint does not offer any medical advice to its customers. We invite you to consult a doctor in order to have a professional opinion before using this product. Results may vary with each individual and we cannot guarantee its effects.  If you are already taking medication, have a specific health condition, are pregnant or have any other medical condition, please consult a healthcare practitioner before using this product.";
-  const seedData: dataType = data.products.map((product) => {
-    return {
-      title:
-        product.title === "" ? faker.commerce.productName() : product.title,
-      description:
-        product.description === ""
-          ? faker.commerce.productDescription()
-          : product.description,
-      allergies: product.allergies === "" ? defaultAlleries : product.allergies,
-      price:
-        product.price === ""
-          ? faker.datatype.number({
-              min: 0,
-              max: 100,
-              precision: 0.01,
-            })
-          : Number(product.price),
-      rank: product.rank === "" ? 2000 : Number(product.rank),
-
-      image: product.image,
-      stockQuantity:
-        product.stockQuantity === ""
-          ? faker.datatype.number({
-              min: 0,
-              max: 10,
-            })
-          : Number(product.stockQuantity),
-    };
-  });
-  await prisma.product.deleteMany();
-  await prisma.product.createMany({
-    data: seedData,
-  });
+  await prisma.paymentTransaction.deleteMany();
+  await prisma.shippingAddress.deleteMany();
+  await prisma.orderItem.deleteMany();
+  await prisma.order.deleteMany();
+  await prisma.user.deleteMany();
+  await prisma.session.deleteMany();
 }
+
+// async function main() {
+//   const res = await fetch("http://localhost:3000/api/seedData");
+//   const data = await res.json();
+//   console.log(data);
+
+//   const defaultAlleries =
+//     "Please note that Love Joint does not offer any medical advice to its customers. We invite you to consult a doctor in order to have a professional opinion before using this product. Results may vary with each individual and we cannot guarantee its effects.  If you are already taking medication, have a specific health condition, are pregnant or have any other medical condition, please consult a healthcare practitioner before using this product.";
+//   const seedData: dataType = data.products.map((product) => {
+//     return {
+//       title:
+//         product.title === "" ? faker.commerce.productName() : product.title,
+//       description:
+//         product.description === ""
+//           ? faker.commerce.productDescription()
+//           : product.description,
+//       allergies: product.allergies === "" ? defaultAlleries : product.allergies,
+//       price:
+//         product.price === ""
+//           ? faker.datatype.number({
+//               min: 0,
+//               max: 100,
+//               precision: 0.01,
+//             })
+//           : Number(product.price),
+//       rank: product.rank === "" ? 2000 : Number(product.rank),
+
+//       image: product.image,
+//       stockQuantity:
+//         product.stockQuantity === ""
+//           ? faker.datatype.number({
+//               min: 0,
+//               max: 10,
+//             })
+//           : Number(product.stockQuantity),
+//     };
+//   });
+//   await prisma.product.deleteMany();
+//   await prisma.product.createMany({
+//     data: seedData,
+//   });
+// }
 
 main()
   .then(async () => {
