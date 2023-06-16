@@ -64,6 +64,28 @@ export const Product = objectType({
   },
 });
 
+//  getAllProducts without pagination or cursor
+export const AllProducts = extendType({
+  type: "Query",
+  definition(t) {
+    t.list.field("allProducts", {
+      type: "Product",
+      async resolve(_, args, ctx) {
+        return await ctx.prisma.product.findMany({
+          orderBy: [
+            {
+              rank: "asc",
+            },
+            {
+              id: "asc",
+            },
+          ],
+        });
+      },
+    });
+  },
+});
+
 // get All Products
 export const ProductsQuery = extendType({
   type: "Query",

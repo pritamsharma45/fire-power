@@ -50,15 +50,26 @@ const Header = () => {
 
           <nav className="md:flex md:flex-row md:items-center md:w-2/3 mr-0 mt-2 hidden justify-end">
             <div className="flex flex-col md:flex-row md:justify-end justify-end md:items-center text-green-600 mr-0">
-              {/* <Link href="/">
-                <a
-                  className={`mx-10 block lg:inline-block lg:mt-0 text-teal-200 font-bold hover:text-white ${
-                    router.pathname === "/" ? "text-green-50" : ""
-                  }`}
-                >
-                  Lifestyle
-                </a>
-              </Link> */}
+              <div className="mr-8">
+                {/* <Link href="/">
+                  <a
+                    className={`mx-10 block lg:inline-block lg:mt-0 text-teal-200 font-bold hover:text-white ${
+                      router.pathname === "/" ? "text-green-50" : ""
+                    }`}
+                  >
+                    Lifestyle
+                  </a>
+                </Link> */}
+                <Link href="/movies">
+                  <a
+                    className={`mx-2 block lg:inline-block lg:mt-0 text-teal-200 font-bold hover:text-white ${
+                      router.pathname === "/movies" ? "text-green-50" : ""
+                    }`}
+                  >
+                    Time out
+                  </a>
+                </Link>
+              </div>
               <Link href="/contact">
                 <a
                   className={`block lg:inline-block lg:mt-0 text-teal-200 font-bold hover:text-white mr-0 ${
@@ -118,7 +129,17 @@ const Header = () => {
                 >
                   Lifestyle
                 </a>
+              </Link>
+              <Link href="/movies">
+                <a
+                  className={`mx-2 block lg:inline-block lg:mt-0 text-teal-200 font-bold hover:text-white ${
+                    router.pathname === "/movies" ? "text-green-50" : ""
+                  }`}
+                >
+                  Movies
+                </a>
               </Link> */}
+
               <Link href="/about">
                 <a
                   className={`mx-2 block lg:inline-block lg:mt-0 text-teal-200 font-bold hover:text-white mr-10 ${
