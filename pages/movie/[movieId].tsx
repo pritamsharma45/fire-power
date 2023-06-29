@@ -6,19 +6,16 @@ import ScrollableProducts from "../../components/ScrollableProducts";
 import ProductSimple from "../../components/ProductSimple";
 
 const FETCH_PROMO_PRODUCTS = gql`
-  query AllProducts {
-    allProducts {
-      id
-      title
-      price
-      mrp
-      description
-      allergies
-      policyType
-      image
-      stockQuantity
-      likes {
-        hasLiked
+  query Query {
+    promoProducts {
+      product {
+        title
+        stockQuantity
+        price
+        mrp
+        image
+        description
+        id
       }
     }
   }
@@ -82,7 +79,7 @@ const MovieDetail = () => {
       <div className=" bg-gradient-to-b from-gray-500 to-gray-400 w-screen ">
         <h1 className="text-white text-2xl py-8 ml-8">You may also like</h1>
         <div className="flex flex-row gap-1 overflow-x-auto px-4 pb-8">
-          {promoData?.allProducts?.map((product) => (
+          {promoData?.promoProducts?.map(({ product }) => (
             <ProductSimple
               key={product.id}
               title={product.title}

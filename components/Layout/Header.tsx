@@ -121,7 +121,7 @@ const Header = () => {
                   </svg>
                 </div>
               </div>
-              {/* <Link href="/">
+              <Link href="/">
                 <a
                   className={`mx-2 block lg:inline-block lg:mt-0 text-teal-200 font-bold hover:text-white ${
                     router.pathname === "/" ? "text-green-50" : ""
@@ -136,9 +136,9 @@ const Header = () => {
                     router.pathname === "/movies" ? "text-green-50" : ""
                   }`}
                 >
-                  Movies
+                  Timeout
                 </a>
-              </Link> */}
+              </Link>
 
               <Link href="/about">
                 <a

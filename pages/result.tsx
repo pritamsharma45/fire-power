@@ -43,6 +43,7 @@ const FETCH_PROMO_PRODUCTS = gql`
         title
         stockQuantity
         price
+        mrp
         image
         description
         id

@@ -97,7 +97,7 @@ const MovieDetailCard = ({ movie, videos }) => {
           </div>
         )}
       </div>
-      <div className="mt-0 px-4 py-4 bg-gray-800 overflow-x-scroll whitespace-nowrap">
+      {/* <div className="mt-0 px-4 py-4 bg-gray-800 overflow-x-scroll whitespace-nowrap">
         {videos.map((video) => (
           <div
             key={video.id}
@@ -119,7 +119,7 @@ const MovieDetailCard = ({ movie, videos }) => {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
     </>
   );
 };
