@@ -42,9 +42,7 @@ const Header = () => {
               <div className="md:text-5xl md:font-bold text-red-500 mx-2 mb-1">
                 <a href="/">Love Joint 2</a>
               </div>
-              <div className="text-white text-xs mx-2">
-                Everything Herbal - Natural Lifestyle Boosters®
-              </div>
+              <div className="text-white text-xs mx-2">xcxcfadfasd</div>
             </div>
           </div>
 
