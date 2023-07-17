@@ -7,7 +7,7 @@ const prodUrl = "https://woodhood.co.in/api/graphql";
 const url = process.env.NODE_ENV === "production" ? prodUrl : devUrl;
 
 export const client = new ApolloClient({
-  uri: url,
+  uri: "https://woodhood.co.in/api/graphql",
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
