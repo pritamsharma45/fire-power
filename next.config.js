@@ -5,7 +5,11 @@ module.exports = {
     ignoreBuildErrors: true,
   },
   images: {
-    // domains: ["nextjs-ecommerce-ten-delta.vercel.app","drive.google.com"],
+    domains: [
+      "nextjs-ecommerce-six-lemon.vercel.app",
+      "woodhood.co.in",
+      "drive.google.com",
+    ],
     remotePatterns: [
       {
         protocol: "https",
