@@ -40,7 +40,7 @@ const Header = () => {
             </a>
             <div className="md:flex md:flex-col md:items-start md:ml-4">
               <div className="md:text-5xl md:font-bold text-red-500 mx-2 mb-1">
-                <a href="/">Love Joint 2</a>
+                <a href="/">Love Joint</a>
               </div>
               <div className="text-white text-xs mx-2">xcxcfadfasd</div>
             </div>
