@@ -20,6 +20,10 @@ const SingleProduct = gql`
       likes {
         hasLiked
       }
+      extraImages {
+        image
+        description
+      }
     }
   }
 `;
@@ -85,6 +89,7 @@ function ProductCard() {
               stockQuantity={data.product.stockQuantity}
               isLiked={data.product.likes[0]?.hasLiked}
               inCart={inCartBl}
+              extraImages={data.product.extraImages}
             />
           </div>
         )}

@@ -27,6 +27,14 @@ type Edge {
   node: Product!
 }
 
+type ExtraImage {
+  description: String
+  id: Int
+  image: String
+  product: Product
+  productId: Int
+}
+
 """
 The `Json` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -110,6 +118,7 @@ input PaymentTransactionInput {
 type Product {
   allergies: String
   description: String
+  extraImages: [ExtraImage]
   id: Int
   image: String
   likes: [Like]

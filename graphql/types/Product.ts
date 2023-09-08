@@ -6,6 +6,7 @@ import {
   intArg,
   floatArg,
   nullable,
+  list,
 } from "nexus";
 // import { connectionFromArraySlice, cursorToOffset,connectionDefinitions } from 'graphql-relay';
 
@@ -47,7 +48,18 @@ export const Product = objectType({
     t.string("policyType");
     t.string("image");
     t.int("stockQuantity");
-
+    t.list.field("extraImages", {
+      type: "ExtraImage",
+      resolve(parent, args, ctx) {
+        return ctx.prisma.product
+          .findUnique({
+            where: {
+              id: parent.id,
+            },
+          })
+          .extraImages();
+      },
+    });
     // likes which are connected to this product
     t.list.field("likes", {
       type: "Like",
@@ -186,6 +198,9 @@ export const ProductByIDQuery = extendType({
         const product = await ctx.prisma.product.findUnique({
           where: {
             id: args.id,
+          },
+          include: {
+            extraImages: true,
           },
         });
 

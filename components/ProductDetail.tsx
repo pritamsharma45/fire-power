@@ -69,6 +69,7 @@ const ProductDetail = ({
   price,
   mrp,
   image,
+  extraImages,
   id,
   stockQuantity,
   isLiked,
@@ -82,6 +83,8 @@ const ProductDetail = ({
     image: image,
   };
   const { data: session, status } = useSession();
+  const [selectedImageId, setSelectedImageId] = useState(image);
+  const [imageList, setImageList] = useState([image]);
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -92,6 +95,13 @@ const ProductDetail = ({
   } = useQuery(GET_LIKE, {
     variables: { userId: session?.user?.id, productId: id },
   });
+  // Update ImageList with extra images
+  useEffect(() => {
+    if (extraImages.length > 0) {
+      const extraImageIds = extraImages.map((e) => e.image);
+      setImageList((prevImageList) => [...prevImageList, ...extraImageIds]);
+    }
+  }, [extraImages]);
 
   //   Query Top Liked Products
   const {
@@ -188,6 +198,8 @@ const ProductDetail = ({
     setTimeout(() => setShowShareButtons(false), 5000);
   };
 
+  const getImageUrl = (id) =>
+    "https://drive.google.com/uc?export=view&id=" + id;
   const imageUrl = "https://drive.google.com/uc?export=view&id=" + image;
 
   return (
@@ -198,12 +210,36 @@ const ProductDetail = ({
           <div className="md:flex-shrink-0 mt-4 ml-2 cursor-pointer">
             <Image
               className="h-48 w-full object-cover md:w96 md:h-auto"
-              src={imageUrl}
+              src={getImageUrl(selectedImageId)}
               alt="Product Image"
               width={300}
               height={300}
             />
+            {imageList.length > 1 && (
+              <div className={`h-14 px-1 py-1 flex flex-row gap-2 w-72`}>
+                {imageList.map((imageId) => {
+                  return (
+                    <div
+                      className={`h-12 w-12   ${
+                        imageId === selectedImageId &&
+                        "ring-1 ring-pink-500 ring-offset-1 rounded-sm"
+                      }`}
+                    >
+                      <Image
+                        className="h-12 w-12 object-cover mx-2 rounded-sm "
+                        src={getImageUrl(imageId)}
+                        alt="Thumb Image"
+                        width={50}
+                        height={50}
+                        onClick={() => setSelectedImageId(imageId)}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
+
           <div className="px-8 pt-2 flex flex-col justify-between">
             {/* <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
             Product
