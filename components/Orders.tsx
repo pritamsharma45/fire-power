@@ -29,7 +29,7 @@ const OrderList = ({ orders }) => {
                 </div>
                 <div className="flex-col mx-2">
                   {/* Price */}
-                  <div className="mb-2 text-xs">Price:${order.price}</div>
+                  <div className="mb-2 text-xs">Price:£{order.price}</div>
                   {/* Quantity */}
                   <div className="mb-2 text-xs">Qty:{order.quantity}</div>
                 </div>
