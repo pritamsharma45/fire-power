@@ -12,7 +12,7 @@ import { useAppDispatch } from "../hooks/hooks";
 import { addTocart } from "../features/cart/cartSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { tax } from "../utils/paypal/helper";
+import { tax, SHIPPING_CHARGE } from "../utils/paypal/helper";
 
 const UPDATE_LIKE = gql`
   mutation AddOrUpdateLike(
@@ -243,7 +243,7 @@ const ProductDetail = ({
       item_total_excluding_tax:
         Math.round(item_total_excluding_tax * 100) / 100,
       tax_total: Math.round(tax_total * 100) / 100,
-      shipping: 20,
+      shipping: SHIPPING_CHARGE,
       userProfile: null,
     };
 
@@ -280,10 +280,9 @@ const ProductDetail = ({
                 {imageList.map((imageId) => {
                   return (
                     <div
-                      className={`h-12 w-12   ${
-                        imageId === selectedImageId &&
+                      className={`h-12 w-12   ${imageId === selectedImageId &&
                         "ring-1 ring-pink-500 ring-offset-1 rounded-sm"
-                      }`}
+                        }`}
                     >
                       <Image
                         className="h-12 w-12 object-cover mx-2 rounded-sm "
@@ -351,10 +350,10 @@ const ProductDetail = ({
                 )}
               </div>
               <p className="mt-2 text-gray-700 font-bold">
-                Price: ${price}
+                Price: £{price}
                 {mrp && (
                   <>
-                    <span className="mt-2 ml-2 text-xs text-gray-500"> $</span>
+                    <span className="mt-2 ml-2 text-xs text-gray-500"> £</span>
                     <span className="mt-2  text-xs text-gray-500 line-through font-bold">
                       {mrp}
                     </span>

@@ -6,7 +6,7 @@ import { GetServerSideProps } from "next";
 import { useDispatch, useSelector } from "react-redux";
 import { loadStripe } from "@stripe/stripe-js";
 import { useSession } from "next-auth/react";
-import { tax } from "../utils/paypal/helper";
+import { tax, SHIPPING_CHARGE } from "../utils/paypal/helper";
 const FETCH_CART = gql`
   query Query($userId: String!) {
     cartByUserId(userId: $userId) {
@@ -183,7 +183,7 @@ export default function Cart({ cartItems }) {
       item_total_excluding_tax:
         Math.round(item_total_excluding_tax * 100) / 100,
       tax_total: Math.round(tax_total * 100) / 100,
-      shipping: 20,
+      shipping: SHIPPING_CHARGE,
       userProfile: profileData?.getProfileByUserId || "",
       fromCart: true,
     };
@@ -261,7 +261,7 @@ export default function Cart({ cartItems }) {
                   <div className="flex items-center mb-4">
                     <div className=" w-24">
                       <p>Unit Price</p>
-                      <p>$ {item.price}</p>
+                      <p>£{item.price}</p>
                     </div>
 
                     <div className=" w-36">
@@ -294,7 +294,7 @@ export default function Cart({ cartItems }) {
                     </div>
                     <div className="w-32 ml-1 md:ml-8">
                       <p>Total</p>
-                      <p>$ {(item.quantity * item.price).toFixed(2)}</p>
+                      <p>£{(item.quantity * item.price).toFixed(2)}</p>
                     </div>
                     <div className="w-32">
                       <button
@@ -314,7 +314,7 @@ export default function Cart({ cartItems }) {
             ))}
 
             <h2 className="text-right mr-32 mt-4">
-              <strong>Grand Total: $ {getTotalPrice().toFixed(2)}</strong>
+              <strong>Grand Total:£  {getTotalPrice().toFixed(2)}</strong>
             </h2>
             <div className="flex justify-end mt-4 mr-28">
               {/* Stripe checkout */}

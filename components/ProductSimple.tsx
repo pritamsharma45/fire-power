@@ -38,12 +38,12 @@ const ProductSimple = ({
               {stockQuantity > 0 ? (
                 <>
                   <div className="text-teal-500 text-xs font-semibold  font-poppins">
-                    ${price}
+                    £{price}
                     {mrp && (
                       <>
                         <span className="mt-2 ml-2 text-xs text-gray-500">
                           {" "}
-                          $
+                          £
                         </span>
                         <span className="mt-2  text-xs text-gray-500 line-through font-bold">
                           {mrp}
@@ -55,7 +55,7 @@ const ProductSimple = ({
               ) : (
                 <>
                   <div className="text-gray-500 text-xs font-semibold  font-poppins">
-                    ${price}
+                    £{price}
                   </div>
                 </>
               )}

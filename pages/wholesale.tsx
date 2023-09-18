@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 import { min } from "cypress/types/lodash";
 import { useRouter } from "next/router";
 import { PayPalCheckoutPage } from "../components/PayPalCheckout";
-import { tax } from "../utils/paypal/helper";
+import { tax, SHIPPING_CHARGE } from "../utils/paypal/helper";
 
 const FETCH_WHOLESALE_PRODUCTS = gql`
   query Query {
@@ -170,7 +170,7 @@ export default function Wholesale() {
       item_total_excluding_tax:
         Math.round(item_total_excluding_tax * 100) / 100,
       tax_total: Math.round(tax_total * 100) / 100,
-      shipping: 20,
+      shipping: SHIPPING_CHARGE,
       userProfile: profileData?.getProfileByUserId || "",
     };
 
@@ -273,7 +273,7 @@ export default function Wholesale() {
                   <div className="flex items-center mb-4">
                     <div>
                       <p className=" w-20">Price</p>
-                      <p className=" w-20"> $ {product.price.toFixed(2)}</p>
+                      <p className=" w-20"> £ {product.price.toFixed(2)}</p>
                     </div>
                     <div>
                       <p className="w-20">Qty</p>
@@ -281,11 +281,10 @@ export default function Wholesale() {
                         {" "}
                         <input
                           type="number"
-                          className={`w-16 pl-1 py-0 m-1 border ${
-                            quantities?.[product.id] < minQty
-                              ? "border-red-500"
-                              : "border-slate-300"
-                          } rounded-md`}
+                          className={`w-16 pl-1 py-0 m-1 border ${quantities?.[product.id] < minQty
+                            ? "border-red-500"
+                            : "border-slate-300"
+                            } rounded-md`}
                           id={product.id}
                           value={quantities?.[product.id] ?? minQty}
                           min={minQty}
@@ -308,16 +307,16 @@ export default function Wholesale() {
                     <div>
                       <p className=" w-20">Total</p>
                       <p className="font-bold w-20" id={product.id}>
-                        ${" "}
+                        £{" "}
                         {quantities?.[product.id]
                           ? (
-                              quantities?.[product.id] *
-                              product.price *
-                              (1 - discount)
-                            ).toFixed(2)
+                            quantities?.[product.id] *
+                            product.price *
+                            (1 - discount)
+                          ).toFixed(2)
                           : (minQty * product.price * (1 - discount)).toFixed(
-                              2
-                            )}
+                            2
+                          )}
                       </p>
                     </div>
                   </div>
@@ -334,7 +333,7 @@ export default function Wholesale() {
 
             <h2 className="text-right mr-2">
               <strong>
-                Grand Total: ${" "}
+                Grand Total: £{" "}
                 {products
                   ?.reduce((acc, item) => {
                     const qty = quantities?.[item.product.id];
@@ -362,9 +361,8 @@ export default function Wholesale() {
               <button
                 onClick={handlePaypalCheckout}
                 disabled={hasError}
-                className={`bg-${hasError ? "gray-200" : "blue-100"} text-${
-                  hasError ? "gray-400" : "blue-600"
-                } rounded-full px-2 py-1 text-sm font-bold w-32`}
+                className={`bg-${hasError ? "gray-200" : "blue-100"} text-${hasError ? "gray-400" : "blue-600"
+                  } rounded-full px-2 py-1 text-sm font-bold w-32`}
               >
                 Buy Now
               </button>
