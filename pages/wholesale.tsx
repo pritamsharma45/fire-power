@@ -6,6 +6,9 @@ import { gql, useQuery } from "@apollo/client";
 import { loadStripe } from "@stripe/stripe-js";
 import { useSession } from "next-auth/react";
 import { min } from "cypress/types/lodash";
+import { useRouter } from "next/router";
+import { PayPalCheckoutPage } from "../components/PayPalCheckout";
+import { tax } from "../utils/paypal/helper";
 
 const FETCH_WHOLESALE_PRODUCTS = gql`
   query Query {
@@ -50,10 +53,15 @@ const stripePromise = loadStripe(
 );
 
 export default function Wholesale() {
+  const router = useRouter();
   const [products, setProducts] = useState([]);
   const [hasError, setHasError] = useState(false);
   const [quantities, setQuantities] = useState(undefined);
-
+  const [showPayPalCheckout, setShowPayPalCheckout] = useState(false);
+  // const tax = {
+  //   val: 0.1,
+  //   name: "GST",
+  // };
   const { data: session, status } = useSession();
   const {
     data: wholesaleData,
@@ -123,7 +131,54 @@ export default function Wholesale() {
     );
     setProducts(updatedWholesaleProducts);
   };
+  const handlePaypalCheckout = async () => {
+    const wholeSaleItems = products.map(({ minQty, discount, product }) => {
+      const qty = quantities?.[product.id] || minQty;
+      return {
+        ...product,
+        productId: product.id,
+        quantity: qty,
+        discount: discount,
+        price: Math.round(product.price * (1 - discount) * 100) / 100,
+        priceExcludingTax:
+          Math.round(product.price * (1 - discount) * (1 - tax.val) * 100) /
+          100,
+        taxAmount:
+          Math.round(product.price * (1 - discount) * tax.val * 100) / 100,
+        imageUrl: "https://drive.google.com/uc?export=view&id=" + product.image,
+      };
+    });
+    console.log(wholeSaleItems);
+    const item_total = wholeSaleItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
 
+    const item_total_excluding_tax = wholeSaleItems.reduce(
+      (acc, item) => acc + item.priceExcludingTax * item.quantity,
+      0
+    );
+
+    const tax_total = item_total - item_total_excluding_tax;
+
+    //  back calculate tax and item total so that it adds up to the total
+
+    const payloadCart = {
+      userId: session?.user?.id || "",
+      line_items: wholeSaleItems,
+      item_total: Math.round(item_total * 100) / 100,
+      item_total_excluding_tax:
+        Math.round(item_total_excluding_tax * 100) / 100,
+      tax_total: Math.round(tax_total * 100) / 100,
+      shipping: 20,
+      userProfile: profileData?.getProfileByUserId || "",
+    };
+
+    router.push({
+      pathname: "/checkout",
+      query: { payload: JSON.stringify(payloadCart) },
+    });
+  };
   const handleCheckout = async () => {
     const wholeSaleItems = products.reduce(
       (acc, item) => {
@@ -179,123 +234,143 @@ export default function Wholesale() {
           No wholesale products to display! Check again later!
         </div>
       ) : (
-        <div className="container mx-auto max-w-5xl my-5 px-5">
-          <div className="flex flex-row justify-between">
-            <h1 className="font-bold mb-4">Xtreme Passion</h1>
-            {hasError && (
-              <p className="text-left text-pink-500 font-semibold">
-                * Please enter a quantity greater than or equal to the minimum
-                specified quantity.
-              </p>
-            )}
-            <h1 className="bg-gray-100 rounded-sm font-bold px-4 pt-1  h-8 mt-1">
-              {" "}
-              Wholesale Agents<span></span>
-            </h1>
-          </div>
-          <hr />
-          {products.map(({ minQty, discount, product }) => (
-            <div className="bg-white shadow-lg  overflow-hidden flex flex-col md:flex-row">
-              <div className="md:w-1/3">
-                <img
-                  className="w-40 h-40 object-cover"
-                  src={
-                    "https://drive.google.com/uc?export=view&id=" +
-                    product.image
-                  }
-                  alt="Image"
-                />
-              </div>
-              <div className="p-4 md:w-2/3">
-                <h2 className="font-bold text-xl mb-2"> {product.title}</h2>
-                <p className="text-gray-700 text-base mb-4">
-                  {" "}
-                  {product.description}
+        <>
+          {/* <pre>{JSON.stringify(quantities, null, 2)}</pre>
+          <pre>{JSON.stringify(products, null, 2)}</pre> */}
+          <div className="container mx-auto max-w-5xl my-5 px-5">
+            <div className="flex flex-row justify-between">
+              <h1 className="font-bold mb-4">Xtreme Passion</h1>
+              {hasError && (
+                <p className="text-left text-pink-500 font-semibold">
+                  * Please enter a quantity greater than or equal to the minimum
+                  specified quantity.
                 </p>
-                <div className="flex items-center mb-4">
-                  <div>
-                    <p className=" w-20">Price</p>
-                    <p className=" w-20"> $ {product.price.toFixed(2)}</p>
-                  </div>
-                  <div>
-                    <p className="w-20">Qty</p>
-                    <p className=" w-20">
-                      {" "}
-                      <input
-                        type="number"
-                        className={`w-16 pl-1 py-0 m-1 border ${
-                          quantities?.[product.id] < minQty
-                            ? "border-red-500"
-                            : "border-slate-300"
-                        } rounded-md`}
-                        id={product.id}
-                        value={quantities?.[product.id] ?? minQty}
-                        min={minQty}
-                        onChange={(event) =>
-                          handleQuantityChange(product.id, event.target.value)
-                        }
-                        placeholder="Qty"
-                      />
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className=" w-20 text-green-700">Discount</p>
-                    <p className=" w-20  text-green-700"> {discount * 100} %</p>
-                  </div>
-
-                  <div>
-                    <p className=" w-20">Total</p>
-                    <p className="font-bold w-20" id={product.id}>
-                      ${" "}
-                      {quantities?.[product.id]
-                        ? (
-                            quantities?.[product.id] *
-                            product.price *
-                            (1 - discount)
-                          ).toFixed(2)
-                        : (minQty * product.price * (1 - discount)).toFixed(2)}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  className="flex items-center justify-center px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-                  onClick={() => handleDeleteClick(product.id)}
-                >
-                  <FaTrash className=" h-4 mr-1" />
-                  Delete
-                </button>
-              </div>
+              )}
+              <h1 className="bg-gray-100 rounded-sm font-bold px-4 pt-1  h-8 mt-1">
+                {" "}
+                Wholesale Agents<span></span>
+              </h1>
             </div>
-          ))}
+            <hr />
+            {products.map(({ minQty, discount, product }) => (
+              <div className="bg-white shadow-lg  overflow-hidden flex flex-col md:flex-row">
+                <div className="md:w-1/3">
+                  <img
+                    className="w-40 h-40 object-cover"
+                    src={
+                      "https://drive.google.com/uc?export=view&id=" +
+                      product.image
+                    }
+                    alt="Image"
+                  />
+                </div>
+                <div className="p-4 md:w-2/3">
+                  <h2 className="font-bold text-xl mb-2"> {product.title}</h2>
+                  <p className="text-gray-700 text-base mb-4">
+                    {" "}
+                    {product.description}
+                  </p>
+                  <div className="flex items-center mb-4">
+                    <div>
+                      <p className=" w-20">Price</p>
+                      <p className=" w-20"> $ {product.price.toFixed(2)}</p>
+                    </div>
+                    <div>
+                      <p className="w-20">Qty</p>
+                      <p className=" w-20">
+                        {" "}
+                        <input
+                          type="number"
+                          className={`w-16 pl-1 py-0 m-1 border ${
+                            quantities?.[product.id] < minQty
+                              ? "border-red-500"
+                              : "border-slate-300"
+                          } rounded-md`}
+                          id={product.id}
+                          value={quantities?.[product.id] ?? minQty}
+                          min={minQty}
+                          onChange={(event) =>
+                            handleQuantityChange(product.id, event.target.value)
+                          }
+                          placeholder="Qty"
+                        />
+                      </p>
+                    </div>
 
-          <h2 className="text-right mr-2">
-            <strong>
-              Grand Total: ${" "}
-              {products
-                ?.reduce((acc, item) => {
-                  const qty = quantities?.[item.product.id];
-                  const itemTotal = qty
-                    ? qty * item.product.price * (1 - item.discount)
-                    : item.minQty * item.product.price * (1 - item.discount);
-                  return acc + itemTotal;
-                }, 0)
-                .toFixed(2)}
-            </strong>
-          </h2>
-          <div className="flex justify-between mt-4 mr-2">
-            <p className="text-left text-pink-500 font-semibold"></p>
-            <button
-              onClick={handleCheckout}
-              disabled={hasError}
-              className={`bg-${hasError ? "gray-200" : "blue-100"} text-${
-                hasError ? "gray-400" : "blue-600"
-              } rounded-full px-2 py-1 text-sm font-bold w-32`}
-            >
-              Buy Now
-            </button>
+                    <div>
+                      <p className=" w-20 text-green-700">Discount</p>
+                      <p className=" w-20  text-green-700">
+                        {" "}
+                        {discount * 100} %
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className=" w-20">Total</p>
+                      <p className="font-bold w-20" id={product.id}>
+                        ${" "}
+                        {quantities?.[product.id]
+                          ? (
+                              quantities?.[product.id] *
+                              product.price *
+                              (1 - discount)
+                            ).toFixed(2)
+                          : (minQty * product.price * (1 - discount)).toFixed(
+                              2
+                            )}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    className="flex items-center justify-center px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                    onClick={() => handleDeleteClick(product.id)}
+                  >
+                    <FaTrash className=" h-4 mr-1" />
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            <h2 className="text-right mr-2">
+              <strong>
+                Grand Total: ${" "}
+                {products
+                  ?.reduce((acc, item) => {
+                    const qty = quantities?.[item.product.id];
+                    const itemTotal = qty
+                      ? qty * item.product.price * (1 - item.discount)
+                      : item.minQty * item.product.price * (1 - item.discount);
+                    return acc + itemTotal;
+                  }, 0)
+                  .toFixed(2)}
+              </strong>
+            </h2>
+            <div className="flex justify-between mt-4 mr-2">
+              <p className="text-left text-pink-500 font-semibold"></p>
+              {/* Button for stripe checkout */}
+              {/* <button
+                onClick={handleCheckout}
+                disabled={hasError}
+                className={`bg-${hasError ? "gray-200" : "blue-100"} text-${
+                  hasError ? "gray-400" : "blue-600"
+                } rounded-full px-2 py-1 text-sm font-bold w-32`}
+              >
+                Buy Now (Stripe)
+              </button> */}
+              {/* Button for paypal checkout */}
+              <button
+                onClick={handlePaypalCheckout}
+                disabled={hasError}
+                className={`bg-${hasError ? "gray-200" : "blue-100"} text-${
+                  hasError ? "gray-400" : "blue-600"
+                } rounded-full px-2 py-1 text-sm font-bold w-32`}
+              >
+                Buy Now
+              </button>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </>
   );

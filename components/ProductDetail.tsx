@@ -12,6 +12,7 @@ import { useAppDispatch } from "../hooks/hooks";
 import { addTocart } from "../features/cart/cartSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { tax } from "../utils/paypal/helper";
 
 const UPDATE_LIKE = gql`
   mutation AddOrUpdateLike(
@@ -192,6 +193,65 @@ const ProductDetail = ({
       alert(error.message);
     }
   };
+  // Handle Paypal checkout
+  const handlePaypalCheckout = async (event) => {
+    if (!session?.user) {
+      toast.warning("Please login to purchase items!", {
+        autoClose: 1000,
+      });
+      setTimeout(() => {
+        router.push("/api/auth/signin");
+      }, 2000);
+      return;
+    }
+    // Get Stripe.js instance
+
+    const items = [
+      {
+        id: id,
+        title: title,
+        image: image,
+        description: description,
+        quantity: 1,
+        productId: id,
+        price: Math.round(price * 100) / 100,
+        priceExcludingTax: Math.round(price * (1 - tax.val) * 100) / 100,
+        taxAmount: Math.round(price * tax.val * 100) / 100,
+        imageUrl: "https://drive.google.com/uc?export=view&id=" + image,
+      },
+    ];
+
+    console.log(items);
+    const item_total = items.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+
+    const item_total_excluding_tax = items.reduce(
+      (acc, item) => acc + item.priceExcludingTax * item.quantity,
+      0
+    );
+
+    const tax_total = item_total - item_total_excluding_tax;
+
+    //  back calculate tax and item total so that it adds up to the total
+
+    const payloadCart = {
+      userId: session?.user?.id || "",
+      line_items: items,
+      item_total: Math.round(item_total * 100) / 100,
+      item_total_excluding_tax:
+        Math.round(item_total_excluding_tax * 100) / 100,
+      tax_total: Math.round(tax_total * 100) / 100,
+      shipping: 20,
+      userProfile: null,
+    };
+
+    router.push({
+      pathname: "/checkout",
+      query: { payload: JSON.stringify(payloadCart) },
+    });
+  };
   const [showShareButtons, setShowShareButtons] = useState(false);
   const handleShareButtonClick = () => {
     setShowShareButtons(!showShareButtons);
@@ -308,7 +368,7 @@ const ProductDetail = ({
                 </div>
               ) : (
                 <div className="flex flex-wrap justify-around mt-2 mb-2">
-                  {" "}
+                  {/*  */}
                   <button
                     disabled={inCart}
                     className="bg-orange-100 text-orange-600 rounded-full  px-2 py-1 text-xs font-medium  w-24"
@@ -332,9 +392,17 @@ const ProductDetail = ({
                       </svg>
                     )}
                   </button>
-                  <button
+                  {/* Stripe checkout button */}
+                  {/* <button
                     className="bg-blue-100 text-blue-600 rounded-full  mx-2 px-1 py-1 text-xs font-medium  w-24"
                     onClick={handleClick}
+                  >
+                    Buy Now
+                  </button> */}
+                  {/* Paypal checkout button */}
+                  <button
+                    className="bg-blue-100 text-blue-600 rounded-full  mx-2 px-1 py-1 text-xs font-medium  w-24"
+                    onClick={handlePaypalCheckout}
                   >
                     Buy Now
                   </button>

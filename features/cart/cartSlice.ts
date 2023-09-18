@@ -45,6 +45,9 @@ export const counterSlice = createSlice({
 
       state.items = [...action.payload];
     },
+    emptyCart: (state) => {
+      state.items = [];
+    },
   },
 });
 
@@ -54,6 +57,7 @@ export const {
   decrementQuantity,
   removeFromCart,
   updateCart,
+  emptyCart,
 } = counterSlice.actions;
 
 export const selectCartItems = (state: AppState) => state.counter.items;

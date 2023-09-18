@@ -49,6 +49,7 @@ const MoviesPage = () => {
             />
           </>
         ))}
+        {/* {<pre>{JSON.stringify(movies, null, 2)}</pre>} */}
       </div>
     </div>
   );

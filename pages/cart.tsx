@@ -6,7 +6,7 @@ import { GetServerSideProps } from "next";
 import { useDispatch, useSelector } from "react-redux";
 import { loadStripe } from "@stripe/stripe-js";
 import { useSession } from "next-auth/react";
-
+import { tax } from "../utils/paypal/helper";
 const FETCH_CART = gql`
   query Query($userId: String!) {
     cartByUserId(userId: $userId) {
@@ -68,9 +68,11 @@ import {
   updateCart,
 } from "../features/cart/cartSlice";
 import styles from "../styles/CartPage.module.css";
+import { useRouter } from "next/router";
 
 export default function Cart({ cartItems }) {
   const { data: session, status } = useSession();
+  const router = useRouter();
   // Fetch the user's profile from the server
   const {
     data: profileData,
@@ -121,6 +123,7 @@ export default function Cart({ cartItems }) {
     userProfile: profileData?.getProfileByUserId,
   };
   console.log("Cart items in payload", payloadCart);
+
   const handleCheckout = async () => {
     // Get Stripe.js instance
 
@@ -143,6 +146,52 @@ export default function Cart({ cartItems }) {
     if (error) {
       alert(error.message);
     }
+  };
+
+  const handlePaypalCheckout = async () => {
+    const items = cart.map((product) => {
+      return {
+        ...product,
+        productId: product.id,
+        quantity: product.quantity,
+        price: Math.round(product.price * 100) / 100,
+        priceExcludingTax:
+          Math.round(product.price * (1 - tax.val) * 100) / 100,
+        taxAmount: Math.round(product.price * tax.val * 100) / 100,
+        imageUrl: "https://drive.google.com/uc?export=view&id=" + product.image,
+      };
+    });
+    console.log(items);
+    const item_total = items.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+
+    const item_total_excluding_tax = items.reduce(
+      (acc, item) => acc + item.priceExcludingTax * item.quantity,
+      0
+    );
+
+    const tax_total = item_total - item_total_excluding_tax;
+
+    //  back calculate tax and item total so that it adds up to the total
+
+    const payloadCart = {
+      userId: session?.user?.id || "",
+      line_items: items,
+      item_total: Math.round(item_total * 100) / 100,
+      item_total_excluding_tax:
+        Math.round(item_total_excluding_tax * 100) / 100,
+      tax_total: Math.round(tax_total * 100) / 100,
+      shipping: 20,
+      userProfile: profileData?.getProfileByUserId || "",
+      fromCart: true,
+    };
+
+    router.push({
+      pathname: "/checkout",
+      query: { payload: JSON.stringify(payloadCart) },
+    });
   };
 
   const handleDelete = async (id) => {
@@ -268,9 +317,17 @@ export default function Cart({ cartItems }) {
               <strong>Grand Total: $ {getTotalPrice().toFixed(2)}</strong>
             </h2>
             <div className="flex justify-end mt-4 mr-28">
-              <button
+              {/* Stripe checkout */}
+              {/* <button
                 className="bg-blue-100 text-blue-600 rounded-full px-2 py-1  text-sm font-bold  w-24"
                 onClick={handleCheckout}
+              >
+                Buy Now
+              </button> */}
+              {/* Paypal checkout */}
+              <button
+                className="bg-blue-100 text-blue-600 rounded-full px-2 py-1  text-sm font-bold  w-24"
+                onClick={handlePaypalCheckout}
               >
                 Buy Now
               </button>
