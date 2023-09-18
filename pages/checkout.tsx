@@ -8,6 +8,7 @@ import { set } from "cypress/types/lodash";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useAppDispatch } from "../hooks/hooks";
 import { emptyCart } from "../features/cart/cartSlice";
+import dynamic from "next/dynamic";
 const CREATE_ORDER = gql`
   mutation Mutation(
     $items: [OrderItemInput!]!
@@ -35,7 +36,9 @@ const DELETE_CART = gql`
     }
   }
 `;
-const Checkout = () => {
+
+
+const NoSSRCheckoutComponent = () => {
   const router = useRouter();
   const payloadReceived = JSON.parse(router.query.payload as string);
   const [products, setProducts] = useState<any>(payloadReceived.line_items); // [1
@@ -172,7 +175,7 @@ const Checkout = () => {
         <div className="px-2 pt-8">
           <p className="text-xl font-medium">Order Summary</p>
           <p className="text-gray-400">
-            Check your items. And select a suitable shipping method.
+            Check your items.
           </p>
           <div className="mt-8 rounded-lg border bg-white px-1 py-4 sm:px-3">
             <div className="space-y-3">
@@ -296,4 +299,9 @@ const Checkout = () => {
     </>
   );
 };
+
+const Checkout = dynamic(() => Promise.resolve(NoSSRCheckoutComponent), {
+  ssr: false,
+})
+
 export default Checkout;

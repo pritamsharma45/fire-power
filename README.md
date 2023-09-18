@@ -20,6 +20,7 @@ We will try to dockerize it
 12. Prisma ( ORM to work with Postgres Database like - modelling, migration,generate SQL query)
 13. Stripe ( payment integration)
 14. Apache KAFKA
+15. Paypal
 
 ### Run commands to get started
 
