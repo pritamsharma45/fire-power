@@ -197,7 +197,7 @@ const NoSSRCheckoutComponent = () => {
                         Unit price:
                       </span>
                       <span className="text-gray-700 font-bold text-sm">
-                        ${product.price.toFixed(2)}
+                        £{product.price.toFixed(2)}
                       </span>
                     </p>
                   </div>
@@ -218,7 +218,7 @@ const NoSSRCheckoutComponent = () => {
                   Item Total:
                 </span>
                 <span className="text-sm font-semibold  text-gray-700">
-                  ${payloadReceived.item_total.toFixed(2)}
+                  £{payloadReceived.item_total.toFixed(2)}
                 </span>
               </div>
               {/* Add shipping in light gray font */}
@@ -229,7 +229,7 @@ const NoSSRCheckoutComponent = () => {
                 <span className="text-sm font-semibold  text-gray-600">
                   {payloadReceived.shipping === 0
                     ? "Free"
-                    : "$" + payloadReceived.shipping.toFixed(2)}
+                    : "£" + payloadReceived.shipping.toFixed(2)}
                 </span>
               </div>
               <hr />
@@ -237,7 +237,7 @@ const NoSSRCheckoutComponent = () => {
               <div className="flex flex-row justify-between px-2 py-1 ">
                 <span className="text-lg font-semibold mr-2">Total:</span>
                 <span className="text-lg font-semibold">
-                  $
+                  £
                   {(
                     payloadReceived.item_total + payloadReceived.shipping
                   ).toFixed(2)}
