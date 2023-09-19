@@ -25,7 +25,7 @@ export default async function Handler(req, res) {
       name: item.title,
       description: item.title,
       unit_amount: {
-        currency_code: "USD",
+        currency_code: "gbp",
         value: item.priceExcludingTax.toFixed(2) + "", // Price of the product
       },
       quantity: item.quantity + "",
@@ -35,19 +35,19 @@ export default async function Handler(req, res) {
     {
       description: "Wellness products",
       amount: {
-        currency_code: "USD",
+        currency_code: "gbp",
         value: (item_total + shipping).toFixed(2), // Total value including tax
         breakdown: {
           item_total: {
-            currency_code: "USD",
+            currency_code: "gbp",
             value: item_total_excluding_tax.toFixed(2) + "", // Total value of the items without tax
           },
           tax_total: {
-            currency_code: "USD",
+            currency_code: "gbp",
             value: tax_total.toFixed(2), // Tax amount
           },
           shipping: {
-            currency_code: "USD",
+            currency_code: "gbp",
             value: shipping + "", // Shipping amount
           },
         },
@@ -73,19 +73,19 @@ export default async function Handler(req, res) {
         {
           description: "Wellness products",
           amount: {
-            currency_code: "USD",
+            currency_code: "gbp",
             value: (item_total + shipping).toFixed(2), // Total value including tax
             breakdown: {
               item_total: {
-                currency_code: "USD",
+                currency_code: "gbp",
                 value: item_total_excluding_tax + "", // Total value of the items without tax
               },
               tax_total: {
-                currency_code: "USD",
+                currency_code: "gbp",
                 value: tax_total, // Tax amount
               },
               shipping: {
-                currency_code: "USD",
+                currency_code: "gbp",
                 value: shipping + "", // Shipping amount
               },
             },

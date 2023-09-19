@@ -269,7 +269,7 @@ const NoSSRCheckoutComponent = () => {
                   "AeBeOhW4v7VitTE8hOYQ-glhngO-sOpY5tsIy1m0wrdLg0wm8DUZ6ggsGa2U-sMQCezP-KgyE6ND5ZFc",
                 clientId:
                   "AeBeOhW4v7VitTE8hOYQ-glhngO-sOpY5tsIy1m0wrdLg0wm8DUZ6ggsGa2U-sMQCezP-KgyE6ND5ZFc",
-                currency: "USD",
+                currency: "gbp",
                 intent: "capture",
               }}
             >
