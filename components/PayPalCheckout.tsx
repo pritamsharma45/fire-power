@@ -4,6 +4,12 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
+
+// ******* This component is not used in the project anywhere *******
+//  Alternate way to import PayPalScriptProvider and PayPalButtons
+// In this way we can PayPal checkout as component in any page rather than creating a separate page
+// This won't add any extra overhead as this won't be loaded by any page while pre rendeirng pages
+
 export const PayPalCheckoutPage = ({ products }) => {
   const { data: session, status } = useSession();
   const [response, setResponse] = useState(null);

@@ -8,6 +8,13 @@ import { gql, useMutation } from "@apollo/client";
 import { useAppDispatch } from "../hooks/hooks";
 import { emptyCart } from "../features/cart/cartSlice";
 import dynamic from "next/dynamic";
+
+
+const CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
+const CURRENCY = "GBP";
+
+
+
 const CREATE_ORDER = gql`
   mutation Mutation(
     $items: [OrderItemInput!]!
@@ -266,10 +273,10 @@ const NoSSRCheckoutComponent = () => {
             <PayPalScriptProvider
               options={{
                 "client-id":
-                  "AeBeOhW4v7VitTE8hOYQ-glhngO-sOpY5tsIy1m0wrdLg0wm8DUZ6ggsGa2U-sMQCezP-KgyE6ND5ZFc",
+                  CLIENT_ID,
                 clientId:
-                  "AeBeOhW4v7VitTE8hOYQ-glhngO-sOpY5tsIy1m0wrdLg0wm8DUZ6ggsGa2U-sMQCezP-KgyE6ND5ZFc",
-                currency: "GBP",
+                  CLIENT_ID,
+                currency: CURRENCY,
                 intent: "capture",
               }}
             >

@@ -1,5 +1,9 @@
 import { PayPalButtons } from "@paypal/react-paypal-js";
 
+// ******* This component is used in PayPalCheckout.tsx, which is  not used in anywhere in the project *******
+//  Alternate way to import PayPalScriptProvider and PayPalButtons
+// In this way we can PayPal checkout as component in any page rather than creating a separate page
+
 const PaypalCheckoutButton = (props) => {
   const { product } = props;
   const paypalCreateOrder = async () => {
