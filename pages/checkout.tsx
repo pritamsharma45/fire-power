@@ -104,7 +104,7 @@ const NoSSRCheckoutComponent = () => {
         productId: item.id,
       };
     });
-    console.log("checkout response", checkoutResponse);
+    // console.log("checkout response", checkoutResponse);
     const inputVariables = {
       userId: payloadReceived.userId,
       sessionId: id,
@@ -120,7 +120,7 @@ const NoSSRCheckoutComponent = () => {
       },
       payment: { amount: item_total + shipping, status: "success" },
     };
-    console.log("input variables", inputVariables);
+    // console.log("input variables", inputVariables);
     await createOrder({
       variables: {
         userId: payloadReceived.userId,
@@ -155,13 +155,10 @@ const NoSSRCheckoutComponent = () => {
       if (response.data.success) {
         // Order is successful
         toast.success("Purchase successful!");
-        // redirect to success-paypal-checkout.tsx with response data
+
         setResponse(response.data.data.result);
         handleOrderCreation(response.data.data.result);
-        // router.push({
-        //   pathname: "/success-paypal-checkout",
-        //   query: { response: JSON.stringify(response.data.data) },
-        // });
+
       }
     } catch (err) {
       // Order is not successful
@@ -300,8 +297,6 @@ const NoSSRCheckoutComponent = () => {
           </div>
         </div>
       </div>
-      {/* {response && <pre>{JSON.stringify(response, null, 2)}</pre>}
-      <pre>{JSON.stringify(payloadReceived, null, 2)}</pre> */}
     </>
   );
 };
