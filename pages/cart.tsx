@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadStripe } from "@stripe/stripe-js";
 import { useSession } from "next-auth/react";
 import { tax, SHIPPING_CHARGE } from "../utils/paypal/helper";
+
 const FETCH_CART = gql`
   query Query($userId: String!) {
     cartByUserId(userId: $userId) {

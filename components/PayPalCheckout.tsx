@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 
-// ******* This component is not used in the project anywhere *******
+// ******* This component is not used in the project anywhere. Can be exported into other projects where PayPal may be needed *******
 //  Alternate way to import PayPalScriptProvider and PayPalButtons
 // In this way we can PayPal checkout as component in any page rather than creating a separate page
 // This won't add any extra overhead as this won't be loaded by any page while pre rendeirng pages

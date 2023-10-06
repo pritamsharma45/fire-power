@@ -261,8 +261,9 @@ const NoSSRCheckoutComponent = () => {
             <p className="mt-10 mb-4 text-center text-sm font-semibold text-gray-500">
               By placing this order you agree to the{" "}
               <a
-                href="#"
+                href="/paymentTerms"
                 className="whitespace-nowrap text-teal-400 underline hover:text-teal-600"
+                target="_blank"
               >
                 Terms and Conditions
               </a>
