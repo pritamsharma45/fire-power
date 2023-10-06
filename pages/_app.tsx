@@ -17,9 +17,6 @@ export default function MyApp({
   pageProps: { session, ...pageProps },
 }: AppProps<{ session: Session }>) {
 
-
-
-
   const CustomComponent = (
     <>
       <Script

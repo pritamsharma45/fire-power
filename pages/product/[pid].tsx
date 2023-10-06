@@ -71,7 +71,7 @@ function ProductCard() {
   return (
     <div>
       <Head>
-        {/* <title>Product</title> */}
+        <title>{data?.product.title}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="container mx-auto max-w-5xl my-5 px-5">
