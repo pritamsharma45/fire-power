@@ -3,6 +3,9 @@ import Movie from "../components/movie";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { TIME_OUT_IN_MINUTES } from "../utils/helper";
+
+const MOVIE_API_KEY = process.env.NEXT_PUBLIC_MOVIE_API_KEY;
+
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -67,7 +70,7 @@ const MoviesPage = () => {
           headers: {
             accept: "application/json",
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkOTRkZGQxMTE1NTYzYTUxMTc3NmU4MjY4OGIzN2JjMyIsInN1YiI6IjY0ODg0Y2NiNmY4ZDk1MDExZjIzNzQ0MyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._j0EeKlTKueFcv135Ph26Bg0cL21HozyAxVrCb2At1I",
+              `Bearer ${MOVIE_API_KEY}`,
           },
         };
 
