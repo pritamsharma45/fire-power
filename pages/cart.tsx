@@ -159,7 +159,7 @@ export default function Cart({ cartItems }) {
         priceExcludingTax:
           Math.round(product.price * (1 - tax.val) * 100) / 100,
         taxAmount: Math.round(product.price * tax.val * 100) / 100,
-        imageUrl: "https://drive.google.com/uc?export=view&id=" + product.image,
+        imageUrl: "https://drive.google.com/thumbnail?id=" + product.image + "&sz=w1000",
       };
     });
     console.log(items);
@@ -246,7 +246,7 @@ export default function Cart({ cartItems }) {
                 <div className="md:w-1/6">
                   <Image
                     src={
-                      "https://drive.google.com/uc?export=view&id=" + item.image
+                      "https://drive.google.com/thumbnail?id=" + item.image + "&sz=w1000"
                     }
                     height="90"
                     width="65"

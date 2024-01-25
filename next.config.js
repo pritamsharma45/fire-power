@@ -9,6 +9,8 @@ module.exports = {
       "nextjs-ecommerce-six-lemon.vercel.app",
       "woodhood.co.in",
       "drive.google.com",
+      "drive.usercontent.google.com",
+      "lh3.googleusercontent.com",
     ],
     remotePatterns: [
       {

@@ -39,7 +39,7 @@ const Product = ({
   userId,
   inCart,
 }) => {
-  const imageUrl = "https://drive.google.com/uc?export=view&id=" + image;
+  const imageUrl = "https://drive.google.com/thumbnail?id=" + image + "&sz=w1000";
 
   const cartItem: TCartItem = {
     id: id,
@@ -89,6 +89,7 @@ const Product = ({
         <div className="flex flex-col justify-around  h-72 shadow-lg hover:shadow-xl rounded-lg transition-transform duration-500 transform hover:scale-105">
           <div>
             <a href={`/product/${id}`}>
+
               <div
                 className="bg-gray-400 h-32  rounded-t-lg p-4 bg-no-repeat bg-center bg-cover cursor-pointer"
                 style={{

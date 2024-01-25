@@ -12,7 +12,7 @@ const ProductSimple = ({
   id,
   stockQuantity,
 }) => {
-  const imageUrl = "https://drive.google.com/uc?export=view&id=" + image;
+  const imageUrl = "https://drive.google.com/thumbnail?id=" + image + "&sz=w1000";
 
   return (
     <div key={id} className="">

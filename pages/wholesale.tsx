@@ -145,7 +145,7 @@ export default function Wholesale() {
           100,
         taxAmount:
           Math.round(product.price * (1 - discount) * tax.val * 100) / 100,
-        imageUrl: "https://drive.google.com/uc?export=view&id=" + product.image,
+        imageUrl: "https://drive.google.com/thumbnail?id=" + product.image + "&sz=w1000",
       };
     });
     console.log(wholeSaleItems);
@@ -258,8 +258,7 @@ export default function Wholesale() {
                   <img
                     className="w-40 h-40 object-cover"
                     src={
-                      "https://drive.google.com/uc?export=view&id=" +
-                      product.image
+                      "https://drive.google.com/thumbnail?id=" + product.image + "&sz=w1000"
                     }
                     alt="Image"
                   />

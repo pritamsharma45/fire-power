@@ -217,7 +217,7 @@ const ProductDetail = ({
         price: Math.round(price * 100) / 100,
         priceExcludingTax: Math.round(price * (1 - tax.val) * 100) / 100,
         taxAmount: Math.round(price * tax.val * 100) / 100,
-        imageUrl: "https://drive.google.com/uc?export=view&id=" + image,
+        imageUrl: "https://drive.google.com/thumbnail?id=" + image + "&sz=w1000"
       },
     ];
 
@@ -259,8 +259,9 @@ const ProductDetail = ({
   };
 
   const getImageUrl = (id) =>
-    "https://drive.google.com/uc?export=view&id=" + id;
-  const imageUrl = "https://drive.google.com/uc?export=view&id=" + image;
+    "https://drive.google.com/thumbnail?id=" + id + "&sz=w1000";
+
+  const imageUrl = "https://drive.google.com/thumbnail?id=" + image + "&sz=w1000";
 
   return (
     <>
